@@ -1,0 +1,119 @@
+// プラグインの設定
+plugins {
+
+	// 成果物をwarファイルとする設定
+	id 'war'
+
+	// spotbugsの設定
+	id 'com.github.spotbugs' version '6.0.4'
+
+	// jacocoの設定
+	id 'jacoco'
+}
+
+// Java17を使用する設定
+sourceCompatibility = 17
+
+// エンコーディングをUTF-8とする設定
+tasks.withType(JavaCompile) {options.encoding = 'UTF-8'}
+
+// mavenCentralを参照して資材を取得するための設定
+repositories.mavenCentral()
+
+// 依存関係の設定
+dependencies {
+
+	// Tomcat 9, Jakarta Servlet 4.0, javax パッケージ
+	//compileOnly 'jakarta.servlet:jakarta.servlet-api:4.0.+'
+	//compileOnly 'jakarta.servlet.jsp:jakarta.servlet.jsp-api:2.3.+'
+	//runtimeOnly 'jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api:1.2.+'
+	//runtimeOnly 'org.apache.taglibs:taglibs-standard-impl:1.2.+'
+
+	// Tomcat 10.0, Jakarta Servlet 5.0
+	//compileOnly 'jakarta.servlet:jakarta.servlet-api:5.0.+'
+	//compileOnly 'jakarta.servlet.jsp:jakarta.servlet.jsp-api:3.0.+'
+	//runtimeOnly 'jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api:2.0.+'
+	//runtimeOnly 'org.glassfish.web:jakarta.servlet.jsp.jstl:2.0.+'
+
+	// Tomcat 10.1, Jakarta Servlet 6.0
+	compileOnly 'jakarta.servlet:jakarta.servlet-api:6.0.+'
+	//compileOnly 'jakarta.servlet.jsp:jakarta.servlet.jsp-api:3.1.+'
+	//runtimeOnly 'jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api:3.0.+'
+	//runtimeOnly 'org.glassfish.web:jakarta.servlet.jsp.jstl:3.0.+'
+
+	// JUnit 5
+	testImplementation 'org.junit.jupiter:junit-jupiter:5.10.1'
+
+	// log4j
+	implementation group: 'log4j', name: 'log4j', version: '1.2.17'
+
+	// その他
+	implementation 'org.eclipse:yasson:3.0.+' // jakarta.json.bind 公式リファレンス実装
+	implementation 'org.hibernate.validator:hibernate-validator:8.0.+' // jakarta.validation 公式リファレンス実装
+	implementation 'commons-beanutils:commons-beanutils:1.9.+' // Commons BeanUtils (リクエストから Bean へコピー)
+	compileOnly 'org.projectlombok:lombok:1.18.+' // Lombok @Data アノテーションなど
+	annotationProcessor 'org.projectlombok:lombok:1.18.+' // Lombok アノテーション処理
+
+	// MySQL connector for Javaの設定
+	implementation 'mysql:mysql-connector-java:8.0.33'
+
+	// H2を使用する設定
+	implementation 'com.h2database:h2:2.2.224'
+
+	// JavaMailを使用する設定
+	implementation 'com.sun.mail:javax.mail:1.6.2'
+}
+
+// テスト設定
+test {
+
+	// JUnit platformを使う設定
+	useJUnitPlatform()
+
+	// テストの最後でjacocoのレポート出力を行う
+	finalizedBy jacocoTestReport
+}
+
+// spotbugs設定
+spotbugs {
+
+	// ツールバージョンを指定する
+	toolVersion = '4.8.3'
+
+	// テストはspotbugsによる検査の対象外とする
+	spotbugsTest.enabled = false
+
+	// mainに対するspotbugsの無効化／有効化は、次のコードで制御する
+	//spotbugsMain.enabled = false
+	spotbugsMain {
+		reports {
+			html {
+				enabled = true
+				stylesheet = 'fancy-hist.xsl'
+			}
+		}
+	}
+}
+
+// jacocoのレポートから除外するクラスファイルを定義する
+def jacocoExcludeFiles = [
+	'**/servlet/*',
+	'**/proc/MailProcBase.class',
+	'**/mail/GetAllMailService.class'
+]
+
+// jacoco設定
+jacocoTestReport {
+
+	// テストに依存(連動)して動作するよう設定する
+	dependsOn test
+
+	// JUnitでテストできないメールやサーブレットなどのクラスを除外する
+	afterEvaluate {
+		classDirectories.setFrom(classDirectories.files.collect {
+			fileTree(
+					dir: it,
+					excludes: jacocoExcludeFiles)
+		})
+	}
+}
