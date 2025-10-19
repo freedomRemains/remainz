@@ -296,4 +296,22 @@ class FileUtilTest {
 		assertNotNull(listFiles);
 		assertTrue(listFiles.length == 0);
 	}
+
+	@Test
+	void test14() throws Exception {
+
+		// テストのためにディレクトリを作成する
+		FileUtil fileUtil = new FileUtil();
+		fileUtil.createDirIfNotExists(RESOURCE_PATH + "util/FileUtilTest/output/subdir");
+
+		// ファイルを作成する
+		try (BufferedWriter bufferedWriter = new FileUtil().getBufferedWriter(
+				RESOURCE_PATH + "util/FileUtilTest/output/subdir/write.txt")) {
+			bufferedWriter.write("This is test.");
+		}
+
+		// カバレッジ(ファイル削除、listFilesがnullになる条件)
+		fileUtil.deleteDirRecursive(new File(RESOURCE_PATH + "util/FileUtilTest/output"));
+		assertFalse(new File(RESOURCE_PATH + "util/FileUtilTest/output").exists());
+	}
 }

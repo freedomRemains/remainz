@@ -103,4 +103,14 @@ class LogUtilTest {
 		File logFile = new File(logPath);
 		assertTrue(logFile.exists());
 	}
+
+	@Test
+	void test04() {
+
+		// byte配列のログパターンを検証する
+		byte[] bytes = new byte[] {0x01, 0x02};
+		new LogUtil().recordBytesLog(logPath, bytes);
+		File logFile = new File(logPath);
+		assertTrue(logFile.exists());
+	}
 }
