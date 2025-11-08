@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -23,11 +24,21 @@ public class GetAllTableDataServiceTest {
 
 	private static String dbName;
 
-	@BeforeEach
-	void beforeEach() throws Exception {
+	@BeforeAll
+	static void beforeAll() throws Exception {
 
 		// テストに必要な準備処理を実行する
 		dbName = TestUtil.getDbName();
+
+		// 必ず最初に一度、DB復元を実施する
+		TestUtil.restoreDb();
+	}
+
+	@BeforeEach
+	void beforeEach() throws Exception {
+
+		// DB構成取得を実行し、前提ファイルを取得する
+		TestUtil.prepare();
 
 		// テーブルデータを取得するために必要なSELECTのSQLを生成する
 		GetAllTableInsertSqlServiceTest.createAllTableSelectSql(dbName);

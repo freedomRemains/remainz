@@ -29,7 +29,7 @@ public class CreateSqlByDefProcTest {
 	void afterEach() {
 
 		// テストフォルダを削除する
-		new FileUtil().deleteDirIfExists(TestUtil.OUTPUT_PATH);
+		TestUtil.clearOutputDir();
 	}
 
 	//
@@ -46,22 +46,23 @@ public class CreateSqlByDefProcTest {
 
 		// サイズが0のファイルを配置
 		String filePath = dirPath + "/" + defPath + "/test.txt";
-		new FileUtil().getBufferedOutputStream(filePath);
+		try (var file = new FileUtil().getBufferedOutputStream(filePath)) {
 
-		// カバレッジ(ファイルサイズが0のファイルを処理)
-		var proc = new CreateSqlByDefProc();
-		var input = new GenericParam();
-		var output = new GenericParam();
-		input.setDb(TestUtil.getDb());
-		input.putString("dirPath", dirPath);
-		input.putString("defPath", defPath);
-		input.putString("sqlPath", sqlPath);
-		proc.doProc(input, output, input.getString("dirPath"));
+			// カバレッジ(ファイルサイズが0のファイルを処理)
+			var proc = new CreateSqlByDefProc();
+			var input = new GenericParam();
+			var output = new GenericParam();
+			input.setDb(TestUtil.getDb());
+			input.putString("dirPath", dirPath);
+			input.putString("defPath", defPath);
+			input.putString("sqlPath", sqlPath);
+			proc.doProc(input, output, input.getString("dirPath"));
 
-		// 処理したファイルについて確認を行う
-		File blankFile = new File(filePath);
-		assertTrue(blankFile.exists());
-		assertEquals(0, blankFile.length());
+			// 処理したファイルについて確認を行う
+			File blankFile = new File(filePath);
+			assertTrue(blankFile.exists());
+			assertEquals(0, blankFile.length());
+		}
 	}
 
 	@Test
@@ -74,22 +75,23 @@ public class CreateSqlByDefProcTest {
 
 		// ".keep"ファイルを配置
 		String filePath = dirPath + "/" + defPath + "/.keep";
-		new FileUtil().getBufferedOutputStream(filePath);
+		try (var file = new FileUtil().getBufferedOutputStream(filePath)) {
 
-		// カバレッジ(".keep"ファイルを処理)
-		var proc = new CreateSqlByDefProc();
-		var input = new GenericParam();
-		var output = new GenericParam();
-		input.setDb(TestUtil.getDb());
-		input.putString("dirPath", dirPath);
-		input.putString("defPath", defPath);
-		input.putString("sqlPath", sqlPath);
-		proc.doProc(input, output, input.getString("dirPath"));
+			// カバレッジ(".keep"ファイルを処理)
+			var proc = new CreateSqlByDefProc();
+			var input = new GenericParam();
+			var output = new GenericParam();
+			input.setDb(TestUtil.getDb());
+			input.putString("dirPath", dirPath);
+			input.putString("defPath", defPath);
+			input.putString("sqlPath", sqlPath);
+			proc.doProc(input, output, input.getString("dirPath"));
 
-		// 処理したファイルについて確認を行う
-		File blankFile = new File(filePath);
-		assertTrue(blankFile.exists());
-		assertEquals(0, blankFile.length());
+			// 処理したファイルについて確認を行う
+			File blankFile = new File(filePath);
+			assertTrue(blankFile.exists());
+			assertEquals(0, blankFile.length());
+		}
 	}
 
 	@Test
@@ -102,21 +104,22 @@ public class CreateSqlByDefProcTest {
 
 		// "tableNameList.txt"ファイルを配置
 		String filePath = dirPath + "/" + defPath + "/tableNameList.txt";
-		new FileUtil().getBufferedOutputStream(filePath);
+		try (var file = new FileUtil().getBufferedOutputStream(filePath)) {
 
-		// カバレッジ("tableNameList.txt"ファイルを処理)
-		var proc = new CreateSqlByDefProc();
-		var input = new GenericParam();
-		var output = new GenericParam();
-		input.setDb(TestUtil.getDb());
-		input.putString("dirPath", dirPath);
-		input.putString("defPath", defPath);
-		input.putString("sqlPath", sqlPath);
-		proc.doProc(input, output, input.getString("dirPath"));
+			// カバレッジ("tableNameList.txt"ファイルを処理)
+			var proc = new CreateSqlByDefProc();
+			var input = new GenericParam();
+			var output = new GenericParam();
+			input.setDb(TestUtil.getDb());
+			input.putString("dirPath", dirPath);
+			input.putString("defPath", defPath);
+			input.putString("sqlPath", sqlPath);
+			proc.doProc(input, output, input.getString("dirPath"));
 
-		// 処理したファイルについて確認を行う
-		File blankFile = new File(filePath);
-		assertTrue(blankFile.exists());
-		assertEquals(0, blankFile.length());
+			// 処理したファイルについて確認を行う
+			File blankFile = new File(filePath);
+			assertTrue(blankFile.exists());
+			assertEquals(0, blankFile.length());
+		}
 	}
 }

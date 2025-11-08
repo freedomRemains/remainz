@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -27,11 +28,18 @@ public class GetTableInsertSqlServiceTest {
 
 	private static String dbName;
 
-	@BeforeEach
-	void beforeEach() throws Exception {
+	@BeforeAll
+	static void beforeAll() throws Exception {
 
 		// テストに必要な準備処理を実行する
 		dbName = TestUtil.getDbName();
+
+		// 必ず最初に一度、DB復元を実施する
+		TestUtil.restoreDb();
+	}
+
+	@BeforeEach
+	void beforeEach() throws Exception {
 
 		// どんな場合でも必ず同じテスト結果となるよう、共通の固定ダミーテーブル定義を適用する
 		TestUtil.prepare();

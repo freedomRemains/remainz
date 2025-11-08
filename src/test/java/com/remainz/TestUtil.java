@@ -271,6 +271,13 @@ public class TestUtil {
 	private static boolean isInitialized;
 
 	/**
+	 * 初期化フラグをクリアします。
+	 */
+	public static void clearInitializedFlag() {
+		isInitialized = false;
+	}
+
+	/**
 	 * テスト用にDBを復元します。<br>
 	 * ScriptServiceを実行する場合、h2では毎回DB再構築が必要となります。<br>
 	 * DB構成更新サービス実行に必要な最小限のテーブル定義及びレコードをSQLで流し、<br>

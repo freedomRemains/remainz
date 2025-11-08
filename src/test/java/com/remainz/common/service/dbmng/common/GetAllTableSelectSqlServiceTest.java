@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import com.remainz.TestUtil;
@@ -21,13 +21,16 @@ import com.remainz.common.util.Mu;
  */
 public class GetAllTableSelectSqlServiceTest {
 
-	private String dbName;
+	private static String dbName;
 
-	@BeforeEach
-	void beforeEach() {
+	@BeforeAll
+	static void beforeAll() throws Exception {
 
 		// テストに必要な準備処理を実行する
 		dbName = TestUtil.getDbName();
+
+		// 必ず最初に一度、DB復元を実施する
+		TestUtil.restoreDb();
 	}
 
 	@AfterEach
