@@ -20,7 +20,7 @@ public class GetTableDefByFileServiceTest {
 
 	private static final String TEST_PATH = TestUtil.RESOURCE_PATH + "service/dbmng/common";
 
-	private static String dbName;
+	private String dbName;
 
 	@BeforeEach
 	void beforeEach() throws Exception {

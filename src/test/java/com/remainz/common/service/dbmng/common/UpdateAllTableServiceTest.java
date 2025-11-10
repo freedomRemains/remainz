@@ -14,7 +14,7 @@ import com.remainz.common.util.Mu;
 
 public class UpdateAllTableServiceTest {
 
-	private static String dbName;
+	private String dbName;
 
 	@BeforeEach
 	void beforeEach() {

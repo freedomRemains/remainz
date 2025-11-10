@@ -120,6 +120,9 @@ public class TestUtil {
 	 */
 	public static String prepare() throws Exception {
 
+		// DB名を取得する
+		dbName = getDbName();
+
 		// テストに必要なフォルダを作成する
 		prepareOutputDir();
 
@@ -173,15 +176,13 @@ public class TestUtil {
 	 */
 	public static void createDummyTableDefBySqlFile() throws Exception {
 
-		// どんな場合でも必ず同じテスト結果となるよう、固定のSQLを実行してTBL_DEFのレコードを生成する
-		String dummyTableDefFilePath = RESOURCE_PATH + "service/dbmng/common/GetAllTableDefServiceTest/10_addSqlForH2.sql";
-		var input = new GenericParam();
-		input.setDb(TestUtil.getDb());
-		input.putString("sqlFilePath", dummyTableDefFilePath);
-		input.putString("resultKey", "updateResult");
-		var output = new GenericParam();
-		var service = new DbUpdateBySqlFileService();
-		service.doService(input, output);
+		// DBがh2の場合のみ実行する(MySQLの場合は実テーブルから直接DB定義を取得できるため、次の処理は不要)
+		if ("h2".equals(dbName)) {
+
+			// どんな場合でも必ず同じテスト結果となるよう、固定のSQLを実行してTBL_DEFのレコードを生成する
+			String dummyTableDefFilePath = RESOURCE_PATH + "service/dbmng/common/GetAllTableDefServiceTest/10_addSqlForH2.sql";
+			doDbUpdateBySqlFileService(dummyTableDefFilePath, "updateResult");
+		}
 	}
 
 	/**
@@ -311,6 +312,9 @@ public class TestUtil {
 	 */
 	public static void restoreDb() throws Exception {
 
+		// 初回はDB名が取得されていない場合があるため、おまじない
+		getDbName();
+
 		// テストに必要なフォルダを作成する
 		prepareOutputDir();
 
@@ -331,9 +335,15 @@ public class TestUtil {
 
 		// DB構成更新サービス実行に必要な最小限のテーブル定義及びレコードを投入する
 		String initSqlPath = RESOURCE_PATH + "service/script/init/10_init.sql";
+		doDbUpdateBySqlFileService(initSqlPath, "initResult");
+	}
+
+	private static void doDbUpdateBySqlFileService(String sqlFilePath, String resultKey) throws Exception {
+
+		//　ファイルとして用意されているupdateのSQLを実行する
 		var input = new GenericParam();
 		input.setDb(getDb());
-		input.putString("sqlFilePath", initSqlPath);
+		input.putString("sqlFilePath", sqlFilePath);
 		input.putString("resultKey", "resultKey");
 		var output = new GenericParam();
 		var service = new DbUpdateBySqlFileService();

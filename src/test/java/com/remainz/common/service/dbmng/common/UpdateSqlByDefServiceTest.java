@@ -14,7 +14,7 @@ import com.remainz.common.util.Mu;
 
 public class UpdateSqlByDefServiceTest {
 
-	private static String dbName;
+	private String dbName;
 
 	@BeforeEach
 	void beforeEach() {

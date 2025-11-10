@@ -32,7 +32,7 @@ import com.remainz.common.util.Mu;
  */
 public class GetTableDropSqlServiceTest {
 
-	private static String dbName;
+	private String dbName;
 
 	@BeforeEach
 	void beforeEach() throws Exception {

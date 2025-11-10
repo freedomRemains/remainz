@@ -19,7 +19,7 @@ import com.remainz.common.util.Mu;
  */
 public class GetTableSelectSqlServiceTest {
 
-	private static String dbName;
+	private String dbName;
 
 	@BeforeEach
 	void beforeEach() throws Exception {
