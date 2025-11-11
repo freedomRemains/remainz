@@ -22,23 +22,33 @@ import com.remainz.common.util.Mu;
  */
 public class GetAllTableInsertSqlServiceTest {
 
-	private static String dbName;
+	private String dbName;
+
+	private static TestUtil testUtil;
 
 	@BeforeAll
 	static void beforeAll() throws Exception {
 
-		// テストに必要な準備処理を実行する
-		dbName = TestUtil.getDbName();
-
 		// 必ず最初に一度、DB復元を実施する
-		TestUtil.restoreDb();
+		testUtil = new TestUtil();
+		testUtil.restoreDb();
+		testUtil.getDb().commit();
+		testUtil.closeDb();
+		testUtil = null;
 	}
 
 	@BeforeEach
 	void beforeEach() throws Exception {
 
+		// DB接続を取得し、トランザクションを開始する
+		testUtil = new TestUtil();
+		testUtil.getDb();
+
+		// DB名を取得する
+		dbName = testUtil.getDbName();
+
 		// DB構成取得を実行し、前提ファイルを取得する
-		TestUtil.prepare();
+		testUtil.prepare();
 
 		// テーブルデータを取得するために必要なSELECTのSQL、データのTSVファイルを生成する
 		createAllTableSelectSql(dbName);
@@ -46,10 +56,14 @@ public class GetAllTableInsertSqlServiceTest {
 	}
 
 	@AfterEach
-	void afterEach() {
+	void afterEach() throws Exception {
+
+		// 必ず最後にロールバックし、DBをクローズする
+		testUtil.getDb().rollback();
+		testUtil.closeDb();
 
 		// テストフォルダを削除する
-		TestUtil.clearOutputDir();
+		testUtil.clearOutputDir();
 	}
 
 	public static void createAllTableSelectSql(String dbName) throws Exception {
@@ -74,7 +88,7 @@ public class GetAllTableInsertSqlServiceTest {
 
 		// 正常系パターン
 		GenericParam input = new GenericParam();
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		input.putString("dirPath", dirPath);
 		input.putString("defPath", defPath);
 		input.putString("sqlPath", sqlPath);
@@ -107,7 +121,7 @@ public class GetAllTableInsertSqlServiceTest {
 
 		// 正常系パターン
 		GenericParam input = new GenericParam();
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		input.putString("dirPath", dirPath);
 		input.putString("defPath", defPath);
 		input.putString("dataPath", dataPath);
@@ -136,7 +150,7 @@ public class GetAllTableInsertSqlServiceTest {
 			assertEquals(new Mu().msg("msg.common.noParam", "db"), e.getLocalizedMessage());
 		}
 
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		try {
 			service.doService(input, output);
 			fail();
@@ -248,7 +262,7 @@ public class GetAllTableInsertSqlServiceTest {
 			String tableNameListFilePath) throws Exception {
 
 		GenericParam input = new GenericParam();
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		input.putString("dirPath", dirPath);
 		input.putString("defPath", defPath);
 		input.putString("dataPath", dataPath);
@@ -263,7 +277,7 @@ public class GetAllTableInsertSqlServiceTest {
 			String sqlPath, ArrayList<LinkedHashMap<String, String>> tableNameList) throws Exception {
 
 		GenericParam input = new GenericParam();
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		input.putString("dirPath", dirPath);
 		input.putString("defPath", defPath);
 		input.putString("dataPath", dataPath);

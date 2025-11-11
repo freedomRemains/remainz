@@ -4,7 +4,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.sql.SQLException;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.remainz.TestUtil;
@@ -15,11 +17,36 @@ import com.remainz.common.util.Mu;
 
 public class CreateRecordServiceTest {
 
+	private static TestUtil testUtil;
+
 	@BeforeAll
 	static void beforeAll() throws Exception {
 
 		// DBの準備を行う
-		TestUtil.restoreDbIfNotYet();
+		testUtil = new TestUtil();
+		testUtil.restoreDbIfNotYet();
+		testUtil.getDb().commit();
+		testUtil.closeDb();
+		testUtil = null;
+	}
+
+	@BeforeEach
+	void beforeEach() {
+
+		// DB接続を取得し、トランザクションを開始する
+		testUtil = new TestUtil();
+		testUtil.getDb();
+	}
+
+	@AfterEach
+	void afterEach() throws Exception {
+
+		// 必ず最後にロールバックし、DBをクローズする
+		testUtil.getDb().rollback();
+		testUtil.closeDb();
+
+		// テストフォルダを削除する
+		testUtil.clearOutputDir();
 	}
 
 	@Test
@@ -37,7 +64,7 @@ public class CreateRecordServiceTest {
 		}
 
 		try {
-			input.setDb(TestUtil.getDb());
+			input.setDb(testUtil.getDb());
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
@@ -60,7 +87,7 @@ public class CreateRecordServiceTest {
 		var input = new GenericParam();
 		var output = new GenericParam();
 		var service = new CreateRecordService();
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		input.putString("accountId", "data_loader");
 		input.putString("tableName", "GNR_GRP");
 		input.putString("GNR_GRP_NAME", "newGroup");
@@ -82,7 +109,7 @@ public class CreateRecordServiceTest {
 		var input = new GenericParam();
 		var output = new GenericParam();
 		var service = new CreateRecordService();
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		input.putString("accountId", "data_loader");
 		input.putString("tableName", "NOTEXISTTABLE");
 		input.putString("GNR_GRP_NAME", "newGroup");
@@ -105,7 +132,7 @@ public class CreateRecordServiceTest {
 		var input = new GenericParam();
 		var output = new GenericParam();
 		var service = new CreateRecordService();
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		input.putString("accountId", "data_loader");
 		input.putString("tableName", "GNR_GRP");
 		input.putString("GNR_GRP_NAME", "newGroup");
@@ -127,7 +154,7 @@ public class CreateRecordServiceTest {
 		var input = new GenericParam();
 		var output = new GenericParam();
 		var service = new CreateRecordService();
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		input.putString("accountId", "data_loader");
 		input.putString("tableName", "VIEW_DEF");
 		input.putString("TABLE_NAME", "TNEWTBL1");
@@ -159,7 +186,7 @@ public class CreateRecordServiceTest {
 		var input = new GenericParam();
 		var output = new GenericParam();
 		var service = new CreateRecordService();
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		input.putString("accountId", "data_loader");
 		input.putString("tableName", "MAIL");
 		input.putString("MAIL_FROM", "mailFrom");
@@ -181,7 +208,7 @@ public class CreateRecordServiceTest {
 		var input = new GenericParam();
 		var output = new GenericParam();
 		var service = new CreateRecordService();
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		input.putString("accountId", "data_loader");
 		input.putString("tableName", "GNR_GRP");
 		input.putString("requireRuledNumber", "true");

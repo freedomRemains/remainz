@@ -16,20 +16,32 @@ public class UpdateSqlByDefServiceTest {
 
 	private String dbName;
 
+	private TestUtil testUtil;
+
 	@BeforeEach
 	void beforeEach() {
 
+		// DB接続を取得し、トランザクションを開始する
+		testUtil = new TestUtil();
+		testUtil.getDb();
+
+		// DB名を取得する
+		dbName = testUtil.getDbName();
+
 		// テストに必要なフォルダを作成する
-		dbName = TestUtil.getDbName();
 		new FileUtil().createDirIfNotExists(TestUtil.OUTPUT_PATH + "dbmng/" + dbName + "/10_dbdef/20_auto_created");
 		new FileUtil().createDirIfNotExists(TestUtil.OUTPUT_PATH + "dbmng/" + dbName + "/30_sql/20_auto_created");	
 	}
 
 	@AfterEach
-	void afterEach() {
+	void afterEach() throws Exception {
+
+		// 必ず最後にロールバックし、DBをクローズする
+		testUtil.getDb().rollback();
+		testUtil.closeDb();
 
 		// テストフォルダを削除する
-		TestUtil.clearOutputDir();
+		testUtil.clearOutputDir();
 	}
 
 	//
@@ -50,7 +62,7 @@ public class UpdateSqlByDefServiceTest {
 			assertEquals(new Mu().msg("msg.common.noParam", "db"), e.getLocalizedMessage());
 		}
 
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		try {
 			service.doService(input, output);
 			fail();

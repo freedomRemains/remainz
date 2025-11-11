@@ -8,6 +8,7 @@ import java.util.LinkedHashMap;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.remainz.TestUtil;
@@ -21,23 +22,41 @@ import com.remainz.common.util.Mu;
  */
 public class GetAllTableDropSqlServiceTest {
 
-	private static String dbName;
+	private String dbName;
+
+	private static TestUtil testUtil;
 
 	@BeforeAll
 	static void beforeAll() throws Exception {
 
-		// テストに必要な準備処理を実行する
-		dbName = TestUtil.getDbName();
-
 		// 必ず最初に一度、DB復元を実施する
-		TestUtil.restoreDb();
+		testUtil = new TestUtil();
+		testUtil.restoreDb();
+		testUtil.getDb().commit();
+		testUtil.closeDb();
+		testUtil = null;
+	}
+
+	@BeforeEach
+	void beforeEach() {
+
+		// DB接続を取得し、トランザクションを開始する
+		testUtil = new TestUtil();
+		testUtil.getDb();
+
+		// DB名を取得する
+		dbName = testUtil.getDbName();
 	}
 
 	@AfterEach
-	void afterEach() {
+	void afterEach() throws Exception {
+
+		// 必ず最後にロールバックし、DBをクローズする
+		testUtil.getDb().rollback();
+		testUtil.closeDb();
 
 		// テストフォルダを削除する
-		TestUtil.clearOutputDir();
+		testUtil.clearOutputDir();
 	}
 
 	//
@@ -58,7 +77,7 @@ public class GetAllTableDropSqlServiceTest {
 			assertEquals(new Mu().msg("msg.common.noParam", "db"), e.getLocalizedMessage());
 		}
 
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		try {
 			service.doService(input, output);
 			fail();
@@ -80,9 +99,9 @@ public class GetAllTableDropSqlServiceTest {
 	void test02() throws Exception {
 
 		// DB構成取得を実行し、前提ファイルを取得する
-		TestUtil.restoreDbIfNotYet();
-		TestUtil.prepareOutputDir();
-		TestUtil.getAllTable(TestUtil.OUTPUT_PATH);
+		testUtil.restoreDbIfNotYet();
+		testUtil.prepareOutputDir();
+		testUtil.getAllTable(TestUtil.OUTPUT_PATH);
 
 		// テーブル名リストファイルのパスが指定されているケース
 		String dirPath = TestUtil.OUTPUT_PATH + "dbmng/" + dbName;
@@ -98,9 +117,9 @@ public class GetAllTableDropSqlServiceTest {
 	void test03() throws Exception {
 
 		// DB構成取得を実行し、前提ファイルを取得する
-		TestUtil.restoreDbIfNotYet();
-		TestUtil.prepareOutputDir();
-		TestUtil.getAllTable(TestUtil.OUTPUT_PATH);
+		testUtil.restoreDbIfNotYet();
+		testUtil.prepareOutputDir();
+		testUtil.getAllTable(TestUtil.OUTPUT_PATH);
 
 		// テーブル名リストが指定されているケース
 		String dirPath = TestUtil.OUTPUT_PATH + "dbmng/" + dbName;
@@ -160,7 +179,7 @@ public class GetAllTableDropSqlServiceTest {
 	private void doService(String dirPath, String sqlPath, String tableNameListFilePath) throws Exception {
 
 		GenericParam input = new GenericParam();
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		input.putString("dirPath", dirPath);
 		input.putString("sqlPath", sqlPath);
 		input.putString("tableNameListFilePath", tableNameListFilePath);
@@ -173,7 +192,7 @@ public class GetAllTableDropSqlServiceTest {
 			ArrayList<LinkedHashMap<String, String>> tableNameList) throws Exception {
 
 		GenericParam input = new GenericParam();
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		input.putString("dirPath", dirPath);
 		input.putString("sqlPath", sqlPath);
 		input.putRecordList("tableNameList", tableNameList);

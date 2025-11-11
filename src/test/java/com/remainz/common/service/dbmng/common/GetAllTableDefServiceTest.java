@@ -26,19 +26,31 @@ public class GetAllTableDefServiceTest {
 
 	private String dbName;
 
+	private TestUtil testUtil;
+
 	@BeforeEach
 	void beforeEach() {
 
+		// DB接続を取得し、トランザクションを開始する
+		testUtil = new TestUtil();
+		testUtil.getDb();
+
+		// DB名を取得する
+		dbName = testUtil.getDbName();
+
 		// テストに必要なフォルダを作成する
-		dbName = TestUtil.getDbName();
 		new FileUtil().createDirIfNotExists(TestUtil.OUTPUT_PATH + "dbmng/" + dbName + "/10_dbdef/20_auto_created");
 	}
 
 	@AfterEach
-	void afterEach() {
+	void afterEach() throws Exception {
+
+		// 必ず最後にロールバックし、DBをクローズする
+		testUtil.getDb().rollback();
+		testUtil.closeDb();
 
 		// テストフォルダを削除する
-		TestUtil.clearOutputDir();
+		testUtil.clearOutputDir();
 	}
 
 	//
@@ -61,7 +73,7 @@ public class GetAllTableDefServiceTest {
 			assertEquals(new Mu().msg("msg.common.noParam", "db"), e.getLocalizedMessage());
 		}
 
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		try {
 			service.doService(input, output);
 			fail();
@@ -90,10 +102,10 @@ public class GetAllTableDefServiceTest {
 	void test02() throws Exception {
 
 		// DB定義取得用SQLを生成する
-		String getTableDefSql = TestUtil.createGetTableDefSql();
+		String getTableDefSql = testUtil.createGetTableDefSql();
 
 		// DBの準備を行う
-		prepareDb(TestUtil.getDb());
+		prepareDb(testUtil.getDb());
 
 		// 存在しないテーブル名リストのパスが指定されているケース
 		String dirPath = TestUtil.OUTPUT_PATH + "dbmng/" + dbName;
@@ -129,10 +141,10 @@ public class GetAllTableDefServiceTest {
 	void test03() throws Exception {
 
 		// DB定義取得用SQLを生成する
-		String getTableDefSql = TestUtil.createGetTableDefSql();
+		String getTableDefSql = testUtil.createGetTableDefSql();
 
 		// DBの準備を行う
-		prepareDb(TestUtil.getDb());
+		prepareDb(testUtil.getDb());
 
 		// テーブル名リストに存在しないテーブル名が指定されているケース
 		String dirPath = TestUtil.OUTPUT_PATH + "dbmng/" + dbName;
@@ -153,10 +165,10 @@ public class GetAllTableDefServiceTest {
 	void test04() throws Exception {
 
 		// DB定義取得用SQLを生成する
-		String getTableDefSql = TestUtil.createGetTableDefSql();
+		String getTableDefSql = testUtil.createGetTableDefSql();
 
 		// DBの準備を行う
-		prepareDb(TestUtil.getDb());
+		prepareDb(testUtil.getDb());
 
 		// テーブル名リストが指定されているケース
 		String dirPath = TestUtil.OUTPUT_PATH + "dbmng/" + dbName;
@@ -187,10 +199,10 @@ public class GetAllTableDefServiceTest {
 	void test05() throws Exception {
 
 		// DB定義取得用SQLを生成する
-		String getTableDefSql = TestUtil.createGetTableDefSql();
+		String getTableDefSql = testUtil.createGetTableDefSql();
 
 		// DBの準備を行う
-		prepareDb(TestUtil.getDb());
+		prepareDb(testUtil.getDb());
 
 		// (カバレッジ)テーブル名リストにnullが指定されているケース
 		String dirPath = TestUtil.OUTPUT_PATH + "dbmng/" + dbName;
@@ -205,10 +217,10 @@ public class GetAllTableDefServiceTest {
 	void test06() throws Exception {
 
 		// DB定義取得用SQLを生成する
-		String getTableDefSql = TestUtil.createGetTableDefSql();
+		String getTableDefSql = testUtil.createGetTableDefSql();
 
 		// DBの準備を行う
-		prepareDb(TestUtil.getDb());
+		prepareDb(testUtil.getDb());
 
 		// (カバレッジ)テーブル名リストに空のリストが指定されているケース
 		String dirPath = TestUtil.OUTPUT_PATH + "dbmng/" + dbName;
@@ -238,7 +250,7 @@ public class GetAllTableDefServiceTest {
 			String tableNameListFilePath) throws Exception {
 
 		GenericParam input = new GenericParam();
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		input.putString("dirPath", dirPath);
 		input.putString("defPath", defPath);
 		input.putString("getTableDefSql", getTableDefSql);
@@ -252,7 +264,7 @@ public class GetAllTableDefServiceTest {
 			ArrayList<LinkedHashMap<String, String>> tableNameList) throws Exception {
 
 		GenericParam input = new GenericParam();
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		input.putString("dirPath", dirPath);
 		input.putString("defPath", defPath);
 		input.putString("getTableDefSql", getTableDefSql);

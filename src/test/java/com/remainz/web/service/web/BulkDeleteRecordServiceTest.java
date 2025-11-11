@@ -4,7 +4,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.sql.SQLException;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.remainz.TestUtil;
@@ -15,11 +17,36 @@ import com.remainz.common.util.Mu;
 
 public class BulkDeleteRecordServiceTest {
 
+	private static TestUtil testUtil;
+
 	@BeforeAll
 	static void beforeAll() throws Exception {
 
 		// DBの準備を行う
-		TestUtil.restoreDbIfNotYet();
+		testUtil = new TestUtil();
+		testUtil.restoreDbIfNotYet();
+		testUtil.getDb().commit();
+		testUtil.closeDb();
+		testUtil = null;
+	}
+
+	@BeforeEach
+	void beforeEach() {
+
+		// DB接続を取得し、トランザクションを開始する
+		testUtil = new TestUtil();
+		testUtil.getDb();
+	}
+
+	@AfterEach
+	void afterEach() throws Exception {
+
+		// 必ず最後にロールバックし、DBをクローズする
+		testUtil.getDb().rollback();
+		testUtil.closeDb();
+
+		// テストフォルダを削除する
+		testUtil.clearOutputDir();
 	}
 
 	@Test
@@ -37,7 +64,7 @@ public class BulkDeleteRecordServiceTest {
 		}
 
 		try {
-			input.setDb(TestUtil.getDb());
+			input.setDb(testUtil.getDb());
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
@@ -52,7 +79,7 @@ public class BulkDeleteRecordServiceTest {
 		var input = new GenericParam();
 		var output = new GenericParam();
 		var service = new BulkDeleteRecordService();
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		input.putString("tableName", "VIEW_DEF");
 		input.putString("1000018", "on");
 		input.putString("1000020", "on");
@@ -75,7 +102,7 @@ public class BulkDeleteRecordServiceTest {
 		var input = new GenericParam();
 		var output = new GenericParam();
 		var service = new BulkDeleteRecordService();
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		input.putString("tableName", "NOTEXISTTABLE");
 		input.putString("1000018", "on");
 

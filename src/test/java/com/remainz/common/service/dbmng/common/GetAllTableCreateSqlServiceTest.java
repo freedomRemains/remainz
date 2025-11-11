@@ -23,18 +23,28 @@ public class GetAllTableCreateSqlServiceTest {
 
 	private String dbName;
 
-	@BeforeEach
-	void beforeEach() throws Exception {
+	private TestUtil testUtil;
 
-		// テストに必要な準備処理を実行する
-		dbName = TestUtil.getDbName();
+	@BeforeEach
+	void beforeEach() {
+
+		// DB接続を取得し、トランザクションを開始する
+		testUtil = new TestUtil();
+		testUtil.getDb();
+
+		// DB名を取得する
+		dbName = testUtil.getDbName();
 	}
 
 	@AfterEach
-	void afterEach() {
+	void afterEach() throws Exception {
+
+		// 必ず最後にロールバックし、DBをクローズする
+		testUtil.getDb().rollback();
+		testUtil.closeDb();
 
 		// テストフォルダを削除する
-		TestUtil.clearOutputDir();
+		testUtil.clearOutputDir();
 	}
 
 	//
@@ -55,7 +65,7 @@ public class GetAllTableCreateSqlServiceTest {
 			assertEquals(new Mu().msg("msg.common.noParam", "db"), e.getLocalizedMessage());
 		}
 
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		try {
 			service.doService(input, output);
 			fail();
@@ -86,9 +96,9 @@ public class GetAllTableCreateSqlServiceTest {
 	void test02() throws Exception {
 
 		// DB構成取得を実行し、前提ファイルを取得する
-		TestUtil.restoreDbIfNotYet();
-		TestUtil.prepareOutputDir();
-		TestUtil.getAllTable(TestUtil.OUTPUT_PATH);
+		testUtil.restoreDbIfNotYet();
+		testUtil.prepareOutputDir();
+		testUtil.getAllTable(TestUtil.OUTPUT_PATH);
 
 		// テーブル名リストファイルのパスが指定されているケース
 		String dirPath = TestUtil.OUTPUT_PATH + "dbmng/" + dbName;
@@ -104,10 +114,9 @@ public class GetAllTableCreateSqlServiceTest {
 	@Test
 	void test03() throws Exception {
 
-		// DB構成取得を実行し、前提ファイルを取得する
-		TestUtil.restoreDbIfNotYet();
-		TestUtil.prepareOutputDir();
-		TestUtil.getAllTable(TestUtil.OUTPUT_PATH);
+		testUtil.restoreDbIfNotYet();
+		testUtil.prepareOutputDir();
+		testUtil.getAllTable(TestUtil.OUTPUT_PATH);
 
 		// テーブル名リストが指定されているケース
 		String dirPath = TestUtil.OUTPUT_PATH + "dbmng/" + dbName;
@@ -172,7 +181,7 @@ public class GetAllTableCreateSqlServiceTest {
 			String tableNameListFilePath) throws Exception {
 
 		GenericParam input = new GenericParam();
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		input.putString("dirPath", dirPath);
 		input.putString("defPath", defPath);
 		input.putString("sqlPath", sqlPath);
@@ -192,7 +201,7 @@ public class GetAllTableCreateSqlServiceTest {
 			ArrayList<LinkedHashMap<String, String>> tableNameList) throws Exception {
 
 		GenericParam input = new GenericParam();
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		input.putString("dirPath", dirPath);
 		input.putString("defPath", defPath);
 		input.putString("sqlPath", sqlPath);

@@ -22,18 +22,28 @@ public class GetTableDefByFileServiceTest {
 
 	private String dbName;
 
-	@BeforeEach
-	void beforeEach() throws Exception {
+	private TestUtil testUtil;
 
-		// テストに必要な準備処理を実行する
-		dbName = TestUtil.getDbName();
+	@BeforeEach
+	void beforeEach() {
+
+		// DB接続を取得し、トランザクションを開始する
+		testUtil = new TestUtil();
+		testUtil.getDb();
+
+		// DB名を取得する
+		dbName = testUtil.getDbName();
 	}
 
 	@AfterEach
-	void afterEach() {
+	void afterEach() throws Exception {
+
+		// 必ず最後にロールバックし、DBをクローズする
+		testUtil.getDb().rollback();
+		testUtil.closeDb();
 
 		// テストフォルダを削除する
-		TestUtil.clearOutputDir();
+		testUtil.clearOutputDir();
 	}
 
 	//
@@ -54,7 +64,7 @@ public class GetTableDefByFileServiceTest {
 			assertEquals(new Mu().msg("msg.common.noParam", "db"), e.getLocalizedMessage());
 		}
 
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		try {
 			service.doService(input, output);
 			fail();
@@ -91,7 +101,7 @@ public class GetTableDefByFileServiceTest {
 
 		// (カバレッジ)存在しないファイルを指定するパターン
 		GenericParam input = new GenericParam();
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		input.putString("dirPath", dirPath);
 		input.putString("defPath", defPath);
 		input.putString("tableName", tableName);
@@ -116,7 +126,7 @@ public class GetTableDefByFileServiceTest {
 
 		// (カバレッジ)ヘッダなしの処理ルートを通るパターン
 		GenericParam input = new GenericParam();
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		input.putString("dirPath", dirPath);
 		input.putString("defPath", defPath);
 		input.putString("tableName", tableName);
@@ -141,7 +151,7 @@ public class GetTableDefByFileServiceTest {
 
 		// (カバレッジ)ヘッダなしの処理ルートを通るパターン
 		GenericParam input = new GenericParam();
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		input.putString("dirPath", dirPath);
 		input.putString("defPath", defPath);
 		input.putString("tableName", tableName);
@@ -156,7 +166,7 @@ public class GetTableDefByFileServiceTest {
 	void test05() throws Exception {
 
 		// どんな場合でも必ず同じテスト結果となるよう、共通の固定ダミーテーブル定義を適用する
-		TestUtil.prepare();
+		testUtil.prepare();
 
 		// 必要なパラメータを準備する
 		String dirPath = TestUtil.OUTPUT_PATH + "dbmng/" + dbName;
@@ -165,7 +175,7 @@ public class GetTableDefByFileServiceTest {
 
 		// 正常系
 		GenericParam input = new GenericParam();
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		input.putString("dirPath", dirPath);
 		input.putString("defPath", defPath);
 		input.putString("tableName", tableName);

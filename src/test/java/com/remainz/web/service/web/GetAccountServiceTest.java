@@ -2,8 +2,7 @@ package com.remainz.web.service.web;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -17,19 +16,28 @@ import com.remainz.web.exception.RoleRestrictionException;
 
 public class GetAccountServiceTest {
 
-	@BeforeAll
-	static void beforeAll() throws Exception {
-	}
-
-	@AfterAll
-	static void afterAll() throws Exception {
-	}
+	private TestUtil testUtil;
 
 	@BeforeEach
 	void beforeEach() throws Exception {
 
+		// DB接続を取得し、トランザクションを開始する
+		testUtil = new TestUtil();
+		testUtil.getDb();
+
 		// テストに必要な準備処理を実行する
-		TestUtil.restoreDb();
+		testUtil.restoreDb();
+	}
+
+	@AfterEach
+	void afterEach() throws Exception {
+
+		// 必ず最後にロールバックし、DBをクローズする
+		testUtil.getDb().rollback();
+		testUtil.closeDb();
+
+		// テストフォルダを削除する
+		testUtil.clearOutputDir();
 	}
 
 	@Test
@@ -47,7 +55,7 @@ public class GetAccountServiceTest {
 		}
 
 		try {
-			input.setDb(TestUtil.getDb());
+			input.setDb(testUtil.getDb());
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
@@ -70,7 +78,7 @@ public class GetAccountServiceTest {
 		var input = new GenericParam();
 		var output = new GenericParam();
 		var service = new GetAccountService();
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		input.putString("requestKind", "GET");
 		input.putString("requestUri", "/jl/service/top.html");
 
@@ -86,7 +94,7 @@ public class GetAccountServiceTest {
 		var input = new GenericParam();
 		var output = new GenericParam();
 		var service = new GetAccountService();
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		input.putString("requestKind", "GET");
 		input.putString("requestUri", "/jl/service/dbMainte.html");
 
@@ -106,7 +114,7 @@ public class GetAccountServiceTest {
 		var input = new GenericParam();
 		var output = new GenericParam();
 		var service = new GetAccountService();
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		input.putString("requestKind", "GET");
 		input.putString("requestUri", "/jl/service/dbMainte.html");
 		input.putString("accountId", "1000301");

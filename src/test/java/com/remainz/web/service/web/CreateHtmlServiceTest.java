@@ -2,8 +2,7 @@ package com.remainz.web.service.web;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -15,19 +14,28 @@ import com.remainz.common.util.Mu;
 
 public class CreateHtmlServiceTest {
 
-	@BeforeAll
-	static void beforeAll() throws Exception {
-	}
-
-	@AfterAll
-	static void afterAll() throws Exception {
-	}
+	private TestUtil testUtil;
 
 	@BeforeEach
 	void beforeEach() throws Exception {
 
+		// DB接続を取得し、トランザクションを開始する
+		testUtil = new TestUtil();
+		testUtil.getDb();
+
 		// テストに必要な準備処理を実行する
-		TestUtil.restoreDb();
+		testUtil.restoreDb();
+	}
+
+	@AfterEach
+	void afterEach() throws Exception {
+
+		// 必ず最後にロールバックし、DBをクローズする
+		testUtil.getDb().rollback();
+		testUtil.closeDb();
+
+		// テストフォルダを削除する
+		testUtil.clearOutputDir();
 	}
 
 	@Test
@@ -45,7 +53,7 @@ public class CreateHtmlServiceTest {
 		}
 
 		try {
-			input.setDb(TestUtil.getDb());
+			input.setDb(testUtil.getDb());
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
@@ -68,7 +76,7 @@ public class CreateHtmlServiceTest {
 		var input = new GenericParam();
 		var output = new GenericParam();
 		var service = new CreateHtmlService();
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		input.putString("requestKind", "GET");
 		input.putString("requestUri", "/jl/service/top.html");
 
@@ -84,7 +92,7 @@ public class CreateHtmlServiceTest {
 		var input = new GenericParam();
 		var output = new GenericParam();
 		var service = new CreateHtmlService();
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		String requestKind = "GET";
 		input.putString("requestKind", requestKind);
 		String requestUri = "/jl/service/top.html";
@@ -96,7 +104,7 @@ public class CreateHtmlServiceTest {
 					ITEM_QUERY = 'SELECT ERR_SQL FROM NOT_EXIST_TABLE'
 					WHERE PARTS_ITEM_ID = 1000001
 				""";
-		TestUtil.getDb().update(sql);
+		testUtil.getDb().update(sql);
 
 		try {
 			service.doService(input, output);
@@ -106,7 +114,7 @@ public class CreateHtmlServiceTest {
 					"SQLException"));
 
 			// DBをロールバックする
-			TestUtil.getDb().rollback();
+			testUtil.getDb().rollback();
 		}
 	}
 
@@ -117,7 +125,7 @@ public class CreateHtmlServiceTest {
 		var input = new GenericParam();
 		var output = new GenericParam();
 		var service = new CreateHtmlService();
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		String requestKind = "GET";
 		input.putString("requestKind", requestKind);
 		String requestUri = "/jl/service/top.html";
@@ -129,7 +137,7 @@ public class CreateHtmlServiceTest {
 					ITEM_QUERY = ''
 					WHERE PARTS_ITEM_ID = 1000001
 				""";
-		TestUtil.getDb().update(sql);
+		testUtil.getDb().update(sql);
 
 		service.doService(input, output);
 		assertEquals("forward", output.getString("respKind"));
@@ -143,7 +151,7 @@ public class CreateHtmlServiceTest {
 		var input = new GenericParam();
 		var output = new GenericParam();
 		var service = new CreateHtmlService();
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		input.putString("requestKind", "GET");
 		input.putString("requestUri", "/jl/service/tableDataMainte.html");
 		input.putString("tableName", "TBL_DEF");
@@ -162,7 +170,7 @@ public class CreateHtmlServiceTest {
 		var input = new GenericParam();
 		var output = new GenericParam();
 		var service = new CreateHtmlService();
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		input.putString("requestKind", "GET");
 		input.putString("requestUri", "/jl/service/top.html");
 		input.putString("errMsgKey", "9999999");

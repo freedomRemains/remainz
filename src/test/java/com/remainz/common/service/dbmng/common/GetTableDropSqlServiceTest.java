@@ -34,18 +34,28 @@ public class GetTableDropSqlServiceTest {
 
 	private String dbName;
 
-	@BeforeEach
-	void beforeEach() throws Exception {
+	private TestUtil testUtil;
 
-		// テストに必要な準備処理を実行する
-		dbName = TestUtil.getDbName();
+	@BeforeEach
+	void beforeEach() {
+
+		// DB接続を取得し、トランザクションを開始する
+		testUtil = new TestUtil();
+		testUtil.getDb();
+
+		// DB名を取得する
+		dbName = testUtil.getDbName();
 	}
 
 	@AfterEach
-	void afterEach() {
+	void afterEach() throws Exception {
+
+		// 必ず最後にロールバックし、DBをクローズする
+		testUtil.getDb().rollback();
+		testUtil.closeDb();
 
 		// テストフォルダを削除する
-		TestUtil.clearOutputDir();
+		testUtil.clearOutputDir();
 	}
 
 	//
@@ -66,7 +76,7 @@ public class GetTableDropSqlServiceTest {
 			assertEquals(new Mu().msg("msg.common.noParam", "db"), e.getLocalizedMessage());
 		}
 
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		try {
 			service.doService(input, output);
 			fail();
@@ -102,7 +112,7 @@ public class GetTableDropSqlServiceTest {
 
 		// (カバレッジ)存在しない出力先を指定するパターン
 		GenericParam input = new GenericParam();
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		input.putString("dirPath", dirPath);
 		input.putString("sqlPath", "noexistpath"); // 存在しない出力先
 		input.putString("tableName", tableName);
@@ -120,7 +130,7 @@ public class GetTableDropSqlServiceTest {
 	void test03() throws Exception {
 
 		// どんな場合でも必ず同じテスト結果となるよう、共通の固定ダミーテーブル定義を適用する
-		TestUtil.prepare();
+		testUtil.prepare();
 
 		// 必要なパラメータを準備する
 		String dirPath = TestUtil.OUTPUT_PATH + "dbmng/" + dbName;
@@ -129,7 +139,7 @@ public class GetTableDropSqlServiceTest {
 
 		// 正常系パターン
 		GenericParam input = new GenericParam();
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		input.putString("dirPath", dirPath);
 		input.putString("sqlPath", sqlPath);
 		input.putString("tableName", tableName);

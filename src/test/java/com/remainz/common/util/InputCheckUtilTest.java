@@ -15,22 +15,22 @@ import com.remainz.common.param.GenericParam;
 //
 class InputCheckUtilTest {
 
+	private TestUtil testUtil;
+
 	@BeforeEach
 	void beforeEach() {
 
-		//
-		// テストメソッドはprivateを付けてはいけない。
-		// 各テストを実施する前の開始処理を記述する。
-		//
+		// DB接続を取得し、トランザクションを開始する
+		testUtil = new TestUtil();
+		testUtil.getDb();
 	}
 
 	@AfterEach
-	void afterEach() {
+	void afterEach() throws Exception {
 
-		//
-		// テストメソッドはprivateを付けてはいけない。
-		// 各テストを実施する前の開始処理を記述する。
-		//
+		// 必ず最後にロールバックし、DBをクローズする
+		testUtil.getDb().rollback();
+		testUtil.closeDb();
 	}
 
 	//
@@ -100,7 +100,7 @@ class InputCheckUtilTest {
 		String key = "key";
 		try {
 			GenericParam genericParam = new GenericParam();
-			genericParam.setDb(TestUtil.getDb());
+			genericParam.setDb(testUtil.getDb());
 			genericParam.putString(key, "value");
 			genericParam.putStringArray("arrayKey", new String[] {"test", "test2"});
 			InputCheckUtil inputCheckUtil = new InputCheckUtil();

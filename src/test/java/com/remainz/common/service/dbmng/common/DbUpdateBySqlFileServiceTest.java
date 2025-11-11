@@ -6,6 +6,8 @@ import java.sql.SQLSyntaxErrorException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.remainz.TestUtil;
@@ -24,6 +26,24 @@ public class DbUpdateBySqlFileServiceTest {
 
 	private static final String TEST_RESOURCE_PATH = TestUtil.RESOURCE_PATH + "service/dbmng/common/DbUpdateBySqlFileServiceTest/";
 
+	private TestUtil testUtil;
+
+	@BeforeEach
+	void beforeEach() {
+
+		// DB接続を取得し、トランザクションを開始する
+		testUtil = new TestUtil();
+		testUtil.getDb();
+	}
+
+	@AfterEach
+	void afterEach() throws Exception {
+
+		// 必ず最後にロールバックし、DBをクローズする
+		testUtil.getDb().rollback();
+		testUtil.closeDb();
+	}
+
 	@Test
 	void test01() throws Exception {
 
@@ -39,7 +59,7 @@ public class DbUpdateBySqlFileServiceTest {
 		}
 
 		try {
-			input.setDb(TestUtil.getDb());
+			input.setDb(testUtil.getDb());
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
@@ -47,7 +67,7 @@ public class DbUpdateBySqlFileServiceTest {
 		}
 
 		try {
-			input.setDb(TestUtil.getDb());
+			input.setDb(testUtil.getDb());
 			input.putString("sqlFilePath", TEST_RESOURCE_PATH + "10_ng.sql");
 			service.doService(input, output);
 			fail();
@@ -61,7 +81,7 @@ public class DbUpdateBySqlFileServiceTest {
 
 		// SQLエラーパターン
 		GenericParam input = new GenericParam();
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		input.putString("sqlFilePath", TEST_RESOURCE_PATH + "10_ng.sql");
 		input.putString("resultKey", "updateResult");
 		GenericParam output = new GenericParam();
@@ -79,7 +99,7 @@ public class DbUpdateBySqlFileServiceTest {
 
 		// 正常系パターン
 		GenericParam input = new GenericParam();
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		input.putString("sqlFilePath", TEST_RESOURCE_PATH + "20_ok.sql");
 		input.putString("resultKey", "updateResult");
 		GenericParam output = new GenericParam();

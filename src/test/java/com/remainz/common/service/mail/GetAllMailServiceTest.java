@@ -17,16 +17,28 @@ public class GetAllMailServiceTest {
 
 	private String dbName;
 
+	private TestUtil testUtil;
+
 	@BeforeEach
 	void beforeEach() {
 
+		// DB接続を取得し、トランザクションを開始する
+		testUtil = new TestUtil();
+		testUtil.getDb();
+
+		// DB名を取得する
+		dbName = testUtil.getDbName();
 	}
 
 	@AfterEach
-	void afterEach() {
+	void afterEach() throws Exception {
+
+		// 必ず最後にロールバックし、DBをクローズする
+		testUtil.getDb().rollback();
+		testUtil.closeDb();
 
 		// テストフォルダを削除する
-		TestUtil.clearOutputDir();
+		testUtil.clearOutputDir();
 	}
 
 	@Test
@@ -44,7 +56,7 @@ public class GetAllMailServiceTest {
 		}
 
 		try {
-			input.setDb(TestUtil.getDb());
+			input.setDb(testUtil.getDb());
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
@@ -110,7 +122,7 @@ public class GetAllMailServiceTest {
 		// 全メール取得サービスを実行する
 		var input = new GenericParam();
 		var prop = new RcProp();
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		input.putString("mailStoreKind", prop.get("mail.storeKind"));
 		input.putString("mailServer", prop.get("mail.server"));
 		input.putString("mailAccount", account);
@@ -146,12 +158,12 @@ public class GetAllMailServiceTest {
 		String defPath = "10_dbdef/20_auto_created";
 		String dataPath = "20_dbdata/20_auto_created";
 		String sqlPath = "30_sql/20_auto_created";
-		String getTableNameListSql = TestUtil.createGetTableNameListSql();
-		String getTableDefSql = TestUtil.createGetTableDefSql();
+		String getTableNameListSql = testUtil.createGetTableNameListSql();
+		String getTableDefSql = testUtil.createGetTableDefSql();
 
 		// 正常系動作確認に必要なパラメータを作成する
 		GenericParam input = new GenericParam();
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		input.putString("scriptId", scriptId);
 		input.putString("dirPath", dirPath);
 		input.putString("defPath", defPath);

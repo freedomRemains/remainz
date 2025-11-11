@@ -4,8 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.sql.SQLException;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -17,19 +16,28 @@ import com.remainz.common.util.Mu;
 
 public class GetRelatedRecordServiceTest {
 
-	@BeforeAll
-	static void beforeAll() throws Exception {
-	}
-
-	@AfterAll
-	static void afterAll() throws Exception {
-	}
+	private TestUtil testUtil;
 
 	@BeforeEach
 	void beforeEach() throws Exception {
 
+		// DB接続を取得し、トランザクションを開始する
+		testUtil = new TestUtil();
+		testUtil.getDb();
+
 		// テストに必要な準備処理を実行する
-		TestUtil.restoreDb();
+		testUtil.restoreDb();
+	}
+
+	@AfterEach
+	void afterEach() throws Exception {
+
+		// 必ず最後にロールバックし、DBをクローズする
+		testUtil.getDb().rollback();
+		testUtil.closeDb();
+
+		// テストフォルダを削除する
+		testUtil.clearOutputDir();
 	}
 
 	@Test
@@ -47,7 +55,7 @@ public class GetRelatedRecordServiceTest {
 		}
 
 		try {
-			input.setDb(TestUtil.getDb());
+			input.setDb(testUtil.getDb());
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
@@ -70,7 +78,7 @@ public class GetRelatedRecordServiceTest {
 		var input = new GenericParam();
 		var output = new GenericParam();
 		var service = new GetRelatedRecordService();
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		input.putString("tableName", "HTML_PAGE");
 		input.putString("recordId", "1000301");
 
@@ -86,7 +94,7 @@ public class GetRelatedRecordServiceTest {
 		var input = new GenericParam();
 		var output = new GenericParam();
 		var service = new GetRelatedRecordService();
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		input.putString("tableName", "GNR_GRP");
 		input.putString("recordId", "1000001");
 
@@ -101,7 +109,7 @@ public class GetRelatedRecordServiceTest {
 		var input = new GenericParam();
 		var output = new GenericParam();
 		var service = new GetRelatedRecordService();
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		input.putString("tableName", "NOTEXISTTABLE");
 		input.putString("recordId", "9999999");
 
@@ -120,7 +128,7 @@ public class GetRelatedRecordServiceTest {
 		var input = new GenericParam();
 		var output = new GenericParam();
 		var service = new GetRelatedRecordService();
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		input.putString("tableName", "VIEW_DEF");
 		input.putString("recordId", "1000001");
 
@@ -135,7 +143,7 @@ public class GetRelatedRecordServiceTest {
 		var input = new GenericParam();
 		var output = new GenericParam();
 		var service = new GetRelatedRecordService();
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		input.putString("tableName", "SCR");
 		input.putString("recordId", "1100301");
 
@@ -150,7 +158,7 @@ public class GetRelatedRecordServiceTest {
 		var input = new GenericParam();
 		var output = new GenericParam();
 		var service = new GetRelatedRecordService();
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		input.putString("tableName", "HTML_PAGE");
 		input.putString("recordId", "9999999");
 
@@ -170,7 +178,7 @@ public class GetRelatedRecordServiceTest {
 		var input = new GenericParam();
 		var output = new GenericParam();
 		var service = new GetRelatedRecordService();
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		input.putString("tableName", "HTML_PAGE");
 		input.putString("recordId", "1000001");
 

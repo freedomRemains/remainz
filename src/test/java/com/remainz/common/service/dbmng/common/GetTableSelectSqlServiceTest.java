@@ -21,21 +21,31 @@ public class GetTableSelectSqlServiceTest {
 
 	private String dbName;
 
+	private TestUtil testUtil;
+
 	@BeforeEach
 	void beforeEach() throws Exception {
 
-		// テストに必要な準備処理を実行する
-		dbName = TestUtil.getDbName();
+		// DB接続を取得し、トランザクションを開始する
+		testUtil = new TestUtil();
+		testUtil.getDb();
+
+		// DB名を取得する
+		dbName = testUtil.getDbName();
 
 		// どんな場合でも必ず同じテスト結果となるよう、共通の固定ダミーテーブル定義を適用する
-		TestUtil.prepare();
+		testUtil.prepare();
 	}
 
 	@AfterEach
-	void afterEach() {
+	void afterEach() throws Exception {
+
+		// 必ず最後にロールバックし、DBをクローズする
+		testUtil.getDb().rollback();
+		testUtil.closeDb();
 
 		// テストフォルダを削除する
-		TestUtil.clearOutputDir();
+		testUtil.clearOutputDir();
 	}
 
 	//
@@ -56,7 +66,7 @@ public class GetTableSelectSqlServiceTest {
 			assertEquals(new Mu().msg("msg.common.noParam", "db"), e.getLocalizedMessage());
 		}
 
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		try {
 			service.doService(input, output);
 			fail();
@@ -102,7 +112,7 @@ public class GetTableSelectSqlServiceTest {
 
 		// (カバレッジ)存在しない出力先を指定するパターン
 		GenericParam input = new GenericParam();
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		input.putString("dirPath", dirPath);
 		input.putString("defPath", defPath);
 		input.putString("sqlPath", "noexistpath"); // 存在しない出力先
@@ -128,7 +138,7 @@ public class GetTableSelectSqlServiceTest {
 
 		// 正常系パターン
 		GenericParam input = new GenericParam();
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		input.putString("dirPath", dirPath);
 		input.putString("defPath", defPath);
 		input.putString("sqlPath", sqlPath);
@@ -154,7 +164,7 @@ public class GetTableSelectSqlServiceTest {
 
 		// カバレッジ(オンメモリにテーブルリストがある状態で実行)
 		GenericParam input = new GenericParam();
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		input.putString("dirPath", dirPath);
 		input.putString("defPath", defPath);
 		input.putString("sqlPath", sqlPath);

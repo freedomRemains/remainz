@@ -22,31 +22,45 @@ public class GetTableDataServiceTest {
 
 	private static String dbName;
 
+	private static TestUtil testUtil;
+
 	@BeforeAll
 	static void beforeAll() throws Exception {
 
-		// テストに必要な準備処理を実行する
-		dbName = TestUtil.getDbName();
-
 		// 必ず最初に一度、DB復元を実施する
-		TestUtil.restoreDb();
+		testUtil = new TestUtil();
+		testUtil.restoreDb();
+		testUtil.getDb().commit();
+		testUtil.closeDb();
+		testUtil = null;
 	}
 
 	@BeforeEach
 	void beforeEach() throws Exception {
 
+		// DB接続を取得し、トランザクションを開始する
+		testUtil = new TestUtil();
+		testUtil.getDb();
+
+		// DB名を取得する
+		dbName = testUtil.getDbName();
+
 		// どんな場合でも必ず同じテスト結果となるよう、共通の固定ダミーテーブル定義を適用する
-		TestUtil.prepare();
+		testUtil.prepare();
 
 		// テーブルデータを取得するために必要なSELECTのSQLを生成する
 		createTableSelectSql("SCR");
 	}
 
 	@AfterEach
-	void afterEach() {
+	void afterEach() throws Exception {
+
+		// 必ず最後にロールバックし、DBをクローズする
+		testUtil.getDb().rollback();
+		testUtil.closeDb();
 
 		// テストフォルダを削除する
-		TestUtil.clearOutputDir();
+		testUtil.clearOutputDir();
 	}
 
 	private static void createTableSelectSql(String tableName) throws Exception {
@@ -59,7 +73,7 @@ public class GetTableDataServiceTest {
 
 		// 正常系パターン
 		GenericParam input = new GenericParam();
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		input.putString("dirPath", dirPath);
 		input.putString("defPath", defPath);
 		input.putString("sqlPath", sqlPath);
@@ -88,7 +102,7 @@ public class GetTableDataServiceTest {
 			assertEquals(new Mu().msg("msg.common.noParam", "db"), e.getLocalizedMessage());
 		}
 
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		try {
 			service.doService(input, output);
 			fail();
@@ -134,7 +148,7 @@ public class GetTableDataServiceTest {
 
 		// (カバレッジ)存在しない出力先を指定するパターン
 		GenericParam input = new GenericParam();
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		input.putString("dirPath", dirPath);
 		input.putString("dataPath", "noexistpath"); // 存在しない出力先
 		input.putString("sqlPath", sqlPath);
@@ -160,7 +174,7 @@ public class GetTableDataServiceTest {
 
 		// 正常系パターン
 		GenericParam input = new GenericParam();
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		input.putString("dirPath", dirPath);
 		input.putString("dataPath", dataPath);
 		input.putString("sqlPath", sqlPath);
@@ -185,7 +199,7 @@ public class GetTableDataServiceTest {
 
 		// (カバレッジ)存在しないSQLを指定するパターン
 		GenericParam input = new GenericParam();
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		input.putString("dirPath", dirPath);
 		input.putString("dataPath", dataPath);
 		input.putString("sqlPath", "notExist.sql"); // 存在しないSQL

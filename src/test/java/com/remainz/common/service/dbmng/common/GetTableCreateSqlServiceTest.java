@@ -19,20 +19,30 @@ import com.remainz.common.util.Mu;
  */
 public class GetTableCreateSqlServiceTest {
 
-	private static String dbName;
+	private String dbName;
+
+	private TestUtil testUtil;
 
 	@BeforeEach
-	void beforeEach() throws Exception {
+	void beforeEach() {
 
-		// テストに必要な準備処理を実行する
-		dbName = TestUtil.getDbName();
+		// DB接続を取得し、トランザクションを開始する
+		testUtil = new TestUtil();
+		testUtil.getDb();
+
+		// DB名を取得する
+		dbName = testUtil.getDbName();
 	}
 
 	@AfterEach
-	void afterEach() {
+	void afterEach() throws Exception {
+
+		// 必ず最後にロールバックし、DBをクローズする
+		testUtil.getDb().rollback();
+		testUtil.closeDb();
 
 		// テストフォルダを削除する
-		TestUtil.clearOutputDir();
+		testUtil.clearOutputDir();
 	}
 
 	//
@@ -53,7 +63,7 @@ public class GetTableCreateSqlServiceTest {
 			assertEquals(new Mu().msg("msg.common.noParam", "db"), e.getLocalizedMessage());
 		}
 
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		try {
 			service.doService(input, output);
 			fail();
@@ -99,7 +109,7 @@ public class GetTableCreateSqlServiceTest {
 
 		// (カバレッジ)存在しない出力先を指定するパターン
 		GenericParam input = new GenericParam();
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		input.putString("dirPath", dirPath);
 		input.putString("defPath", defPath);
 		input.putString("sqlPath", "noexistpath"); // 存在しない出力先
@@ -118,7 +128,7 @@ public class GetTableCreateSqlServiceTest {
 	void test03() throws Exception {
 
 		// どんな場合でも必ず同じテスト結果となるよう、共通の固定ダミーテーブル定義を適用する
-		TestUtil.prepare();
+		testUtil.prepare();
 
 		// 必要なパラメータを準備する
 		String dirPath = TestUtil.OUTPUT_PATH + "dbmng/" + dbName;
@@ -128,7 +138,7 @@ public class GetTableCreateSqlServiceTest {
 
 		// 正常系パターン
 		GenericParam input = new GenericParam();
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		input.putString("dirPath", dirPath);
 		input.putString("defPath", defPath);
 		input.putString("sqlPath", sqlPath);
@@ -147,7 +157,7 @@ public class GetTableCreateSqlServiceTest {
 	void test04() throws Exception {
 
 		// どんな場合でも必ず同じテスト結果となるよう、共通の固定ダミーテーブル定義を適用する
-		TestUtil.prepare();
+		testUtil.prepare();
 
 		// 必要なパラメータを準備する
 		String dirPath = TestUtil.OUTPUT_PATH + "dbmng/" + dbName;
@@ -157,7 +167,7 @@ public class GetTableCreateSqlServiceTest {
 
 		// カバレッジ(オンメモリにテーブルリストがある状態で実行)
 		GenericParam input = new GenericParam();
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		input.putString("dirPath", dirPath);
 		input.putString("defPath", defPath);
 		input.putString("sqlPath", sqlPath);
@@ -189,7 +199,7 @@ public class GetTableCreateSqlServiceTest {
 	void test05() throws Exception {
 
 		// どんな場合でも必ず同じテスト結果となるよう、共通の固定ダミーテーブル定義を適用する
-		TestUtil.prepare();
+		testUtil.prepare();
 
 		// 必要なパラメータを準備する
 		String dirPath = TestUtil.OUTPUT_PATH + "dbmng/" + dbName;
@@ -199,7 +209,7 @@ public class GetTableCreateSqlServiceTest {
 
 		// カバレッジ(プライマリキーが2つ以上)
 		GenericParam input = new GenericParam();
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		input.putString("dirPath", dirPath);
 		input.putString("defPath", defPath);
 		input.putString("sqlPath", sqlPath);
@@ -220,7 +230,7 @@ public class GetTableCreateSqlServiceTest {
 		String outputPath = dirPath + "/" + sqlPath + "/";
 		assertTrue(new File(outputPath + "CREATE_SCR.txt").exists());
 		assertTrue(new File(outputPath + "CREATE_SCR.txt").length() > 0);
-		TestUtil.assertFileContains(outputPath + "CREATE_SCR.txt", "PRIMARY KEY(SCR_ID, SCR_NAME)");
+		testUtil.assertFileContains(outputPath + "CREATE_SCR.txt", "PRIMARY KEY(SCR_ID, SCR_NAME)");
 
 		// カバレッジ(プライマリキーなし)
 		tableDef.get(0).put("Key", "");
@@ -231,7 +241,7 @@ public class GetTableCreateSqlServiceTest {
 		// オンメモリの空情報は使わず、ファイルが生成されていることを確認する
 		assertTrue(new File(outputPath + "CREATE_SCR.txt").exists());
 		assertTrue(new File(outputPath + "CREATE_SCR.txt").length() > 0);
-		TestUtil.assertFileNotContains(outputPath + "CREATE_SCR.txt", "PRIMARY KEY(");
+		testUtil.assertFileNotContains(outputPath + "CREATE_SCR.txt", "PRIMARY KEY(");
 
 		// カバレッジ(デフォルト値が空文字列)
 		tableDef.get(0).put("Key", "PRI");
@@ -252,7 +262,7 @@ public class GetTableCreateSqlServiceTest {
 		// オンメモリの空情報は使わず、ファイルが生成されていることを確認する
 		assertTrue(new File(outputPath + "CREATE_SCR.txt").exists());
 		assertTrue(new File(outputPath + "CREATE_SCR.txt").length() > 0);
-		TestUtil.assertFileContains(outputPath + "CREATE_SCR.txt", "DEFAULT 'test'");
+		testUtil.assertFileContains(outputPath + "CREATE_SCR.txt", "DEFAULT 'test'");
 
 		// カバレッジ(デフォルト値指定あり、CURRENT_DATE)
 		tableDef.get(0).put("Key", "PRI");
@@ -263,7 +273,7 @@ public class GetTableCreateSqlServiceTest {
 		// オンメモリの空情報は使わず、ファイルが生成されていることを確認する
 		assertTrue(new File(outputPath + "CREATE_SCR.txt").exists());
 		assertTrue(new File(outputPath + "CREATE_SCR.txt").length() > 0);
-		TestUtil.assertFileContains(outputPath + "CREATE_SCR.txt", "DEFAULT CURRENT_DATE");
+		testUtil.assertFileContains(outputPath + "CREATE_SCR.txt", "DEFAULT CURRENT_DATE");
 
 		// カバレッジ(デフォルト値指定あり、CURRENT_TIME)
 		tableDef.get(0).put("Key", "PRI");
@@ -274,7 +284,7 @@ public class GetTableCreateSqlServiceTest {
 		// オンメモリの空情報は使わず、ファイルが生成されていることを確認する
 		assertTrue(new File(outputPath + "CREATE_SCR.txt").exists());
 		assertTrue(new File(outputPath + "CREATE_SCR.txt").length() > 0);
-		TestUtil.assertFileContains(outputPath + "CREATE_SCR.txt", "DEFAULT CURRENT_TIME");
+		testUtil.assertFileContains(outputPath + "CREATE_SCR.txt", "DEFAULT CURRENT_TIME");
 
 		// カバレッジ(デフォルト値指定あり、CURRENT_TIMESTAMP)
 		tableDef.get(0).put("Key", "PRI");
@@ -285,6 +295,6 @@ public class GetTableCreateSqlServiceTest {
 		// オンメモリの空情報は使わず、ファイルが生成されていることを確認する
 		assertTrue(new File(outputPath + "CREATE_SCR.txt").exists());
 		assertTrue(new File(outputPath + "CREATE_SCR.txt").length() > 0);
-		TestUtil.assertFileContains(outputPath + "CREATE_SCR.txt", "DEFAULT CURRENT_TIMESTAMP");
+		testUtil.assertFileContains(outputPath + "CREATE_SCR.txt", "DEFAULT CURRENT_TIMESTAMP");
 	}
 }

@@ -26,32 +26,44 @@ public class ScriptServiceTest {
 
 	private String dbName;
 
+	private static TestUtil testUtil;
+
 	@BeforeEach
 	void beforeEach() throws Exception {
 
+		// DB接続を取得し、トランザクションを開始する
+		testUtil = new TestUtil();
+		testUtil.getDb();
+
+		// DB名を取得する
+		dbName = testUtil.getDbName();
+
 		// どんな場合でも必ず同じテスト結果となるよう、共通の固定ダミーテーブル定義を適用する
-		dbName = TestUtil.getDbName();
-		TestUtil.restoreDb();
+		testUtil.restoreDb();
 	}
 
 	@AfterEach
 	void afterEach() throws Exception {
 
+		// 必ず最後にロールバックし、DBをクローズする
+		testUtil.getDb().rollback();
+		testUtil.closeDb();
+
 		// テストフォルダを削除する
-		TestUtil.clearOutputDir();
+		testUtil.clearOutputDir();
 	}
 
 	@AfterAll
 	static void afterAll() throws Exception {
 
-		// DB接続を一度クローズする
-		TestUtil.closeDb();
-
 		// h2の場合、DROP-CREATEはロールバックできないため、DB構成更新を複数回実施する
 		// このクラスではコミットあるいはロールバックしても、DBは消えた状態になる。
 		// そのためテストの最後でDBを復元する必要がある
-		// 2025/11/03付記 remainz移植に伴い、restoreDb処理はbeforeEachに移動した。
-		//TestUtil.restoreDb();
+		testUtil = new TestUtil();
+		testUtil.restoreDb();
+		testUtil.getDb().commit();
+		testUtil.closeDb();
+		testUtil = null;
 	}
 
 	//
@@ -116,19 +128,19 @@ public class ScriptServiceTest {
 		// 最初にDB構成取得を実施し、output配下に各種SQLを出力する
 		// (こうしないとDB構成更新の元ネタであるDB定義ファイルやDBデータがoutput配下にない状態となるため)
 		var input = new GenericParam();
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		input.putString("scriptId", "1000001");
 		input.putString("basePath", TestUtil.OUTPUT_PATH);
 		input.putString("dbName", dbName);
-		input.putString("getTableNameListSql", TestUtil.createGetTableNameListSql());
-		input.putString("getTableDefSql", TestUtil.createGetTableDefSql());
+		input.putString("getTableNameListSql", testUtil.createGetTableNameListSql());
+		input.putString("getTableDefSql", testUtil.createGetTableDefSql());
 		var output = new GenericParam();
 		var service = new ScriptService();
 		service.doService(input, output);
 		assertOutput(dbName);
 
 		// 正常系動作確認に必要なパラメータを作成する
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		input.putString("scriptId", "1000002");
 		input.putString("basePath", TestUtil.OUTPUT_PATH);
 		input.putString("dbName", dbName);
@@ -158,7 +170,7 @@ public class ScriptServiceTest {
 		}
 
 		try {
-			input.setDb(TestUtil.getDb());
+			input.setDb(testUtil.getDb());
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
@@ -177,7 +189,7 @@ public class ScriptServiceTest {
 		String prepareClassName = "com.remainz.common.service.dbmng.common.impl.BlankPrepare";
 		String sql = "UPDATE SCR_ELM SET ADAPTER = '" + adapterClassName + "', PREPARE_INPUT = '"
 				+ prepareClassName + "' WHERE SCR_ELM_ID = 1000001";
-		TestUtil.getDb().update(sql);
+		testUtil.getDb().update(sql);
 
 		// カバレッジ(アダプタ、準備クラス指定あり)
 		GenericParam output = new GenericParam();
@@ -194,7 +206,7 @@ public class ScriptServiceTest {
 
 		// サービス名に存在しないクラスを指定する
 		String sql = "UPDATE SCR_ELM SET SERVICE_NAME = 'notExistService' WHERE SCR_ELM_ID = 1000001";
-		TestUtil.getDb().update(sql);
+		testUtil.getDb().update(sql);
 
 		// カバレッジ(存在しないサービスクラス)
 		GenericParam output = new GenericParam();
@@ -215,7 +227,7 @@ public class ScriptServiceTest {
 
 		// エラーが起きるサービスを設定する
 		String sql = "UPDATE SCR_ELM SET SERVICE_NAME = 'com.remainz.common.service.dbmng.common.impl.ErrorService' WHERE SCR_ELM_ID = 1000001";
-		TestUtil.getDb().update(sql);
+		testUtil.getDb().update(sql);
 
 		// カバレッジ(サービス内で例外発生)
 		GenericParam output = new GenericParam();
@@ -245,7 +257,7 @@ public class ScriptServiceTest {
 
 		// エラーが起きるサービスを設定する
 		String sql = "UPDATE SCR_ELM SET SERVICE_NAME = 'com.remainz.common.service.dbmng.common.impl.ApErrorService' WHERE SCR_ELM_ID = 1000001";
-		TestUtil.getDb().update(sql);
+		testUtil.getDb().update(sql);
 
 		// カバレッジ(サービス内で例外発生)
 		GenericParam output = new GenericParam();
@@ -266,7 +278,7 @@ public class ScriptServiceTest {
 
 		// エラーが起きるサービスを設定する
 		String sql = "UPDATE SCR_ELM SET SERVICE_NAME = 'com.remainz.common.service.dbmng.common.impl.BrErrorService' WHERE SCR_ELM_ID = 1000001";
-		TestUtil.getDb().update(sql);
+		testUtil.getDb().update(sql);
 
 		// カバレッジ(サービス内で例外発生)
 		GenericParam output = new GenericParam();
@@ -297,12 +309,12 @@ public class ScriptServiceTest {
 		String defPath = "10_dbdef/20_auto_created";
 		String dataPath = "20_dbdata/20_auto_created";
 		String sqlPath = "30_sql/20_auto_created";
-		String getTableNameListSql = TestUtil.createGetTableNameListSql();
-		String getTableDefSql = TestUtil.createGetTableDefSql();
+		String getTableNameListSql = testUtil.createGetTableNameListSql();
+		String getTableDefSql = testUtil.createGetTableDefSql();
 
 		// 正常系動作確認に必要なパラメータを作成する
 		GenericParam input = new GenericParam();
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		input.putString("scriptId", scriptId);
 		input.putString("dirPath", dirPath);
 		input.putString("defPath", defPath);
@@ -340,7 +352,7 @@ public class ScriptServiceTest {
 
 		// 正常系動作確認に必要なパラメータを作成する
 		GenericParam input = new GenericParam();
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		input.putString("scriptId", scriptId);
 		input.putString("dirPath", dirPath);
 		input.putString("defPath", defPath);

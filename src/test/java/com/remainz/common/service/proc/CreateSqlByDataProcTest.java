@@ -14,22 +14,34 @@ import com.remainz.common.util.FileUtil;
 
 public class CreateSqlByDataProcTest {
 
-	private static String dbName;
+	private String dbName;
+
+	private TestUtil testUtil;
 
 	@BeforeEach
 	void beforeEach() {
 
+		// DB接続を取得し、トランザクションを開始する
+		testUtil = new TestUtil();
+		testUtil.getDb();
+
+		// DB名を取得する
+		dbName = testUtil.getDbName();
+
 		// テストに必要なフォルダを作成する
-		dbName = TestUtil.getDbName();
 		new FileUtil().createDirIfNotExists(TestUtil.OUTPUT_PATH + "dbmng/" + dbName + "/20_dbdata/20_auto_created");
 		new FileUtil().createDirIfNotExists(TestUtil.OUTPUT_PATH + "dbmng/" + dbName + "/30_sql/20_auto_created");	
 	}
 
 	@AfterEach
-	void afterEach() {
+	void afterEach() throws Exception {
+
+		// 必ず最後にロールバックし、DBをクローズする
+		testUtil.getDb().rollback();
+		testUtil.closeDb();
 
 		// テストフォルダを削除する
-		new FileUtil().deleteDirIfExists(TestUtil.OUTPUT_PATH);
+		testUtil.clearOutputDir();
 	}
 
 	//
@@ -53,7 +65,7 @@ public class CreateSqlByDataProcTest {
 			var proc = new CreateSqlByDataProc();
 			var input = new GenericParam();
 			var output = new GenericParam();
-			input.setDb(TestUtil.getDb());
+			input.setDb(testUtil.getDb());
 			input.putString("dirPath", dirPath);
 			input.putString("defPath", defPath);
 			input.putString("dataPath", dataPath);
@@ -84,7 +96,7 @@ public class CreateSqlByDataProcTest {
 			var proc = new CreateSqlByDataProc();
 			var input = new GenericParam();
 			var output = new GenericParam();
-			input.setDb(TestUtil.getDb());
+			input.setDb(testUtil.getDb());
 			input.putString("dirPath", dirPath);
 			input.putString("defPath", defPath);
 			input.putString("dataPath", dataPath);

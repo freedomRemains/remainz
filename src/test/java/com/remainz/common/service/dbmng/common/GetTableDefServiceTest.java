@@ -26,11 +26,17 @@ import com.remainz.common.util.Mu;
  */
 public class GetTableDefServiceTest {
 
+	private static TestUtil testUtil;
+
 	private static DbInterface dbMysql;
 	private static DbInterface dbH2;
 
 	@BeforeAll
 	static void beforeAll() throws Exception {
+
+		// DB接続を取得し、トランザクションを開始する
+		testUtil = new TestUtil();
+		testUtil.getDb();
 
 		// DBの準備を行う
 		dbMysql = getDb("mysql");
@@ -40,7 +46,7 @@ public class GetTableDefServiceTest {
 	private static DbInterface getDb(String dbName) {
 
 		// DB名に対応するDBインターフェースを呼び出し側に返却する
-		DbInterface db = TestUtil.getDb();
+		DbInterface db = testUtil.getDb();
 		if ("mysql".equals(dbName)) {
 			if (dbMysql != null) {
 				return dbMysql;
@@ -76,7 +82,7 @@ public class GetTableDefServiceTest {
 	static void afterAll() throws Exception {
 
 		// DB接続をクローズする
-		TestUtil.closeDb();
+		testUtil.closeDb();
 		getDb("mysql").close();
 		getDb("h2").close();
 	}
@@ -120,7 +126,7 @@ public class GetTableDefServiceTest {
 	private void doTest02(String dbName) throws Exception {
 
 		// DB定義取得用SQLを生成する
-		String getTableDefSql = TestUtil.createGetTableDefSql(dbName);
+		String getTableDefSql = testUtil.createGetTableDefSql(dbName);
 
 		// DBの準備を行う
 		prepareDb(dbName);
@@ -144,7 +150,7 @@ public class GetTableDefServiceTest {
 	private void doTest03(String dbName) throws Exception {
 
 		// DB定義取得用SQLを生成する
-		String getTableDefSql = TestUtil.createGetTableDefSql(dbName);
+		String getTableDefSql = testUtil.createGetTableDefSql(dbName);
 
 		// DBの準備を行う
 		prepareDb(dbName);

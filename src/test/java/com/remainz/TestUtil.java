@@ -22,8 +22,8 @@ public class TestUtil {
 
 	public static final String OUTPUT_PATH = "output/";
 
-	private static DbInterface db;
-	private static String dbName;
+	private DbInterface db;
+	private String dbName;
 
 	/**
 	 * DB名を取得します。<br>
@@ -32,7 +32,7 @@ public class TestUtil {
 	 * 
 	 * @return DB名("mysql", "h2")
 	 */
-	public static String getDbName() {
+	public String getDbName() {
 
 		// プロパティファイルからDB名を取得する
 		dbName = "mysql";
@@ -52,7 +52,7 @@ public class TestUtil {
 	 * 
 	 * @return DBインスタンス
 	 */
-	public static DbInterface getDb() {
+	public DbInterface getDb() {
 
 		// インスタンスがまだ生成されていない場合のみ生成する
 		if (db == null) {
@@ -69,7 +69,7 @@ public class TestUtil {
 	 * 
 	 * @throws Exception 例外
 	 */
-	public static void closeDb() throws Exception {
+	public void closeDb() throws Exception {
 
 		// DBをクローズし、変数もnullとする
 		if (db != null) {
@@ -81,7 +81,7 @@ public class TestUtil {
 	/**
 	 * テスト用のファイル出力用フォルダを削除します。
 	 */
-	public static void clearOutputDir() {
+	public void clearOutputDir() {
 
 		// テストフォルダを削除する
 		new FileUtil().deleteDirIfExists(OUTPUT_PATH);
@@ -94,7 +94,7 @@ public class TestUtil {
 	 * @param targetString 検索対象文字列
 	 * @throws Exception 例外
 	 */
-	public static void assertFileContains(String filePath, String targetString) throws Exception {
+	public void assertFileContains(String filePath, String targetString) throws Exception {
 		assertTrue(Files.readString(Paths.get(filePath)).contains(targetString));
 	}
 
@@ -105,7 +105,7 @@ public class TestUtil {
 	 * @param targetString 検索対象文字列
 	 * @throws Exception 例外
 	 */
-	public static void assertFileNotContains(String filePath, String targetString) throws Exception {
+	public void assertFileNotContains(String filePath, String targetString) throws Exception {
 		assertFalse(Files.readString(Paths.get(filePath)).contains(targetString));
 	}
 
@@ -118,7 +118,7 @@ public class TestUtil {
 	 * @return DB名
 	 * @throws Exception 例外
 	 */
-	public static String prepare() throws Exception {
+	public String prepare() throws Exception {
 
 		// DB名を取得する
 		dbName = getDbName();
@@ -136,7 +136,7 @@ public class TestUtil {
 		return dbName;
 	}
 
-	public static void prepareOutputDir() {
+	public void prepareOutputDir() {
 
 		// テストに必要なフォルダを作成する
 		new FileUtil().createDirIfNotExists(OUTPUT_PATH + "dbmng/" + dbName + "/10_dbdef/20_auto_created");
@@ -150,7 +150,7 @@ public class TestUtil {
 	 * 
 	 * @throws Exception 例外
 	 */
-	public static void getTableNameList() throws Exception {
+	public void getTableNameList() throws Exception {
 
 		// テーブル定義を出力するためのパラメータを生成する
 		String dirPath = OUTPUT_PATH + "dbmng/" + dbName;
@@ -174,7 +174,7 @@ public class TestUtil {
 	 * 
 	 * @throws Exception 例外
 	 */
-	public static void createDummyTableDefBySqlFile() throws Exception {
+	public void createDummyTableDefBySqlFile() throws Exception {
 
 		// DBがh2の場合のみ実行する(MySQLの場合は実テーブルから直接DB定義を取得できるため、次の処理は不要)
 		if ("h2".equals(dbName)) {
@@ -192,7 +192,7 @@ public class TestUtil {
 	 * 
 	 * @throws Exception 例外
 	 */
-	public static void loadDummyTableDef() throws Exception {
+	public void loadDummyTableDef() throws Exception {
 
 		// テスト用に固定で用意されているファイルを使って、テーブル定義を出力するためのパラメータを生成する
 		String dirPath = OUTPUT_PATH + "dbmng/" + dbName;
@@ -219,7 +219,7 @@ public class TestUtil {
 	 * 
 	 * @return テーブル名リストを取得するためのSQL
 	 */
-	public static String createGetTableNameListSql() {
+	public String createGetTableNameListSql() {
 
 		// MySQLかH2かによってSQLを分ける
 		String getTableNameListSql = """
@@ -245,7 +245,7 @@ public class TestUtil {
 	 * @param dbName DB名
 	 * @return TBL_DEFテーブルから、DBテーブル定義を読み込むSQL
 	 */
-	public static String createGetTableDefSql(String dbName) {
+	public String createGetTableDefSql(String dbName) {
 
 		// DB定義取得用SQLを生成する
 		String getTableDefSql = "desc #TABLE_NAME#";
@@ -264,17 +264,17 @@ public class TestUtil {
 	 * 
 	 * @return TBL_DEFテーブルから、DBテーブル定義を読み込むSQL
 	 */
-	public static String createGetTableDefSql() {
+	public String createGetTableDefSql() {
 		return createGetTableDefSql(getDbName());
 	}
 
 	/** 初期化済みフラグ */
-	private static boolean isInitialized;
+	private boolean isInitialized;
 
 	/**
 	 * 初期化フラグをクリアします。
 	 */
-	public static void clearInitializedFlag() {
+	public void clearInitializedFlag() {
 		isInitialized = false;
 	}
 
@@ -287,7 +287,7 @@ public class TestUtil {
 	 * 
 	 * @throws Exception 例外
 	 */
-	public static void restoreDbIfNotYet() throws Exception {
+	public void restoreDbIfNotYet() throws Exception {
 
 		// 初期化済みの場合は何もしない
 		if (isInitialized) {
@@ -310,7 +310,7 @@ public class TestUtil {
 	 * 
 	 * @throws Exception 例外
 	 */
-	public static void restoreDb() throws Exception {
+	public void restoreDb() throws Exception {
 
 		// 初回はDB名が取得されていない場合があるため、おまじない
 		getDbName();
@@ -331,14 +331,14 @@ public class TestUtil {
 	 * 
 	 * @throws Exception 例外
 	 */
-	public static void initDbAndRecord() throws Exception {
+	public void initDbAndRecord() throws Exception {
 
 		// DB構成更新サービス実行に必要な最小限のテーブル定義及びレコードを投入する
 		String initSqlPath = RESOURCE_PATH + "service/script/init/10_init.sql";
 		doDbUpdateBySqlFileService(initSqlPath, "initResult");
 	}
 
-	private static void doDbUpdateBySqlFileService(String sqlFilePath, String resultKey) throws Exception {
+	private void doDbUpdateBySqlFileService(String sqlFilePath, String resultKey) throws Exception {
 
 		//　ファイルとして用意されているupdateのSQLを実行する
 		var input = new GenericParam();
@@ -356,7 +356,7 @@ public class TestUtil {
 	 * @param basePath 基準パス
 	 * @throws Exception 例外
 	 */
-	public static void updateAllTable(String basePath) throws Exception {
+	public void updateAllTable(String basePath) throws Exception {
 
 		// 必要なパラメータを準備する
 		String scriptId = "1000002"; // DB構成更新
@@ -392,7 +392,7 @@ public class TestUtil {
 	 * @param basePath 基準パス
 	 * @throws Exception 例外
 	 */
-	public static void getAllTable(String basePath) throws Exception {
+	public void getAllTable(String basePath) throws Exception {
 
 		// 必要なパラメータを準備する
 		String scriptId = "1000001"; // DB構成取得
@@ -400,12 +400,12 @@ public class TestUtil {
 		String defPath = "10_dbdef/20_auto_created";
 		String dataPath = "20_dbdata/20_auto_created";
 		String sqlPath = "30_sql/20_auto_created";
-		String getTableNameListSql = TestUtil.createGetTableNameListSql();
-		String getTableDefSql = TestUtil.createGetTableDefSql();
+		String getTableNameListSql = createGetTableNameListSql();
+		String getTableDefSql = createGetTableDefSql();
 
 		// 正常系動作確認に必要なパラメータを作成する
 		GenericParam input = new GenericParam();
-		input.setDb(TestUtil.getDb());
+		input.setDb(getDb());
 		input.putString("scriptId", scriptId);
 		input.putString("dirPath", dirPath);
 		input.putString("defPath", defPath);

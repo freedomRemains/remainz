@@ -23,22 +23,23 @@ class GenericParamTest {
 	/** ロガー */
 	private Logger logger = Logger.getLogger(this.getClass().getName());
 
+	private TestUtil testUtil;
+
+	private 
 	@BeforeEach
 	void beforeEach() {
 
-		//
-		// テストメソッドはprivateを付けてはいけない。
-		// 各テストを実施する前の開始処理を記述する。
-		//
+		// DB接続を取得し、トランザクションを開始する
+		testUtil = new TestUtil();
+		testUtil.getDb();
 	}
 
 	@AfterEach
-	void afterEach() {
+	void afterEach() throws Exception {
 
-		//
-		// テストメソッドはprivateを付けてはいけない。
-		// 各テストを実施する前の開始処理を記述する。
-		//
+		// 必ず最後にロールバックし、DBをクローズする
+		testUtil.getDb().rollback();
+		testUtil.closeDb();
 	}
 
 	//
@@ -185,14 +186,14 @@ class GenericParamTest {
 		// recordLogのテスト(パラメータあり、1つ)
 		genericParam.putString("key", "value");
 		genericParam.putStringArray("key", new String[] {"testArray1", "testArray2"});
-		var recordList = TestUtil.getDb().select("SELECT * FROM TBL_DEF");
+		var recordList = testUtil.getDb().select("SELECT * FROM TBL_DEF");
 		genericParam.putRecordList("key", recordList);
 		genericParam.recordLog(logger, "test");
 
 		// recordLogのテスト(パラメータあり、2つ以上、パスワードあり)
 		genericParam.putString("key2", "value2");
 		genericParam.putStringArray("key2", new String[] {"testArray2_1", "testArray2_2"});
-		var recordList2 = TestUtil.getDb().select("SELECT * FROM ACCNT");
+		var recordList2 = testUtil.getDb().select("SELECT * FROM ACCNT");
 		genericParam.putRecordList("key2", recordList2);
 		genericParam.recordLog(logger, "test");
 	}

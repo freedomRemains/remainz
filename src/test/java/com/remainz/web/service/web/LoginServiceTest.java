@@ -4,8 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.sql.SQLException;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -16,19 +15,28 @@ import com.remainz.common.util.Mu;
 
 public class LoginServiceTest {
 
-	@BeforeAll
-	static void beforeAll() throws Exception {
-	}
-
-	@AfterAll
-	static void afterAll() throws Exception {
-	}
+	private TestUtil testUtil;
 
 	@BeforeEach
 	void beforeEach() throws Exception {
 
+		// DB接続を取得し、トランザクションを開始する
+		testUtil = new TestUtil();
+		testUtil.getDb();
+
 		// テストに必要な準備処理を実行する
-		TestUtil.restoreDb();
+		testUtil.restoreDb();
+	}
+
+	@AfterEach
+	void afterEach() throws Exception {
+
+		// 必ず最後にロールバックし、DBをクローズする
+		testUtil.getDb().rollback();
+		testUtil.closeDb();
+
+		// テストフォルダを削除する
+		testUtil.clearOutputDir();
 	}
 
 	@Test
@@ -46,7 +54,7 @@ public class LoginServiceTest {
 		}
 
 		try {
-			input.setDb(TestUtil.getDb());
+			input.setDb(testUtil.getDb());
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
@@ -69,7 +77,7 @@ public class LoginServiceTest {
 		var input = new GenericParam();
 		var output = new GenericParam();
 		var service = new LoginService();
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		input.putString("MAIL_ADDRESS", "master@account.com");
 		input.putString("PASSWORD", "password");
 
@@ -84,7 +92,7 @@ public class LoginServiceTest {
 		var input = new GenericParam();
 		var output = new GenericParam();
 		var service = new LoginService();
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		input.putString("MAIL_ADDRESS", "master2@account.com");
 		input.putString("PASSWORD", "password");
 
@@ -103,7 +111,7 @@ public class LoginServiceTest {
 		var input = new GenericParam();
 		var output = new GenericParam();
 		var service = new LoginService();
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		input.putString("MAIL_ADDRESS", "master@account.com");
 		input.putString("PASSWORD", "ngPassword");
 
@@ -122,7 +130,7 @@ public class LoginServiceTest {
 		var input = new GenericParam();
 		var output = new GenericParam();
 		var service = new LoginService();
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		input.putString("MAIL_ADDRESS", "master@account.com");
 		input.putString("PASSWORD", "password");
 
@@ -134,13 +142,13 @@ public class LoginServiceTest {
 					'1000501', 'マスタ2', 'master@account.com', 'password', 1, 0
 				)
 				""";
-		TestUtil.getDb().update(sql);
+		testUtil.getDb().update(sql);
 
 		service.doService(input, output);
 		assertEquals("redirect", output.getString("respKind"));
 		assertEquals("myPage.html?errMsgKey=1", output.getString("destination"));
 
 		// DBをロールバックする
-		TestUtil.getDb().rollback();
+		testUtil.getDb().rollback();
 	}
 }

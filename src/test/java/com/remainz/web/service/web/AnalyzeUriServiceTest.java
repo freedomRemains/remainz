@@ -2,8 +2,7 @@ package com.remainz.web.service.web;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -15,19 +14,28 @@ import com.remainz.common.util.Mu;
 
 public class AnalyzeUriServiceTest {
 
-	@BeforeAll
-	static void beforeAll() throws Exception {
-	}
-
-	@AfterAll
-	static void afterAll() throws Exception {
-	}
+	private TestUtil testUtil;
 
 	@BeforeEach
 	void beforeEach() throws Exception {
 
+		// DB接続を取得し、トランザクションを開始する
+		testUtil = new TestUtil();
+		testUtil.getDb();
+
 		// テストに必要な準備処理を実行する
-		TestUtil.restoreDb();
+		testUtil.restoreDb();
+	}
+
+	@AfterEach
+	void afterEach() throws Exception {
+
+		// 必ず最後にロールバックし、DBをクローズする
+		testUtil.getDb().rollback();
+		testUtil.closeDb();
+
+		// テストフォルダを削除する
+		testUtil.clearOutputDir();
 	}
 
 	@Test
@@ -45,7 +53,7 @@ public class AnalyzeUriServiceTest {
 		}
 
 		try {
-			input.setDb(TestUtil.getDb());
+			input.setDb(testUtil.getDb());
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
@@ -68,7 +76,7 @@ public class AnalyzeUriServiceTest {
 		var input = new GenericParam();
 		var output = new GenericParam();
 		var service = new AnalyzeUriService();
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		input.putString("requestKind", "GET");
 		input.putString("requestUri", "/jl/service/top.html");
 
@@ -84,7 +92,7 @@ public class AnalyzeUriServiceTest {
 		var input = new GenericParam();
 		var output = new GenericParam();
 		var service = new AnalyzeUriService();
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		input.putString("requestKind", "GET");
 		input.putString("requestUri", "/jl/service/dbMainte.html");
 
@@ -103,7 +111,7 @@ public class AnalyzeUriServiceTest {
 		var input = new GenericParam();
 		var output = new GenericParam();
 		var service = new AnalyzeUriService();
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		input.putString("requestKind", "GET");
 		String requestUri = "/jl/service/nowhere.html";
 		input.putString("requestUri", requestUri);
@@ -124,7 +132,7 @@ public class AnalyzeUriServiceTest {
 		var input = new GenericParam();
 		var output = new GenericParam();
 		var service = new AnalyzeUriService();
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		String requestKind = "PATCH";
 		String requestUri = "/jl/service/top.html";
 		input.putString("requestKind", requestKind);
@@ -146,7 +154,7 @@ public class AnalyzeUriServiceTest {
 		var input = new GenericParam();
 		var output = new GenericParam();
 		var service = new AnalyzeUriService();
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		input.putString("requestKind", "GET");
 		String requestUri = "/jl/service/top.html";
 		input.putString("requestUri", requestUri);
@@ -167,7 +175,7 @@ public class AnalyzeUriServiceTest {
 					1, 0
 				)
 				""";
-		TestUtil.getDb().update(sql);
+		testUtil.getDb().update(sql);
 
 		try {
 			service.doService(input, output);
@@ -177,7 +185,7 @@ public class AnalyzeUriServiceTest {
 					new Mu().msg("msg.err.invalidRequestUri", requestUri)));
 
 			// DBをロールバックする
-			TestUtil.getDb().rollback();
+			testUtil.getDb().rollback();
 		}
 	}
 
@@ -188,7 +196,7 @@ public class AnalyzeUriServiceTest {
 		var input = new GenericParam();
 		var output = new GenericParam();
 		var service = new AnalyzeUriService();
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		input.putString("requestKind", "POST");
 		String requestUri = "/jl/service/top.html";
 		input.putString("requestUri", requestUri);
@@ -201,14 +209,14 @@ public class AnalyzeUriServiceTest {
 					DESTINATION_POST = '10000_contents.jsp'
 					WHERE HTML_PAGE_ID = 1000001
 				""";
-		TestUtil.getDb().update(sql);
+		testUtil.getDb().update(sql);
 
 		service.doService(input, output);
 		assertEquals("forward", output.getString("respKind"));
 		assertEquals("10000_contents.jsp", output.getString("destination"));
 
 		// DBをロールバックする
-		TestUtil.getDb().rollback();
+		testUtil.getDb().rollback();
 	}
 
 	@Test
@@ -218,7 +226,7 @@ public class AnalyzeUriServiceTest {
 		var input = new GenericParam();
 		var output = new GenericParam();
 		var service = new AnalyzeUriService();
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		input.putString("requestKind", "PUT");
 		String requestUri = "/jl/service/top.html";
 		input.putString("requestUri", requestUri);
@@ -231,15 +239,14 @@ public class AnalyzeUriServiceTest {
 					DESTINATION_PUT = '10000_contents.jsp'
 					WHERE HTML_PAGE_ID = 1000001
 				""";
-		TestUtil.getDb().update(sql);
+		testUtil.getDb().update(sql);
 
 		service.doService(input, output);
 		assertEquals("forward", output.getString("respKind"));
 		assertEquals("10000_contents.jsp", output.getString("destination"));
-		TestUtil.getDb().rollback();
 
 		// DBをロールバックする
-		TestUtil.getDb().rollback();
+		testUtil.getDb().rollback();
 	}
 
 	@Test
@@ -249,7 +256,7 @@ public class AnalyzeUriServiceTest {
 		var input = new GenericParam();
 		var output = new GenericParam();
 		var service = new AnalyzeUriService();
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		input.putString("requestKind", "DELETE");
 		String requestUri = "/jl/service/top.html";
 		input.putString("requestUri", requestUri);
@@ -262,14 +269,14 @@ public class AnalyzeUriServiceTest {
 					DESTINATION_DELETE = '10000_contents.jsp'
 					WHERE HTML_PAGE_ID = 1000001
 				""";
-		TestUtil.getDb().update(sql);
+		testUtil.getDb().update(sql);
 
 		service.doService(input, output);
 		assertEquals("forward", output.getString("respKind"));
 		assertEquals("10000_contents.jsp", output.getString("destination"));
 
 		// DBをロールバックする
-		TestUtil.getDb().rollback();
+		testUtil.getDb().rollback();
 	}
 
 	@Test
@@ -279,7 +286,7 @@ public class AnalyzeUriServiceTest {
 		var input = new GenericParam();
 		var output = new GenericParam();
 		var service = new AnalyzeUriService();
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		String requestKind = "GET";
 		input.putString("requestKind", requestKind);
 		String requestUri = "/jl/service/top.html";
@@ -293,7 +300,7 @@ public class AnalyzeUriServiceTest {
 					DESTINATION_DELETE = 'top.html'
 					WHERE HTML_PAGE_ID = 1000001
 				""";
-		TestUtil.getDb().update(sql);
+		testUtil.getDb().update(sql);
 
 		try {
 			service.doService(input, output);
@@ -303,7 +310,7 @@ public class AnalyzeUriServiceTest {
 					new Mu().msg("msg.err.invalidRequestKind", requestUri, requestKind)));
 
 			// DBをロールバックする
-			TestUtil.getDb().rollback();
+			testUtil.getDb().rollback();
 		}
 	}
 
@@ -314,7 +321,7 @@ public class AnalyzeUriServiceTest {
 		var input = new GenericParam();
 		var output = new GenericParam();
 		var service = new AnalyzeUriService();
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		String requestKind = "POST";
 		input.putString("requestKind", requestKind);
 		String requestUri = "/jl/service/top.html";
@@ -326,6 +333,9 @@ public class AnalyzeUriServiceTest {
 		} catch (ApplicationInternalException e) {
 			assertTrue(e.getLocalizedMessage().contains(
 					new Mu().msg("msg.err.invalidRequestKind", requestUri, requestKind)));
+
+			// DBをロールバックする
+			testUtil.getDb().rollback();
 		}
 	}
 
@@ -336,7 +346,7 @@ public class AnalyzeUriServiceTest {
 		var input = new GenericParam();
 		var output = new GenericParam();
 		var service = new AnalyzeUriService();
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		String requestKind = "PUT";
 		input.putString("requestKind", requestKind);
 		String requestUri = "/jl/service/top.html";
@@ -348,6 +358,9 @@ public class AnalyzeUriServiceTest {
 		} catch (ApplicationInternalException e) {
 			assertTrue(e.getLocalizedMessage().contains(
 					new Mu().msg("msg.err.invalidRequestKind", requestUri, requestKind)));
+
+			// DBをロールバックする
+			testUtil.getDb().rollback();
 		}
 	}
 
@@ -358,7 +371,7 @@ public class AnalyzeUriServiceTest {
 		var input = new GenericParam();
 		var output = new GenericParam();
 		var service = new AnalyzeUriService();
-		input.setDb(TestUtil.getDb());
+		input.setDb(testUtil.getDb());
 		String requestKind = "DELETE";
 		input.putString("requestKind", requestKind);
 		String requestUri = "/jl/service/top.html";
@@ -370,6 +383,9 @@ public class AnalyzeUriServiceTest {
 		} catch (ApplicationInternalException e) {
 			assertTrue(e.getLocalizedMessage().contains(
 					new Mu().msg("msg.err.invalidRequestKind", requestUri, requestKind)));
+
+			// DBをロールバックする
+			testUtil.getDb().rollback();
 		}
 	}
 }
