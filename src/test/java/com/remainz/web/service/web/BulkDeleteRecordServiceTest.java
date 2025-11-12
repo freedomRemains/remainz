@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.sql.SQLException;
 
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -19,19 +18,8 @@ public class BulkDeleteRecordServiceTest {
 
 	private static TestUtil testUtil;
 
-	@BeforeAll
-	static void beforeAll() throws Exception {
-
-		// DBの準備を行う
-		testUtil = new TestUtil();
-		testUtil.restoreDbIfNotYet();
-		testUtil.getDb().commit();
-		testUtil.closeDb();
-		testUtil = null;
-	}
-
 	@BeforeEach
-	void beforeEach() {
+	void beforeEach() throws Exception {
 
 		// DB接続を取得し、トランザクションを開始する
 		testUtil = new TestUtil();

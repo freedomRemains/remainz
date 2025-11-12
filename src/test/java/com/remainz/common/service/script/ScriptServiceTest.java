@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.io.File;
 
 import org.apache.log4j.Logger;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -38,31 +37,27 @@ public class ScriptServiceTest {
 		// DB名を取得する
 		dbName = testUtil.getDbName();
 
-		// どんな場合でも必ず同じテスト結果となるよう、共通の固定ダミーテーブル定義を適用する
-		testUtil.restoreDb();
+		// テーブル定義のファイルを準備する
+		testUtil.prepare();
 	}
 
 	@AfterEach
 	void afterEach() throws Exception {
 
+		// テストフォルダを削除する
+		testUtil.clearOutputDir();
+
 		// 必ず最後にロールバックし、DBをクローズする
 		testUtil.getDb().rollback();
 		testUtil.closeDb();
+		testUtil = null;
 
-		// テストフォルダを削除する
-		testUtil.clearOutputDir();
-	}
-
-	@AfterAll
-	static void afterAll() throws Exception {
-
-		// h2の場合、DROP-CREATEはロールバックできないため、DB構成更新を複数回実施する
-		// このクラスではコミットあるいはロールバックしても、DBは消えた状態になる。
-		// そのためテストの最後でDBを復元する必要がある
+		// 本クラスでは、テストメソッド内でDBを更新してコミットも随時行うため、
+		// 必ずテストの最後で別インスタンスを生成してDBを復元する
 		testUtil = new TestUtil();
 		testUtil.restoreDb();
 		testUtil.getDb().commit();
-		testUtil.closeDb();
+		testUtil.getDb().close();
 		testUtil = null;
 	}
 

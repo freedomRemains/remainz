@@ -22,9 +22,6 @@ public class CreateHtmlServiceTest {
 		// DB接続を取得し、トランザクションを開始する
 		testUtil = new TestUtil();
 		testUtil.getDb();
-
-		// テストに必要な準備処理を実行する
-		testUtil.restoreDb();
 	}
 
 	@AfterEach

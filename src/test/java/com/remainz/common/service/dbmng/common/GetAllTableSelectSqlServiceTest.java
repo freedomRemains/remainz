@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -24,21 +23,10 @@ public class GetAllTableSelectSqlServiceTest {
 
 	private String dbName;
 
-	private static TestUtil testUtil;
-
-	@BeforeAll
-	static void beforeAll() throws Exception {
-
-		// 必ず最初に一度、DB復元を実施する
-		testUtil = new TestUtil();
-		testUtil.restoreDb();
-		testUtil.getDb().commit();
-		testUtil.closeDb();
-		testUtil = null;
-	}
+	private TestUtil testUtil;
 
 	@BeforeEach
-	void beforeEach() {
+	void beforeEach() throws Exception {
 
 		// DB接続を取得し、トランザクションを開始する
 		testUtil = new TestUtil();
@@ -108,8 +96,8 @@ public class GetAllTableSelectSqlServiceTest {
 	void test02() throws Exception {
 
 		// DB構成取得を実行し、前提ファイルを取得する
-		testUtil.restoreDbIfNotYet();
 		testUtil.prepareOutputDir();
+		testUtil.prepare();
 		testUtil.getAllTable(TestUtil.OUTPUT_PATH);
 
 		// テーブル名リストファイルのパスが指定されているケース
@@ -127,8 +115,8 @@ public class GetAllTableSelectSqlServiceTest {
 	void test03() throws Exception {
 
 		// DB構成取得を実行し、前提ファイルを取得する
-		testUtil.restoreDbIfNotYet();
 		testUtil.prepareOutputDir();
+		testUtil.prepare();
 		testUtil.getAllTable(TestUtil.OUTPUT_PATH);
 
 		// テーブル名リストが指定されているケース

@@ -26,7 +26,7 @@ public class GetAllTableCreateSqlServiceTest {
 	private TestUtil testUtil;
 
 	@BeforeEach
-	void beforeEach() {
+	void beforeEach() throws Exception {
 
 		// DB接続を取得し、トランザクションを開始する
 		testUtil = new TestUtil();
@@ -96,7 +96,6 @@ public class GetAllTableCreateSqlServiceTest {
 	void test02() throws Exception {
 
 		// DB構成取得を実行し、前提ファイルを取得する
-		testUtil.restoreDbIfNotYet();
 		testUtil.prepareOutputDir();
 		testUtil.getAllTable(TestUtil.OUTPUT_PATH);
 
@@ -114,7 +113,7 @@ public class GetAllTableCreateSqlServiceTest {
 	@Test
 	void test03() throws Exception {
 
-		testUtil.restoreDbIfNotYet();
+		// DB構成取得を実行し、前提ファイルを取得する
 		testUtil.prepareOutputDir();
 		testUtil.getAllTable(TestUtil.OUTPUT_PATH);
 

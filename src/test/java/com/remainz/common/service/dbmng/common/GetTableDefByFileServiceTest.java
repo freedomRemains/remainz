@@ -25,7 +25,7 @@ public class GetTableDefByFileServiceTest {
 	private TestUtil testUtil;
 
 	@BeforeEach
-	void beforeEach() {
+	void beforeEach() throws Exception {
 
 		// DB接続を取得し、トランザクションを開始する
 		testUtil = new TestUtil();

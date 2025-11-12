@@ -16,6 +16,9 @@ import com.remainz.common.util.FileUtil;
 import com.remainz.common.util.InnerClassPathProp;
 import com.remainz.common.util.RcProp;
 
+/**
+ * JUnitテスト用のユーティリティクラスです。
+ */
 public class TestUtil {
 
 	public static final String RESOURCE_PATH = "src/test/resources/";
@@ -24,6 +27,34 @@ public class TestUtil {
 
 	private DbInterface db;
 	private String dbName;
+
+	/** 初期化済みフラグ */
+	private static boolean isInitialized;
+
+	/**
+	 * コンストラクタ1
+	 */
+	public TestUtil() throws Exception {
+
+		// DB名取得は必ず行うものとする
+		getDbName();
+
+		// 初期化済みの場合は何もしない
+		if (isInitialized) {
+			return;
+		}
+
+		// 初期化済みフラグを初期化済みに変更する
+		isInitialized = true;
+
+		// 別インスタンスでDB復元処理を実行し、そのインスタンスはすぐにDBクローズして解放する
+		// (コンストラクタの段階ではまだDB接続されていないため、このような挙動が可能となっている)
+		var testUtil = new TestUtil();
+		testUtil.restoreDb();
+		testUtil.getDb().commit();
+		testUtil.closeDb();
+		testUtil = null;
+	}
 
 	/**
 	 * DB名を取得します。<br>
@@ -127,10 +158,10 @@ public class TestUtil {
 		prepareOutputDir();
 
 		// どんな場合でも必ず同じテスト結果となるよう、固定のSQLを実行してTBL_DEFのレコードを生成する
-		createDummyTableDefBySqlFile();
+		createTableDefBySqlFile();
 
 		// テスト用に固定で用意されているファイルを使って、ダミーテーブル定義を出力するためのパラメータを生成する
-		loadDummyTableDef();
+		loadTableDef();
 
 		// DB名を呼び出し側に返却する
 		return dbName;
@@ -171,17 +202,26 @@ public class TestUtil {
 	/**
 	 * どんな場合でも必ず同じテスト結果となるよう、固定のSQLを実行して<br>
 	 * TBL_DEFのレコードを生成します。<br>
+	 * 以前は次の位置にある固定のSQLを実行していました。<br>
+	 * String dummyTableDefFilePath = RESOURCE_PATH + "service/dbmng/common/GetAllTableDefServiceTest/10_addSqlForH2.sql";<br>
+	 * 最新版では本物のテーブル構成のTBL_DEFのファイルを使用しています。<br>
+	 * 本メソッドは最終的に不要となる見込みですが、削除可能と判断できるまでは残します。<br>
 	 * 
 	 * @throws Exception 例外
 	 */
-	public void createDummyTableDefBySqlFile() throws Exception {
+	public void createTableDefBySqlFile() throws Exception {
 
 		// DBがh2の場合のみ実行する(MySQLの場合は実テーブルから直接DB定義を取得できるため、次の処理は不要)
+		String dbName = getDbName();
 		if ("h2".equals(dbName)) {
 
 			// どんな場合でも必ず同じテスト結果となるよう、固定のSQLを実行してTBL_DEFのレコードを生成する
-			String dummyTableDefFilePath = RESOURCE_PATH + "service/dbmng/common/GetAllTableDefServiceTest/10_addSqlForH2.sql";
-			doDbUpdateBySqlFileService(dummyTableDefFilePath, "updateResult");
+			String filePath = RESOURCE_PATH + "service/script/dbmng/" + dbName + "/30_sql/10_authorized/DROP_TBL_DEF.txt";
+			doDbUpdateBySqlFileService(filePath, "dropResult");
+			filePath = RESOURCE_PATH + "service/script/dbmng/" + dbName + "/30_sql/10_authorized/CREATE_TBL_DEF.txt";
+			doDbUpdateBySqlFileService(filePath, "createResult");
+			filePath = RESOURCE_PATH + "service/script/dbmng/" + dbName + "/30_sql/10_authorized/INSERT_TBL_DEF.txt";
+			doDbUpdateBySqlFileService(filePath, "createResult");
 		}
 	}
 
@@ -189,16 +229,22 @@ public class TestUtil {
 	 * テスト用に固定で用意されているファイルを使って、テーブル定義を出力するための<br>
 	 * パラメータを生成します。<br>
 	 * 最後に GetAllTableDefService を実行し、全テーブル定義を取得します。<br>
+	 * 以前は次の位置にある固定のSQLを実行していました。<br>
+	 * String tableNameListFilePath = RESOURCE_PATH + "service/dbmng/common/GetAllTableDefServiceTest/tableNameList.txt";<br>
+	 * 最新版では本物のテーブル構成のtableNameList.txtを使用しています。<br>
+	 * 本メソッドは最終的に不要となる見込みですが、削除可能と判断できるまでは残します。<br>
 	 * 
 	 * @throws Exception 例外
 	 */
-	public void loadDummyTableDef() throws Exception {
+	public void loadTableDef() throws Exception {
 
 		// テスト用に固定で用意されているファイルを使って、テーブル定義を出力するためのパラメータを生成する
 		String dirPath = OUTPUT_PATH + "dbmng/" + dbName;
 		String defPath = "10_dbdef/20_auto_created";
 		String getTableDefSql = createGetTableDefSql();
-		String tableNameListFilePath = RESOURCE_PATH + "service/dbmng/common/GetAllTableDefServiceTest/tableNameList.txt";
+		// 元々のコードを念のため残す(次のように所定の位置にある固定ファイルを指定していた)
+		//String tableNameListFilePath = RESOURCE_PATH + "service/dbmng/common/GetAllTableDefServiceTest/tableNameList.txt";
+		String tableNameListFilePath = RESOURCE_PATH + "service/script/dbmng/" + dbName + "/10_dbdef/10_authorized/tableNameList.txt";
 
 		// 処理の前提となるテーブル定義ファイルを出力する
 		var input = new GenericParam();
@@ -266,39 +312,6 @@ public class TestUtil {
 	 */
 	public String createGetTableDefSql() {
 		return createGetTableDefSql(getDbName());
-	}
-
-	/** 初期化済みフラグ */
-	private boolean isInitialized;
-
-	/**
-	 * 初期化フラグをクリアします。
-	 */
-	public void clearInitializedFlag() {
-		isInitialized = false;
-	}
-
-	/**
-	 * テスト用にDBを復元します。<br>
-	 * ScriptServiceを実行する場合、h2では毎回DB再構築が必要となります。<br>
-	 * DB構成更新サービス実行に必要な最小限のテーブル定義及びレコードをSQLで流し、<br>
-	 * "src/test/resources/service/script/dbmng"配下にあるDB名フォルダの資材で<br>
-	 * 実際にDB構成更新を実行し、最新のDB定義に従ったDB再構築を行います。<br>
-	 * 
-	 * @throws Exception 例外
-	 */
-	public void restoreDbIfNotYet() throws Exception {
-
-		// 初期化済みの場合は何もしない
-		if (isInitialized) {
-			return;
-		}
-
-		// DB復元処理を実行する
-		restoreDb();
-
-		// 初期化フラグを初期化済みに変更する
-		isInitialized = true;
 	}
 
 	/**

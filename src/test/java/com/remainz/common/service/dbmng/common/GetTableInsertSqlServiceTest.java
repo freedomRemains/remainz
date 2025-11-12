@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -29,17 +28,6 @@ public class GetTableInsertSqlServiceTest {
 	private static String dbName;
 
 	private static TestUtil testUtil;
-
-	@BeforeAll
-	static void beforeAll() throws Exception {
-
-		// 必ず最初に一度、DB復元を実施する
-		testUtil = new TestUtil();
-		testUtil.restoreDb();
-		testUtil.getDb().commit();
-		testUtil.closeDb();
-		testUtil = null;
-	}
 
 	@BeforeEach
 	void beforeEach() throws Exception {
