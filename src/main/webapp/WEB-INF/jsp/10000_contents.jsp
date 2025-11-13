@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"%>
-<%@ page import="com.jc.param.GenericParam" %>
-<%@ page import="com.jw.util.AuthUtil" %>
+<%@ page import="com.remainz.common.param.GenericParam" %>
+<%@ page import="com.remainz.web.util.AuthUtil" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.LinkedHashMap" %>
 <%@ page import="java.util.Map" %>
@@ -13,8 +13,8 @@
 <!doctype html>
 <html>
   <head>
-    <script type="text/javascript" src="<%=contextPath%>/js/jwscript.js"></script>
-    <link rel="stylesheet" type="text/css" href="<%=contextPath%>/css/jwstyle.css">
+    <script type="text/javascript" src="<%=contextPath%>/js/rwscript.js"></script>
+    <link rel="stylesheet" type="text/css" href="<%=contextPath%>/css/rwstyle.css">
     <link rel="icon" type="image/png" href="<%=contextPath%>/img/favicon.png">
     <title><%=htmlPage.get(0).get("PAGE_NAME")%></title>
   </head>

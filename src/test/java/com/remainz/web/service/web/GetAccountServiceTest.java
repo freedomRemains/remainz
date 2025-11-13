@@ -77,7 +77,7 @@ public class GetAccountServiceTest {
 		var service = new GetAccountService();
 		input.setDb(testUtil.getDb());
 		input.putString("requestKind", "GET");
-		input.putString("requestUri", "/jl/service/top.html");
+		input.putString("requestUri", "/remainz/service/top.html");
 
 		service.doService(input, output);
 		assertEquals("1000001", output.getRecordList("account").get(0).get("ACCNT_ID"));
@@ -93,7 +93,7 @@ public class GetAccountServiceTest {
 		var service = new GetAccountService();
 		input.setDb(testUtil.getDb());
 		input.putString("requestKind", "GET");
-		input.putString("requestUri", "/jl/service/dbMainte.html");
+		input.putString("requestUri", "/remainz/service/dbMainte.html");
 
 		try {
 			service.doService(input, output);
@@ -113,7 +113,7 @@ public class GetAccountServiceTest {
 		var service = new GetAccountService();
 		input.setDb(testUtil.getDb());
 		input.putString("requestKind", "GET");
-		input.putString("requestUri", "/jl/service/dbMainte.html");
+		input.putString("requestUri", "/remainz/service/dbMainte.html");
 		input.putString("accountId", "1000301");
 
 		service.doService(input, output);
@@ -130,7 +130,7 @@ public class GetAccountServiceTest {
 		var service = new GetAccountService();
 		input.setDb(new GenericDb()); // 単にnewしただけではDB接続していないので、例外が発生する
 		input.putString("requestKind", "GET");
-		input.putString("requestUri", "/jl/service/nowhere.html");
+		input.putString("requestUri", "/remainz/service/nowhere.html");
 
 		try {
 			service.doService(input, output);

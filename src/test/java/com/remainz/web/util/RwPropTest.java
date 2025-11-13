@@ -34,6 +34,6 @@ public class RwPropTest {
 	void test01() {
 
 		// getのテストを実施
-		assertEquals("/jl/service/", new RwProp().get("servlet.redirect.basepath"));
+		assertEquals("/remainz/service/", new RwProp().get("servlet.redirect.basepath"));
 	}
 }

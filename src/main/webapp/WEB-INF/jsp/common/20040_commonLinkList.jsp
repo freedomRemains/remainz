@@ -7,7 +7,7 @@
                      for (LinkedHashMap<String, String> link : linkList) {
                        String url = link.get("URI_PATTERN");
                        String pageName = link.get("LNK_NAME");
-                       if ("/jl/service/error.html".equals(url)) {
+                       if ("/remainz/service/error.html".equals(url)) {
                          continue;
                        }
                        if ("0".equals(link.get("IS_POST"))) { %>

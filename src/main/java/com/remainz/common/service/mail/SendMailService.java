@@ -35,12 +35,12 @@ public class SendMailService implements ServiceInterface {
 
 	public void sendMail(GenericParam input) throws Exception {
 		// メールホストとポートはinputにあるものを優先する
-		RcProp jlProp = new RcProp();
-		String host = jlProp.get("mail.smtp.host");
+		RcProp rcProp = new RcProp();
+		String host = rcProp.get("mail.smtp.host");
 		if (Cu.isNotEmpty(input.getString("mail.smtp.host"))) {
 			host = input.getString("mail.smtp.host");
 		}
-		String port = jlProp.get("mail.smtp.port");
+		String port = rcProp.get("mail.smtp.port");
 		if (Cu.isNotEmpty(input.getString("mail.smtp.port"))) {
 			port = input.getString("mail.smtp.port");
 		}
@@ -49,11 +49,11 @@ public class SendMailService implements ServiceInterface {
 		Properties props = new Properties();
 		props.put("mail.smtp.host", host);
 		props.put("mail.smtp.port", port);
-		props.put("mail.smtp.auth", jlProp.get("mail.smtp.auth"));
-		props.put("mail.smtp.starttls.enable", jlProp.get("mail.smtp.starttls.enable"));
-		props.put("mail.smtp.connectiontimeout", jlProp.get("mail.smtp.connectiontimeout"));
-		props.put("mail.smtp.timeout", jlProp.get("mail.smtp.timeout"));
-		props.put("mail.debug", jlProp.get("mail.debug"));
+		props.put("mail.smtp.auth", rcProp.get("mail.smtp.auth"));
+		props.put("mail.smtp.starttls.enable", rcProp.get("mail.smtp.starttls.enable"));
+		props.put("mail.smtp.connectiontimeout", rcProp.get("mail.smtp.connectiontimeout"));
+		props.put("mail.smtp.timeout", rcProp.get("mail.smtp.timeout"));
+		props.put("mail.debug", rcProp.get("mail.debug"));
 
 		// メールセッションを開始する
 		String username = input.getString("username");
@@ -66,13 +66,13 @@ public class SendMailService implements ServiceInterface {
 		});
 
 		// メールを送信する
-		String from = jlProp.get("mail.from");
+		String from = rcProp.get("mail.from");
 		MimeMessage message = new MimeMessage(mailSession);
 		message.setFrom(new InternetAddress(from, "aliasName"));
 		message.setReplyTo(new Address[] {new InternetAddress(from)});
 		message.setRecipient(Message.RecipientType.TO, new InternetAddress(input.getString("to")));
-		message.setSubject(input.getString("subject"), jlProp.get("default.charset"));
-		message.setText(input.getString("honbun"), jlProp.get("default.charset"));
+		message.setSubject(input.getString("subject"), rcProp.get("default.charset"));
+		message.setText(input.getString("honbun"), rcProp.get("default.charset"));
 		Transport.send(message);
 	}
 }

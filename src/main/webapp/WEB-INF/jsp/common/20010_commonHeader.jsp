@@ -17,7 +17,7 @@
                      for (LinkedHashMap<String, String> urlLink : urlLinkList) {
                        String link = urlLink.get("URI_PATTERN");
                        String pageName = urlLink.get("PAGE_NAME");
-                       if ("/jl/service/error.html".equals(link)) {
+                       if ("/remainz/service/error.html".equals(link)) {
                          continue;
                        } %>
                   <div class="largePadding"><a class="linkButton" href="<%=link%>"><%=pageName%></a></div>

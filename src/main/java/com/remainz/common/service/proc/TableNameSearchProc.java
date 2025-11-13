@@ -29,7 +29,7 @@ public class TableNameSearchProc extends DirProcBase {
 		// ファイル名から拡張子(".txt")を除外した名前を、テーブル名としてリストに追加する
 		String tableName = currentFile.getName().substring(0, currentFile.getName().length() - ".txt".length());
 		LinkedHashMap<String, String> record = new LinkedHashMap<String, String>();
-		record.put("Tables_in_db", tableName); // MySQLの場合、"Tables_in_[DB名]" (例："Tables_in_jw")となる。
+		record.put("Tables_in_db", tableName); // MySQLの場合、"Tables_in_[DB名]" (例："Tables_in_REMAINZ_DB")となる。
 		recordList.add(record);
 	}
 }

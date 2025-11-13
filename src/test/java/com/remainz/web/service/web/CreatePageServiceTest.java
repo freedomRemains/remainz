@@ -116,7 +116,7 @@ public class CreatePageServiceTest {
 		input.putString("accountId", "data_loader");
 		input.putString("tableName", "HTML_PAGE");
 		input.putString("PAGE_NAME", "TOP");
-		input.putString("URI_PATTERN", "/jl/service/top.html");
+		input.putString("URI_PATTERN", "/remainz/service/top.html");
 
 		// サービスを実行する
 		service.doService(input, output);

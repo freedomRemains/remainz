@@ -75,7 +75,7 @@ public class AnalyzeUriServiceTest {
 		var service = new AnalyzeUriService();
 		input.setDb(testUtil.getDb());
 		input.putString("requestKind", "GET");
-		input.putString("requestUri", "/jl/service/top.html");
+		input.putString("requestUri", "/remainz/service/top.html");
 
 		service.doService(input, output);
 		assertEquals("forward", output.getString("respKind"));
@@ -91,7 +91,7 @@ public class AnalyzeUriServiceTest {
 		var service = new AnalyzeUriService();
 		input.setDb(testUtil.getDb());
 		input.putString("requestKind", "GET");
-		input.putString("requestUri", "/jl/service/dbMainte.html");
+		input.putString("requestUri", "/remainz/service/dbMainte.html");
 
 		try {
 			service.doService(input, output);
@@ -110,7 +110,7 @@ public class AnalyzeUriServiceTest {
 		var service = new AnalyzeUriService();
 		input.setDb(testUtil.getDb());
 		input.putString("requestKind", "GET");
-		String requestUri = "/jl/service/nowhere.html";
+		String requestUri = "/remainz/service/nowhere.html";
 		input.putString("requestUri", requestUri);
 
 		try {
@@ -131,7 +131,7 @@ public class AnalyzeUriServiceTest {
 		var service = new AnalyzeUriService();
 		input.setDb(testUtil.getDb());
 		String requestKind = "PATCH";
-		String requestUri = "/jl/service/top.html";
+		String requestUri = "/remainz/service/top.html";
 		input.putString("requestKind", requestKind);
 		input.putString("requestUri", requestUri);
 
@@ -153,7 +153,7 @@ public class AnalyzeUriServiceTest {
 		var service = new AnalyzeUriService();
 		input.setDb(testUtil.getDb());
 		input.putString("requestKind", "GET");
-		String requestUri = "/jl/service/top.html";
+		String requestUri = "/remainz/service/top.html";
 		input.putString("requestUri", requestUri);
 
 		// insertにより2件以上エラーが出るようにする
@@ -195,7 +195,7 @@ public class AnalyzeUriServiceTest {
 		var service = new AnalyzeUriService();
 		input.setDb(testUtil.getDb());
 		input.putString("requestKind", "POST");
-		String requestUri = "/jl/service/top.html";
+		String requestUri = "/remainz/service/top.html";
 		input.putString("requestUri", requestUri);
 
 		// リクエストを受けられるよう、DBレコードを更新する
@@ -225,7 +225,7 @@ public class AnalyzeUriServiceTest {
 		var service = new AnalyzeUriService();
 		input.setDb(testUtil.getDb());
 		input.putString("requestKind", "PUT");
-		String requestUri = "/jl/service/top.html";
+		String requestUri = "/remainz/service/top.html";
 		input.putString("requestUri", requestUri);
 
 		// リクエストを受けられるよう、DBレコードを更新する
@@ -255,7 +255,7 @@ public class AnalyzeUriServiceTest {
 		var service = new AnalyzeUriService();
 		input.setDb(testUtil.getDb());
 		input.putString("requestKind", "DELETE");
-		String requestUri = "/jl/service/top.html";
+		String requestUri = "/remainz/service/top.html";
 		input.putString("requestUri", requestUri);
 
 		// リクエストを受けられるよう、DBレコードを更新する
@@ -286,7 +286,7 @@ public class AnalyzeUriServiceTest {
 		input.setDb(testUtil.getDb());
 		String requestKind = "GET";
 		input.putString("requestKind", requestKind);
-		String requestUri = "/jl/service/top.html";
+		String requestUri = "/remainz/service/top.html";
 		input.putString("requestUri", requestUri);
 
 		// リクエストを受けられるよう、DBレコードを更新する
@@ -321,7 +321,7 @@ public class AnalyzeUriServiceTest {
 		input.setDb(testUtil.getDb());
 		String requestKind = "POST";
 		input.putString("requestKind", requestKind);
-		String requestUri = "/jl/service/top.html";
+		String requestUri = "/remainz/service/top.html";
 		input.putString("requestUri", requestUri);
 
 		try {
@@ -346,7 +346,7 @@ public class AnalyzeUriServiceTest {
 		input.setDb(testUtil.getDb());
 		String requestKind = "PUT";
 		input.putString("requestKind", requestKind);
-		String requestUri = "/jl/service/top.html";
+		String requestUri = "/remainz/service/top.html";
 		input.putString("requestUri", requestUri);
 
 		try {
@@ -371,7 +371,7 @@ public class AnalyzeUriServiceTest {
 		input.setDb(testUtil.getDb());
 		String requestKind = "DELETE";
 		input.putString("requestKind", requestKind);
-		String requestUri = "/jl/service/top.html";
+		String requestUri = "/remainz/service/top.html";
 		input.putString("requestUri", requestUri);
 
 		try {

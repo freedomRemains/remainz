@@ -39,7 +39,7 @@ public class AnalyzeUriService implements ServiceInterface {
 //			// ロール制約違反の場合は、トップページに遷移させる
 //			output = new GenericParam();
 //			output.putString("respKind", "redirect");
-//			output.putString("destination", "/jl/service/top.html");
+//			output.putString("destination", "/remainz/service/top.html");
 
 		} catch (Exception e) {
 

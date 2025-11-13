@@ -177,7 +177,7 @@ public class CreatePageService implements ServiceInterface {
 		input.putString("requireRuledNumber", "true"); // 規則的採番をリクエスト
 		input.putString("accountId", accountId);
 		input.putString("tableName", "SCR_ELM");
-		input.putString("SERVICE_NAME", "com.jw.service.web.GetAccountService");
+		input.putString("SERVICE_NAME", "com.remainz.web.service.web.GetAccountService");
 		input.putString("ADAPTER", "");
 		input.putString("PREPARE_INPUT", "");
 		input.putString("SCR_ID", scriptId);
@@ -191,7 +191,7 @@ public class CreatePageService implements ServiceInterface {
 		input.setDb(db);
 		input.putString("accountId", accountId);
 		input.putString("tableName", "SCR_ELM");
-		input.putString("SERVICE_NAME", "com.jw.service.web.CreateHtmlService");
+		input.putString("SERVICE_NAME", "com.remainz.web.service.web.CreateHtmlService");
 		input.putString("ADAPTER", "");
 		input.putString("PREPARE_INPUT", "");
 		input.putString("SCR_ID", scriptId);

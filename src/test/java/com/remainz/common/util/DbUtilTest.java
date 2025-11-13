@@ -30,7 +30,7 @@ class DbUtilTest {
 
 		// 接続情報が書かれていないプロパティファイルを指定し、エラーとなるテストを実施
 		try {
-			new DbUtil().getDb(new InnerClassPathProp("util/DbUtilTest/jlNg.properties"));
+			new DbUtil().getDb(new InnerClassPathProp("util/DbUtilTest/remainzNg.properties"));
 			fail();
 			
 		} catch (ApplicationInternalException e) {

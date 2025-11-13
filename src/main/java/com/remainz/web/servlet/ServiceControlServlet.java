@@ -94,7 +94,7 @@ public class ServiceControlServlet extends HttpServlet {
 		logger.info(new Mu().msg("msg.ServiceControlServlet.requestUri", requestUri));
 
 		// DBに接続する
-		DbInterface db = new DbUtil().getDb(new InnerClassPathProp("jl.properties"));
+		DbInterface db = new DbUtil().getDb(new InnerClassPathProp("rc.properties"));
 		try {
 			// リクエストパラメータを入力パラメータに設定する
 			var input = new GenericParam();
@@ -224,7 +224,7 @@ public class ServiceControlServlet extends HttpServlet {
 			var input = new GenericParam();
 			input.setDb(db);
 			input.putString("requestKind", "GET");
-			input.putString("requestUri", "/jl/service/error.html");
+			input.putString("requestUri", "/remainz/service/error.html");
 			var service = new AnalyzeUriService();
 			service.doService(input, output);
 
@@ -282,8 +282,8 @@ public class ServiceControlServlet extends HttpServlet {
 
 			// それ以外の場合は警告のログを記録してデフォルトページにリダイレクトする
 			logger.warn("unknown respKind.  respKind=" + respKind);
-			RwProp jwProp = new RwProp();
-			String redirectUrl = jwProp.get("servlet.redirect.basepath") + jwProp.get("servlet.defaultPage");
+			RwProp rwProp = new RwProp();
+			String redirectUrl = rwProp.get("servlet.redirect.basepath") + rwProp.get("servlet.defaultPage");
 			response.sendRedirect(redirectUrl);
 		}
 	}

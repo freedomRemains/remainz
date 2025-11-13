@@ -62,7 +62,7 @@ public class DirProcBaseTest {
 		GenericParam input = new GenericParam();
 		GenericParam output = new GenericParam();
 		input.putString("procName", "com.remainz.common.service.proc.SqlFromFileProc");
-		input.putString("dirPath", "src/test/resources/util/DbUtilTest/jlNg.properties");
+		input.putString("dirPath", "src/test/resources/util/DbUtilTest/remainzNg.properties");
 		proc.doProc(input, output, input.getString("dirPath"));
 		assertNull(output.getDb());
 	}

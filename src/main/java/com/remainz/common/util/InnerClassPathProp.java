@@ -11,9 +11,9 @@ import com.remainz.common.exception.ApplicationInternalException;
  * クラスパス内(クラスローダーでリソースとして取得できる範囲)にあるプロパティファイルを読み込むクラスです。
  * warの中に含まれるプロパティを読み込むときに使用します。
  * warに含まれるJavaクラスは通常src配下にソースコードを置き、eclipseの自動ビルド等によりbinやclasses、build
- * といったフォルダにクラスファイルが生成されます。 C:\(中略)\webapps\jw\src
- * C:\(中略)\webapps\jw\src\application.properties C:\(中略)\webapps\jw\bin
- * C:\(中略)\webapps\jw\bin\application.properties
+ * といったフォルダにクラスファイルが生成されます。 C:\(中略)\webapps\remainz\src
+ * C:\(中略)\webapps\remainz\src\application.properties C:\(中略)\webapps\remainz\bin
+ * C:\(中略)\webapps\remainz\bin\application.properties
  * プロパティファイルは通常「src」直下に配置し、ビルドすると「bin」配下などの決まった出力先に出力されます。
  * このクラスでは「src」直下に配置し、ビルドにより「bin」や「classes」、「build」などに出力されたプロパティ
  * ファイルを読み込むことができます。 warファイル内に含まれているプロパティファイルを読み込むときは、本クラスを使用してください。

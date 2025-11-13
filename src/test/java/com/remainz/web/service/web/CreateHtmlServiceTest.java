@@ -75,7 +75,7 @@ public class CreateHtmlServiceTest {
 		var service = new CreateHtmlService();
 		input.setDb(testUtil.getDb());
 		input.putString("requestKind", "GET");
-		input.putString("requestUri", "/jl/service/top.html");
+		input.putString("requestUri", "/remainz/service/top.html");
 
 		service.doService(input, output);
 		assertEquals("forward", output.getString("respKind"));
@@ -92,7 +92,7 @@ public class CreateHtmlServiceTest {
 		input.setDb(testUtil.getDb());
 		String requestKind = "GET";
 		input.putString("requestKind", requestKind);
-		String requestUri = "/jl/service/top.html";
+		String requestUri = "/remainz/service/top.html";
 		input.putString("requestUri", requestUri);
 
 		// リクエストを受けられるよう、DBレコードを更新する
@@ -125,7 +125,7 @@ public class CreateHtmlServiceTest {
 		input.setDb(testUtil.getDb());
 		String requestKind = "GET";
 		input.putString("requestKind", requestKind);
-		String requestUri = "/jl/service/top.html";
+		String requestUri = "/remainz/service/top.html";
 		input.putString("requestUri", requestUri);
 
 		// リクエストを受けられるよう、DBレコードを更新する
@@ -150,7 +150,7 @@ public class CreateHtmlServiceTest {
 		var service = new CreateHtmlService();
 		input.setDb(testUtil.getDb());
 		input.putString("requestKind", "GET");
-		input.putString("requestUri", "/jl/service/tableDataMainte.html");
+		input.putString("requestUri", "/remainz/service/tableDataMainte.html");
 		input.putString("tableName", "TBL_DEF");
 		input.putString("limit", "10");
 		input.putString("offset", "10");
@@ -169,7 +169,7 @@ public class CreateHtmlServiceTest {
 		var service = new CreateHtmlService();
 		input.setDb(testUtil.getDb());
 		input.putString("requestKind", "GET");
-		input.putString("requestUri", "/jl/service/top.html");
+		input.putString("requestUri", "/remainz/service/top.html");
 		input.putString("errMsgKey", "9999999");
 
 		service.doService(input, output);

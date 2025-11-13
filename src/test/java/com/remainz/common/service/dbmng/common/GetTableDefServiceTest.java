@@ -51,12 +51,12 @@ public class GetTableDefServiceTest {
 			if (dbMysql != null) {
 				return dbMysql;
 			}
-			db = new DbUtil().getDb(new InnerClassPathProp("service/dbmng/common/GetTableDefServiceTest/jlMysql.properties"));
+			db = new DbUtil().getDb(new InnerClassPathProp("service/dbmng/common/GetTableDefServiceTest/remainzMysql.properties"));
 		} else if ("h2".equals(dbName)) {
 			if (dbH2 != null) {
 				return dbH2;
 			}
-			db = new DbUtil().getDb(new InnerClassPathProp("service/dbmng/common/GetTableDefServiceTest/jlH2.properties"));
+			db = new DbUtil().getDb(new InnerClassPathProp("service/dbmng/common/GetTableDefServiceTest/remainzH2.properties"));
 		}
 
 		// DBインターフェースを呼び出し側に返却する
