@@ -1,0 +1,93 @@
+# versionは '3' でも動作する。細かく指定するなら、「'3.6'」のようにマイナーバージョンまで指定する
+version: '3'
+
+# サービス定義の開始
+services:
+
+  # 開発環境の設定
+  remainz_develop:
+
+    # コンテナ名
+    container_name: image_java
+
+    # カレントディレクトリを基準としてビルドする
+    build: 
+      context: .
+      dockerfile: ./java/Dockerfile
+
+    # DBに依存するため、先にDBを起動する設定を行う
+    depends_on:
+      - db
+
+    # Windows(ホスト)側の18080ポートを占有し、コンテナ側の8080ポートと共有する
+    ports:
+      - 18080:8080
+
+    # ボリューム定義
+    volumes:
+
+      # コンテナ側の「/home/develop/remainz」をホスト側の「./remainz」としてマッピングする
+      - ../../remainz:/home/develop/remainz
+
+    # コンテナ内のワーキングディレクトリの定義
+    working_dir: /home/develop/remainz
+
+    # 標準入出力先のデバイスを常時起動しておかないとコンテナが落ちてしまうのでtrueとする
+    tty: true
+
+  # DBの設定
+  db:
+
+    # コンテナ名
+    container_name: image_mysql
+
+    # カレントディレクトリを基準としてビルドする
+    build:
+      context: .
+
+    # イメージは MySQL の最新版とする
+    image: mysql:latest
+
+    # 標準入出力先のデバイスを常時起動しておかないとコンテナが落ちてしまうのでtrueとする
+    tty: true
+
+    # 暗号化なしの認証を行う場合は、次の設定を有効にする
+    #command: mysqld --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+
+    # MySQL8以降で標準となった暗号化による認証を行う場合は、次の設定を有効にする
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+
+    # 環境変数を設定する
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: JLDB
+      MYSQL_USER: mysqluser
+      MYSQL_PASSWORD: mysqlpass
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+
+    # ポートは通常のMySQLポート(3306)を使用する(ホストで別のMySQLが立ち上がっていたら気付くように)
+    ports:
+      - 3306:3306
+
+    # ボリュームの定義を行う(初期データ投入SQLの位置とmy.cnfの位置をWindowsと共有する)
+    volumes:
+      - ./mysql/initdb:/docker-entrypoint-initdb.d
+      - ./mysql/config/my.cnf:/etc/mysql/conf.d/my.cnf
+      - mysql_vol:/var/lib/mysql
+
+  # mailhogの設定
+  mail:
+
+    # コンテナ名
+    container_name: image_mailhog
+
+    # イメージは mailhog の最新版とする
+    image: mailhog/mailhog:latest
+
+    # ポート設定
+    ports:
+      - 1025:1025
+      - 8025:8025
+
+volumes:
+  mysql_vol:

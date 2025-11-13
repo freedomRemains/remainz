@@ -1,0 +1,4 @@
+/* 以下のSQLは、DBを再構築する場合に使用する。
+DROP DATABASE IF EXISTS REMAINZ_DB;
+SHOW DATABASES;
+*/

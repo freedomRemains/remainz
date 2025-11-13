@@ -1,7 +1,7 @@
 HELP.md
 .gradle
 build/
-log/jl.log*
+log/remainz.log*
 output/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
