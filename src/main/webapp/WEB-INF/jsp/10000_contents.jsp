@@ -13,7 +13,7 @@
 <!doctype html>
 <html>
   <head>
-    <script type="text/javascript" src="<%=contextPath%>/js/rwscript.js"></script>
+    <link rel="stylesheet" href="<%=contextPath%>/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="<%=contextPath%>/css/rwstyle.css">
     <link rel="icon" type="image/png" href="<%=contextPath%>/img/favicon.png">
     <title><%=htmlPage.get(0).get("PAGE_NAME")%></title>
@@ -46,5 +46,7 @@
 
       </form>
     </div>
+    <script src="<%=contextPath%>/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="<%=contextPath%>/js/rwscript.js"></script>
   </body>
 </html>

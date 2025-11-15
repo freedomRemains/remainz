@@ -14,6 +14,6 @@
                     </tr>
                   </tbody>
                 </table>
-                <input type="button" name="doPost" value="送信" onclick="submitMainForm()">
+                <button class="btn btn-primary px-4 py-2" onclick="submitMainForm()">サインイン</button>
               </div>
             <% } %>

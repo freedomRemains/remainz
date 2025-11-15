@@ -11,9 +11,9 @@
                          continue;
                        }
                        if ("0".equals(link.get("IS_POST"))) { %>
-                    <div class="largePadding"><a class="linkButton" href="<%=url%>"><%=pageName%></a></div>
+                    <div class="largePadding"><a class="btn btn-primary px-4 py-2" href="<%=url%>"><%=pageName%></a></div>
                   <%   } else { %>
-                    <div class="largePadding"><a class="linkButton" href="javascript:void(0);" onclick="submitMainForm()"><%=pageName%></a></div>
+                    <div class="largePadding"><a class="btn btn-primary px-4 py-2" href="javascript:void(0);" onclick="submitMainForm()"><%=pageName%></a></div>
                   <%   } %>
                   <% } %>
                 </div>

@@ -10,8 +10,8 @@
                          String tableLogicalName = table.get("TABLE_LOGICAL_NAME"); %>
                       <tr>
                         <td><%=tableLogicalName%>(<%=tableName%>)</td>
-                        <td><a class="linkButton" href="tableDefRef.html?tableName=<%=tableName%>" target="_blank" rel="noopener noreferrer">定義参照</a></td>
-                        <td><a class="linkButton" href="tableDataMainte.html?tableName=<%=tableName%>">データ編集</a></td>
+                        <td><a class="btn btn-primary px-4 py-2" href="tableDefRef.html?tableName=<%=tableName%>" target="_blank" rel="noopener noreferrer">定義参照</a></td>
+                        <td><a class="btn btn-primary px-4 py-2" href="tableDataMainte.html?tableName=<%=tableName%>">データ編集</a></td>
                       </tr>
                     <% } %>
                   </tbody>
