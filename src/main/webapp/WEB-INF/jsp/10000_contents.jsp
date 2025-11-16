@@ -19,7 +19,7 @@
     <title><%=htmlPage.get(0).get("PAGE_NAME")%></title>
   </head>
   <body>
-    <div id="mainArea" class="mainArea">
+    <div id="mainArea" class="container">
       <form id="mainForm" method="POST">
 
         <% ArrayList<String> partsInPageIdList = new ArrayList<String>();
