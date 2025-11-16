@@ -1,9 +1,9 @@
 <%@ page pageEncoding="UTF-8"%>
 
             <div class="<%=columnMap.get("HTML_PARTS_ID")%>">
-              <div class="partsArea">
+              <div class="p-2">
                 <% var tableDefListEdit = (ArrayList<LinkedHashMap<String, String>>) request.getAttribute("tableDefList"); %>
-                <label><span class="genericLabel"><%=tableDefListEdit.get(0).get("TABLE_LOGICAL_NAME") + "(" + tableDefListEdit.get(0).get("TABLE_NAME") + ")"%></span><br /></label>
+                <label><span class="form-label fw-bold"><%=tableDefListEdit.get(0).get("TABLE_LOGICAL_NAME") + "(" + tableDefListEdit.get(0).get("TABLE_NAME") + ")"%></span><br /></label>
                 <table>
                   <tbody>
                     <% var columnList = (ArrayList<LinkedHashMap<String, String>>) request.getAttribute("columnList");

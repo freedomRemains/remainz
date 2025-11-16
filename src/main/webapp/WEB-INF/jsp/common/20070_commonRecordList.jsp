@@ -1,7 +1,7 @@
 <%@ page pageEncoding="UTF-8"%>
 
             <div class="<%=columnMap.get("HTML_PARTS_ID")%>">
-              <div class="partsArea">
+              <div class="p-2">
                 <% var tableDefList = (ArrayList<LinkedHashMap<String, String>>) request.getAttribute("tableDefList");
                    var dbRecordList = (ArrayList<LinkedHashMap<String, String>>) request.getAttribute("dbRecordList");
                    var newRecordUri = ((ArrayList<LinkedHashMap<String, String>>) request.getAttribute("newRecordUri")).get(0).get("URI_PATTERN");
@@ -47,23 +47,23 @@
                    }
                    String nextPageOffset = Integer.toString(currentLimitInt * (Integer.parseInt(nextPage) - 1));
                    %>
-                <div class="littlePadding">
-                  <label><span class="genericLabel"><%=tableDefList.get(0).get("TABLE_LOGICAL_NAME") + "(" + tableDefList.get(0).get("TABLE_NAME") + ")"%></span><br /></label>
+                <div class="p-2">
+                  <label><span class="form-label fw-bold"><%=tableDefList.get(0).get("TABLE_LOGICAL_NAME") + "(" + tableDefList.get(0).get("TABLE_NAME") + ")"%></span><br /></label>
                   <% if (authUtil.hasEditAuth("1000601", authList)) { %>
-                    <a href="<%=newRecordUri%>?tableName=<%=tableName%>">新規レコード追加</a>
-                    <input type="button" name="doPost" value="一括削除" onclick="submitMainForm()">
+                    <a class="btn btn-secondary px-2 py-0" href="<%=newRecordUri%>?tableName=<%=tableName%>">新規レコード追加</a>
+                    <input class="btn btn-secondary px-2 py-0" type="button" name="doPost" value="一括削除" onclick="confirmBulkDelete()">
                   <% } %>
                 </div>
                 <div class="scrollArea">
-                  <table class="dbRecordTable">
-                    <thead>
+                  <table class="table table-bordered table-striped table-hover table-responsive text-nowrap">
+                    <thead class="table-success">
                       <tr>
                         <% if (authUtil.hasEditAuth("1000601", authList)) { %>
-                          <th>操作</th>
-                          <th>選択</th>
+                          <th class="align-middle px-2 py-0">操作</th>
+                          <th class="align-middle px-2 py-0">選択</th>
                         <% } %>
                         <% for (LinkedHashMap<String, String> tableDef : tableDefList) { %>
-                          <th><%=tableDef.get("FIELD_LOGICAL_NAME")%><br /><%=tableDef.get("FIELD_NAME")%></th>
+                          <th class="align-middle px-2 py-0"><%=tableDef.get("FIELD_LOGICAL_NAME")%><br /><%=tableDef.get("FIELD_NAME")%></th>
                         <% } %>
                       </tr>
                     </thead>
@@ -73,13 +73,13 @@
                           <% for (Map.Entry<String, String> entry : dbRecord.entrySet()) {
                                if (entry.getKey().equals(tableName + "_ID") &&
                                    authUtil.hasEditAuth("1000601", authList)) { %>
-                              <td>
-                                  <a href="<%=deleteRecordUri%>?tableName=<%=tableName%>&recordId=<%=entry.getValue()%>">削除</a>
-                                  <a href="<%=editRecordUri%>?tableName=<%=tableName%>&recordId=<%=entry.getValue()%>">編集</a>
-                              </td>
-                              <td>
-                                <input type="checkbox" name="<%=entry.getValue()%>">
-                              </td>
+                            <td class="px-2 py-0">
+                              <a class="btn btn-secondary px-2 py-0" href="<%=deleteRecordUri%>?tableName=<%=tableName%>&recordId=<%=entry.getValue()%>">削除</a>
+                              <a class="btn btn-secondary px-2 py-0" href="<%=editRecordUri%>?tableName=<%=tableName%>&recordId=<%=entry.getValue()%>">編集</a>
+                            </td>
+                            <td class="px-2 py-0">
+                              <input type="checkbox" name="<%=entry.getValue()%>">
+                            </td>
                           <%   } %>
                           <%   String foreignTable = "";
                                for (LinkedHashMap<String, String> tableDef : tableDefList) {
@@ -89,9 +89,9 @@
                                  }
                                }
                                if (foreignTable != null && foreignTable.length() > 0) { %>
-                            <td><a href="<%=recordRefUri%>?tableName=<%=foreignTable%>&recordId=<%=entry.getValue()%>" target="_blank" rel="noopener noreferrer"><%=entry.getValue()%></a></td>
+                            <td class="px-2 py-0"><a href="<%=recordRefUri%>?tableName=<%=foreignTable%>&recordId=<%=entry.getValue()%>" target="_blank" rel="noopener noreferrer"><%=entry.getValue()%></a></td>
                           <%   } else { %>
-                            <td><%=entry.getValue()%></td>
+                            <td class="px-2 py-0"><%=entry.getValue()%></td>
                           <%   } %>
                           <% } %>
                         </tr>
@@ -99,22 +99,22 @@
                     </tbody>
                   </table>
                 </div>
-                <div class="littlePadding">
+                <div class="p-2">
                   <% if (lastPageInt > 1) { %>
                     <% if (currentPageInt > 1) { %>
-                      <a href="<%=recordListUri%>?tableName=<%=tableName%>&limit=<%=currentLimit%>&offset=0">最初のページ(1)</a>　
+                      <a class="btn btn-secondary px-2 py-0" href="<%=recordListUri%>?tableName=<%=tableName%>&limit=<%=currentLimit%>&offset=0">最初のページ(1)</a>　
                     <% } %>
                     <% if (prevPageInt > 1) { %>
-                      <a href="<%=recordListUri%>?tableName=<%=tableName%>&limit=<%=currentLimit%>&offset=<%=prevPageOffset%>">前のページ(<%=prevPage%>)</a>　
+                      <a class="btn btn-secondary px-2 py-0" href="<%=recordListUri%>?tableName=<%=tableName%>&limit=<%=currentLimit%>&offset=<%=prevPageOffset%>">前のページ(<%=prevPage%>)</a>　
                     <% } %>
                     <% if (nextPageInt < lastPageInt) { %>
-                      <a href="<%=recordListUri%>?tableName=<%=tableName%>&limit=<%=currentLimit%>&offset=<%=nextPageOffset%>">次のページ(<%=nextPage%>)</a>　
+                      <a class="btn btn-secondary px-2 py-0" href="<%=recordListUri%>?tableName=<%=tableName%>&limit=<%=currentLimit%>&offset=<%=nextPageOffset%>">次のページ(<%=nextPage%>)</a>　
                     <% } %>
                     <% if (currentPageInt < lastPageInt) { %>
-                      <a href="<%=recordListUri%>?tableName=<%=tableName%>&limit=<%=currentLimit%>&offset=<%=lastPageOffset%>">最後のページ(<%=lastPage%>)</a>　
+                      <a class="btn btn-secondary px-2 py-0" href="<%=recordListUri%>?tableName=<%=tableName%>&limit=<%=currentLimit%>&offset=<%=lastPageOffset%>">最後のページ(<%=lastPage%>)</a>　
                     <% } %>
                   <% } %>
-                  <label><span class="genericLabel"><%=currentPage%>／<%=lastPage%>　表示件数</span></label>
+                  <label><span class="form-label fw-bold"><%=currentPage%>／<%=lastPage%>　表示件数</span></label>
                   <select id="selectLimit" name="limit" onchange="changeLimit('<%=recordListUri%>?tableName=<%=tableName%>&limit=', '&offset=<%=currentPageOffset%>')">
                     <% for (LinkedHashMap<String, String> limitInList : limitList) {
                          String limitNum = limitInList.get("GNR_VAL");
