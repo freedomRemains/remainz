@@ -1,7 +1,7 @@
 <%@ page pageEncoding="UTF-8"%>
 
-            <nav class="navbar navbar-expand-md navbar-dark bg-secondary">
-              <a class="navbar-brand" href="#"><%=systemName.get(0).get("GNR_VAL")%></a>
+            <nav class="navbar navbar-expand-md navbar-dark bg-secondary mt-2 mb-2">
+              <a class="navbar-brand ms-2" href="#"><em><%=systemName.get(0).get("GNR_VAL")%></em></a>
               <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu">
                 <span class="navbar-toggler-icon"></span>
               </button>
@@ -15,7 +15,7 @@
                          if ("/remainz/service/error.html".equals(link)) {
                            continue;
                          } %>
-                    <li class="nav-item"><a class="nav-link" href="<%=link%>"><%=pageName%></a></li>
+                    <li class="nav-item"><a class="nav-link btn btn-outline-primary ms-2 me-2" href="<%=link%>"><%=pageName%></a></li>
                   <%   } %>
                   <% } %>
                   <li class="nav-item"><a class="nav-link" href="#"><%=account.get(0).get("ACCOUNT_NAME")%></a></li>

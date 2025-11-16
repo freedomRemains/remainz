@@ -1,11 +1,11 @@
 <%@ page pageEncoding="UTF-8"%>
 
             <div class="<%=columnMap.get("HTML_PARTS_ID")%>">
-              <div class="partsArea">
+              <div class="p-2">
                 <% var targetRecordRef = (ArrayList<LinkedHashMap<String, String>>) request.getAttribute("targetRecord");
                    var tableDefListRef = (ArrayList<LinkedHashMap<String, String>>) request.getAttribute("tableDefList");
                    var tableNameRef = tableDefListRef.get(0).get("TABLE_NAME"); %>
-                <label><span class="genericLabel"><%=tableDefListRef.get(0).get("TABLE_LOGICAL_NAME") + "(" + tableNameRef + ")"%></span><br /></label>
+                <label><span class="form-label fw-bold"><%=tableDefListRef.get(0).get("TABLE_LOGICAL_NAME") + "(" + tableNameRef + ")"%></span><br /></label>
                 <table>
                   <tbody>
                     <% for (Map.Entry<String, String> entry : targetRecordRef.get(0).entrySet()) {
