@@ -5,12 +5,12 @@
                 <table>
                   <tbody>
                     <tr>
-                      <td>メールアドレス</td>
-                      <td><input id="MAIL_ADDRESS" name="MAIL_ADDRESS" value="grandmaster@account.com"></td>
+                      <td class=" px-4 py-2">メールアドレス</td>
+                      <td class=" px-4 py-2"><input id="MAIL_ADDRESS" name="MAIL_ADDRESS" value="grandmaster@account.com"></td>
                     </tr>
                     <tr>
-                      <td>パスワード</td>
-                      <td><input id="PASSWORD" type="password" name="PASSWORD" value="password"></td>
+                      <td class=" px-4 py-2">パスワード</td>
+                      <td class=" px-4 py-2"><input id="PASSWORD" type="password" name="PASSWORD" value="password"></td>
                     </tr>
                   </tbody>
                 </table>
