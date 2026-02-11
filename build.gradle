@@ -11,8 +11,14 @@ plugins {
 	id 'jacoco'
 }
 
-// Java17を使用する設定
-sourceCompatibility = 17
+// Javaの設定
+java {
+
+	// Java 21 を使用する設定
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(21)
+	}
+}
 
 // エンコーディングをUTF-8とする設定
 tasks.withType(JavaCompile) {options.encoding = 'UTF-8'}
@@ -42,7 +48,8 @@ dependencies {
 	//runtimeOnly 'org.glassfish.web:jakarta.servlet.jsp.jstl:3.0.+'
 
 	// JUnit 5
-	testImplementation 'org.junit.jupiter:junit-jupiter:5.10.1'
+	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.1'
+	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.1'
 
 	// log4j
 	implementation group: 'log4j', name: 'log4j', version: '1.2.17'
@@ -67,7 +74,7 @@ dependencies {
 // テスト設定
 test {
 
-	// JUnit platformを使う設定
+	// JUnitを使う設定
 	useJUnitPlatform()
 
 	// テストの最後でjacocoのレポート出力を行う

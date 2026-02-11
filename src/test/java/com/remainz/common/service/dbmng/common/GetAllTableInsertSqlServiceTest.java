@@ -23,7 +23,7 @@ public class GetAllTableInsertSqlServiceTest {
 
 	private String dbName;
 
-	private static TestUtil testUtil;
+	private TestUtil testUtil;
 
 	@BeforeEach
 	void beforeEach() throws Exception {
@@ -56,17 +56,30 @@ public class GetAllTableInsertSqlServiceTest {
 
 	public static void createAllTableSelectSql(String dbName) throws Exception {
 
-		// 全てのテーブルについて、SELECTのSQLを出力する
-		createTableSelectSql(dbName, "GNR_GRP");
-		createTableSelectSql(dbName, "GNR_KEY_VAL");
-		createTableSelectSql(dbName, "TBL_DEF");
-		createTableSelectSql(dbName, "ACCNT");
-		createTableSelectSql(dbName, "MAIL");
-		createTableSelectSql(dbName, "SCR");
-		createTableSelectSql(dbName, "SCR_ELM");
+		// テストユーティリティを生成する
+		var testUtil = new TestUtil();
+		testUtil.getDb();
+
+		try {
+			// 全てのテーブルについて、SELECTのSQLを出力する
+			createTableSelectSql(dbName, "GNR_GRP", testUtil);
+			createTableSelectSql(dbName, "GNR_KEY_VAL", testUtil);
+			createTableSelectSql(dbName, "TBL_DEF", testUtil);
+			createTableSelectSql(dbName, "ACCNT", testUtil);
+			createTableSelectSql(dbName, "MAIL", testUtil);
+			createTableSelectSql(dbName, "SCR", testUtil);
+			createTableSelectSql(dbName, "SCR_ELM", testUtil);
+
+		} finally {
+
+			// 必ず最後にロールバックし、DBをクローズする
+			testUtil.getDb().rollback();
+			testUtil.closeDb();
+		}
 	}
 
-	private static void createTableSelectSql(String dbName, String tableName) throws Exception {
+	private static void createTableSelectSql(String dbName, String tableName, TestUtil testUtil)
+			throws Exception {
 
 		// 必要なパラメータを準備する
 		String dirPath = TestUtil.OUTPUT_PATH + "dbmng/" + dbName;
@@ -89,17 +102,30 @@ public class GetAllTableInsertSqlServiceTest {
 
 	private static void createAllTableDataFile(String dbName) throws Exception {
 
-		// 全てのテーブルについて、データのTSVファイルを出力する
-		createTableDataFile(dbName, "GNR_GRP");
-		createTableDataFile(dbName, "GNR_KEY_VAL");
-		createTableDataFile(dbName, "TBL_DEF");
-		createTableDataFile(dbName, "ACCNT");
-		createTableDataFile(dbName, "MAIL");
-		createTableDataFile(dbName, "SCR");
-		createTableDataFile(dbName, "SCR_ELM");
+		// テストユーティリティを生成する
+		var testUtil = new TestUtil();
+		testUtil.getDb();
+
+		try {
+			// 全てのテーブルについて、データのTSVファイルを出力する
+			createTableDataFile(dbName, "GNR_GRP", testUtil);
+			createTableDataFile(dbName, "GNR_KEY_VAL", testUtil);
+			createTableDataFile(dbName, "TBL_DEF", testUtil);
+			createTableDataFile(dbName, "ACCNT", testUtil);
+			createTableDataFile(dbName, "MAIL", testUtil);
+			createTableDataFile(dbName, "SCR", testUtil);
+			createTableDataFile(dbName, "SCR_ELM", testUtil);
+
+		} finally {
+
+			// 必ず最後にロールバックし、DBをクローズする
+			testUtil.getDb().rollback();
+			testUtil.closeDb();
+		}
 	}
 
-	private static void createTableDataFile(String dbName, String tableName) throws Exception {
+	private static void createTableDataFile(String dbName, String tableName, TestUtil testUtil)
+			throws Exception {
 
 		// 必要なパラメータを準備する
 		String dirPath = TestUtil.OUTPUT_PATH + "dbmng/" + dbName;
