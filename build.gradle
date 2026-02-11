@@ -11,8 +11,8 @@ plugins {
 	id 'jacoco'
 }
 
-// Java17を使用する設定
-sourceCompatibility = 17
+// Java21を使用する設定
+sourceCompatibility = 21
 
 // エンコーディングをUTF-8とする設定
 tasks.withType(JavaCompile) {options.encoding = 'UTF-8'}
