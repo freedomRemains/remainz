@@ -4,6 +4,14 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Enumeration;
 
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+
 import org.apache.log4j.Logger;
 
 import com.remainz.common.db.DbInterface;
@@ -14,14 +22,6 @@ import com.remainz.common.util.LogUtil;
 import com.remainz.common.util.Mu;
 import com.remainz.web.service.web.AnalyzeUriService;
 import com.remainz.web.util.RwProp;
-
-import jakarta.servlet.RequestDispatcher;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 
 /**
  * URIパターンに基づいてサービス制御を行うサーブレットクラスです。
@@ -119,6 +119,9 @@ public class ServiceControlServlet extends HttpServlet {
 			return output;
 
 		} catch (Exception e) {
+
+			// ログを記録する
+			new LogUtil().handleException(e);
 
 			// ロールバックする
 			rollbackDb(db);
