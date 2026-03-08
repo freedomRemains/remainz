@@ -31,7 +31,7 @@ public class DeleteRecordService implements ServiceInterface {
 			if (!doDeleteRecord(input, output, logger)) {
 
 				// エラーメッセージIDを取得する
-				String errMsgKey = new ErrMsgUtil().getErrMsgKey(input.getDb(),
+				String errMsgKey = ErrMsgUtil.getErrMsgKey(input.getDb(),
 						input.getString("sessionId"), input.getString("accountId"),
 						"1000301");
 
@@ -44,7 +44,7 @@ public class DeleteRecordService implements ServiceInterface {
 			}
 
 		} catch (Exception e) {
-			throw new ApplicationInternalException(new LogUtil().handleException(e));
+			throw new ApplicationInternalException(LogUtil.handleException(e));
 		}
 	}
 
@@ -58,8 +58,8 @@ public class DeleteRecordService implements ServiceInterface {
 		paramList.add(input.getString("recordId"));
 
 		// SQLをログに記録する
-		logger.info(new Mu().msg("msg.common.sql", sql));
-		logger.info(new Mu().msg("msg.common.sqlParam", paramList.toString()));	
+		logger.info(Mu.msg("msg.common.sql", sql));
+		logger.info(Mu.msg("msg.common.sqlParam", paramList.toString()));	
 
 		// DBレコードを削除する
 		Integer updateCnt = input.getDb().update(sql, paramList);

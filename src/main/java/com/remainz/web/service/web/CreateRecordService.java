@@ -39,7 +39,7 @@ public class CreateRecordService implements ServiceInterface {
 			doCreateRecord(input, output);
 
 		} catch (Exception e) {
-			throw new ApplicationInternalException(new LogUtil().handleException(e));
+			throw new ApplicationInternalException(LogUtil.handleException(e));
 		}
 	}
 
@@ -68,8 +68,8 @@ public class CreateRecordService implements ServiceInterface {
 		sql.append(")");
 
 		// SQLをログに記録する
-		logger.info(new Mu().msg("msg.common.sql", sql));
-		logger.info(new Mu().msg("msg.common.sqlParam", paramList.toString()));	
+		logger.info(Mu.msg("msg.common.sql", sql));
+		logger.info(Mu.msg("msg.common.sqlParam", paramList.toString()));	
 
 		// DBレコードを更新する
 		Integer updateCnt = input.getDb().update(sql.toString(), paramList);

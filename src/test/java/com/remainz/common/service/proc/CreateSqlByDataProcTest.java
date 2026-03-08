@@ -29,8 +29,8 @@ public class CreateSqlByDataProcTest {
 		dbName = testUtil.getDbName();
 
 		// テストに必要なフォルダを作成する
-		new FileUtil().createDirIfNotExists(TestUtil.OUTPUT_PATH + "dbmng/" + dbName + "/20_dbdata/20_auto_created");
-		new FileUtil().createDirIfNotExists(TestUtil.OUTPUT_PATH + "dbmng/" + dbName + "/30_sql/20_auto_created");	
+		FileUtil.createDirIfNotExists(TestUtil.OUTPUT_PATH + "dbmng/" + dbName + "/20_dbdata/20_auto_created");
+		FileUtil.createDirIfNotExists(TestUtil.OUTPUT_PATH + "dbmng/" + dbName + "/30_sql/20_auto_created");	
 	}
 
 	@AfterEach
@@ -59,7 +59,7 @@ public class CreateSqlByDataProcTest {
 
 		// サイズが0のファイルを配置
 		String filePath = dirPath + "/" + dataPath + "/test.txt";
-		try (var file = new FileUtil().getBufferedOutputStream(filePath)) {
+		try (var file = FileUtil.getBufferedOutputStream(filePath)) {
 
 			// カバレッジ(ファイルサイズが0のファイルを処理)
 			var proc = new CreateSqlByDataProc();
@@ -90,7 +90,7 @@ public class CreateSqlByDataProcTest {
 
 		// ".keep"ファイルを配置
 		String filePath = dirPath + "/" + dataPath + "/.keep";
-		try (var file = new FileUtil().getBufferedOutputStream(filePath)) {
+		try (var file = FileUtil.getBufferedOutputStream(filePath)) {
 
 			// カバレッジ(".keep"ファイルを処理)
 			var proc = new CreateSqlByDataProc();

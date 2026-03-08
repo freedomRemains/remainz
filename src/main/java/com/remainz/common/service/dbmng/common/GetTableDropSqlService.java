@@ -53,7 +53,7 @@ public class GetTableDropSqlService implements ServiceInterface {
 		// リソースパス配下の "30_sql/20_auto_created" にテキストファイルを生成する
 		String sqlFilePath = input.getString("dirPath") + PATH_DELM + input.getString("sqlPath")
 				+ "/DROP_" + tableName + ".txt";
-		try (BufferedWriter tableSqlFile = new FileUtil().getBufferedWriter(sqlFilePath)) {
+		try (BufferedWriter tableSqlFile = FileUtil.getBufferedWriter(sqlFilePath)) {
 
 			// DB定義を取得してファイルに書き込む
 			writeTableSql(output, tableName, tableSqlFile);
@@ -65,7 +65,7 @@ public class GetTableDropSqlService implements ServiceInterface {
 
 		// SQLをファイルに書き込む
 		String sql = "DROP TABLE IF EXISTS " + tableName + ";";
-		logger.info(new Mu().msg("msg.common.sql", sql));
+		logger.info(Mu.msg("msg.common.sql", sql));
 		tableSqlFile.write(sql);
 		tableSqlFile.newLine();
 	}

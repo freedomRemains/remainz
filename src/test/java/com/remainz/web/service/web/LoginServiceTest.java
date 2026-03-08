@@ -47,7 +47,7 @@ public class LoginServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "db"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "db"), e.getLocalizedMessage());
 		}
 
 		try {
@@ -55,7 +55,7 @@ public class LoginServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "MAIL_ADDRESS"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "MAIL_ADDRESS"), e.getLocalizedMessage());
 		}
 
 		try {
@@ -63,7 +63,7 @@ public class LoginServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "PASSWORD"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "PASSWORD"), e.getLocalizedMessage());
 		}
 	}
 

@@ -39,7 +39,7 @@ public class CreateHtmlService implements ServiceInterface {
 			doCreateHtml(input, output);
 
 		} catch (Exception e) {
-			throw new ApplicationInternalException(new LogUtil().handleException(e));
+			throw new ApplicationInternalException(LogUtil.handleException(e));
 		}
 	}
 
@@ -67,7 +67,7 @@ public class CreateHtmlService implements ServiceInterface {
 		var paramList = new ArrayList<String>();
 		paramList.add(input.getString("requestUri"));
 		var recordList = input.getDb().select(sql, paramList);
-		logger.info(new Mu().msg("msg.pageQuerySql", sql));
+		logger.info(Mu.msg("msg.pageQuerySql", sql));
 
 		// クエリ結果をHTMLページ情報として出力パラメータに設定する
 		output.putRecordList("htmlPage", recordList);
@@ -118,7 +118,7 @@ public class CreateHtmlService implements ServiceInterface {
 		// 実行するクエリをログに記録する
 		String sql = columnMap.get("ITEM_QUERY");
 		sql = ScriptService.convertVariable(input, sql, logger);
-		logger.info(new Mu().msg("msg.pageItemQuerySql", sql));
+		logger.info(Mu.msg("msg.pageItemQuerySql", sql));
 
 		// クエリを実行する
 		var recordList = input.getDb().select(sql);

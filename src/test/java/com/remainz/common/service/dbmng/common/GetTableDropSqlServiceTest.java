@@ -73,7 +73,7 @@ public class GetTableDropSqlServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "db"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "db"), e.getLocalizedMessage());
 		}
 
 		input.setDb(testUtil.getDb());
@@ -81,7 +81,7 @@ public class GetTableDropSqlServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "dirPath"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "dirPath"), e.getLocalizedMessage());
 		}
 
 		String dirPath = TestUtil.OUTPUT_PATH + "dbmng/" + dbName;
@@ -90,7 +90,7 @@ public class GetTableDropSqlServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "sqlPath"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "sqlPath"), e.getLocalizedMessage());
 		}
 
 		String sqlPath = "30_sql/20_auto_created";
@@ -99,7 +99,7 @@ public class GetTableDropSqlServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "tableName"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "tableName"), e.getLocalizedMessage());
 		}
 	}
 

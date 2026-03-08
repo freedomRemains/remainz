@@ -60,7 +60,7 @@ public class GetTableDefService implements ServiceInterface {
 
 		// テーブル定義ディレクトリ配下にテーブル名のテキストファイルを生成する
 		String tableDefFilePath = input.getString("tableDefFilePath");
-		try (BufferedWriter tableDefFile = new FileUtil().getBufferedWriter(tableDefFilePath)) {
+		try (BufferedWriter tableDefFile = FileUtil.getBufferedWriter(tableDefFilePath)) {
 
 			// DB定義を取得してファイルに書き込む
 			writeTableDef(input, output, tableName, tableDefFile);
@@ -72,13 +72,13 @@ public class GetTableDefService implements ServiceInterface {
 
 		// テーブル定義を取得するSQLを生成し、実行する
 		String sql = input.getString("getTableDefSql").replace("#TABLE_NAME#", tableName);
-		logger.info(new Mu().msg("msg.common.sql", sql));
+		logger.info(Mu.msg("msg.common.sql", sql));
 		ArrayList<LinkedHashMap<String, String>> recordList = input.getDb().select(sql);
 
 		// レコードが取得できなかった場合はエラーとする
 		if (recordList.size() == 0) {
 			throw new BusinessRuleViolationException(
-					new Mu().msg("msg.err.common.invalidTableDef", tableName));
+					Mu.msg("msg.err.common.invalidTableDef", tableName));
 		}
 
 		// 変換を行う

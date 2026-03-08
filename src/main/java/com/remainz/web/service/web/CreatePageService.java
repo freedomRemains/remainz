@@ -34,7 +34,7 @@ public class CreatePageService implements ServiceInterface {
 		} catch (BusinessRuleViolationException e) {
 
 			// エラーメッセージIDを取得する(例外を発行する側がメッセージを編集している)
-			String errMsgKey = new ErrMsgUtil().getErrMsgKeyByMsg(input.getDb(),
+			String errMsgKey = ErrMsgUtil.getErrMsgKeyByMsg(input.getDb(),
 					input.getString("sessionId"), input.getString("accountId"),
 					e.getMessage());
 
@@ -43,7 +43,7 @@ public class CreatePageService implements ServiceInterface {
 			output.putString("destination", "editPage.html?errMsgKey=" + errMsgKey);
 
 		} catch (Exception e) {
-			throw new ApplicationInternalException(new LogUtil().handleException(e));
+			throw new ApplicationInternalException(LogUtil.handleException(e));
 		}
 	}
 
@@ -363,7 +363,7 @@ public class CreatePageService implements ServiceInterface {
 		paramList.add(columnValue);
 		var recordList = db.select(sql, paramList);
 		if (!recordList.isEmpty()) {
-			throw new BusinessRuleViolationException(new ErrMsgUtil().getErrMsg(db, "1000501",
+			throw new BusinessRuleViolationException(ErrMsgUtil.getErrMsg(db, "1000501",
 					tableName, targetColumn, columnValue));
 		}
 	}

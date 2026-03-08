@@ -48,7 +48,7 @@ public class CreatePageServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "db"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "db"), e.getLocalizedMessage());
 		}
 
 		try {
@@ -56,7 +56,7 @@ public class CreatePageServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "accountId"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "accountId"), e.getLocalizedMessage());
 		}
 
 		try {
@@ -64,7 +64,7 @@ public class CreatePageServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "tableName"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "tableName"), e.getLocalizedMessage());
 		}
 
 		try {
@@ -72,7 +72,7 @@ public class CreatePageServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "PAGE_NAME"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "PAGE_NAME"), e.getLocalizedMessage());
 		}
 
 		try {
@@ -80,7 +80,7 @@ public class CreatePageServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "URI_PATTERN"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "URI_PATTERN"), e.getLocalizedMessage());
 		}
 	}
 

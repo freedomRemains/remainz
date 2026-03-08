@@ -52,7 +52,7 @@ public class GetTableNameListService implements ServiceInterface {
 	private ArrayList<LinkedHashMap<String, String>> getTableNameList(DbInterface db, String sql) throws Exception {
 
 		// 全テーブルを取得するためのSQLを生成し、ログに記録する
-		logger.info(new Mu().msg("msg.common.sql", sql));
+		logger.info(Mu.msg("msg.common.sql", sql));
 
 		// SQLを実行し、結果を戻り値変数に格納する
 		ArrayList<LinkedHashMap<String, String>> recordList = db.select(sql);
@@ -64,7 +64,7 @@ public class GetTableNameListService implements ServiceInterface {
 	private void writeTableNameList(ArrayList<LinkedHashMap<String, String>> recordList, String filePath) throws Exception {
 
 		// テーブル名リストファイルを開く
-		try (BufferedWriter tableNameListFile = new FileUtil().getBufferedWriter(filePath)) {
+		try (BufferedWriter tableNameListFile = FileUtil.getBufferedWriter(filePath)) {
 
 			// 全てのテーブル名を処理するまでループ
 			for (LinkedHashMap<String, String> columnMap : recordList) {

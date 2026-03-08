@@ -161,7 +161,7 @@ public class ScriptServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "db"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "db"), e.getLocalizedMessage());
 		}
 
 		try {
@@ -169,7 +169,7 @@ public class ScriptServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "scriptId"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "scriptId"), e.getLocalizedMessage());
 		}
 	}
 

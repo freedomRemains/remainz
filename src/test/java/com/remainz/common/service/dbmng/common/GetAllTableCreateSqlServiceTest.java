@@ -62,7 +62,7 @@ public class GetAllTableCreateSqlServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "db"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "db"), e.getLocalizedMessage());
 		}
 
 		input.setDb(testUtil.getDb());
@@ -70,7 +70,7 @@ public class GetAllTableCreateSqlServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "dirPath"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "dirPath"), e.getLocalizedMessage());
 		}
 
 		String dirPath = TestUtil.OUTPUT_PATH + "dbmng/" + dbName;
@@ -79,7 +79,7 @@ public class GetAllTableCreateSqlServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "defPath"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "defPath"), e.getLocalizedMessage());
 		}
 
 		String defPath = "10_dbdef/20_auto_created";
@@ -88,7 +88,7 @@ public class GetAllTableCreateSqlServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "sqlPath"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "sqlPath"), e.getLocalizedMessage());
 		}
 	}
 

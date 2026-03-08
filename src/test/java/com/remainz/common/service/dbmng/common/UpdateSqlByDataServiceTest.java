@@ -29,8 +29,8 @@ public class UpdateSqlByDataServiceTest {
 		dbName = testUtil.getDbName();
 
 		// テストに必要なフォルダを作成する
-		new FileUtil().createDirIfNotExists(TestUtil.OUTPUT_PATH + "dbmng/" + dbName + "/10_dbdef/20_auto_created");
-		new FileUtil().createDirIfNotExists(TestUtil.OUTPUT_PATH + "dbmng/" + dbName + "/30_sql/20_auto_created");	
+		FileUtil.createDirIfNotExists(TestUtil.OUTPUT_PATH + "dbmng/" + dbName + "/10_dbdef/20_auto_created");
+		FileUtil.createDirIfNotExists(TestUtil.OUTPUT_PATH + "dbmng/" + dbName + "/30_sql/20_auto_created");	
 	}
 
 	@AfterEach
@@ -59,7 +59,7 @@ public class UpdateSqlByDataServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "db"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "db"), e.getLocalizedMessage());
 		}
 
 		input.setDb(testUtil.getDb());
@@ -67,7 +67,7 @@ public class UpdateSqlByDataServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "dirPath"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "dirPath"), e.getLocalizedMessage());
 		}
 
 		String dirPath = TestUtil.OUTPUT_PATH + "dbmng/" + dbName;
@@ -76,7 +76,7 @@ public class UpdateSqlByDataServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "defPath"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "defPath"), e.getLocalizedMessage());
 		}
 
 		String defPath = "10_dbdef";
@@ -85,7 +85,7 @@ public class UpdateSqlByDataServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "dataPath"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "dataPath"), e.getLocalizedMessage());
 		}
 
 		String dataPath = "20_dbdata";
@@ -94,7 +94,7 @@ public class UpdateSqlByDataServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "sqlPath"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "sqlPath"), e.getLocalizedMessage());
 		}
 
 		String sqlPath = "30_sql";
@@ -103,7 +103,7 @@ public class UpdateSqlByDataServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "authorizedPath"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "authorizedPath"), e.getLocalizedMessage());
 		}
 
 		String authorizedPath = "10_authorized";
@@ -112,7 +112,7 @@ public class UpdateSqlByDataServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "autoCreatedPath"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "autoCreatedPath"), e.getLocalizedMessage());
 		}
 
 		String autoCreatedPath = "20_auto_created";
@@ -121,7 +121,7 @@ public class UpdateSqlByDataServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "forUpdatePath"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "forUpdatePath"), e.getLocalizedMessage());
 		}
 	}
 

@@ -11,6 +11,12 @@ import com.remainz.common.db.DbInterface;
 public class AuthUtil {
 
 	/**
+	 * インスタンス化禁止を明示するため、privateコンストラクタを定義する。
+	 */
+	private AuthUtil() {
+	}
+
+	/**
 	 * アカウントIDをキーとして、権限を取得します。
 	 * 
 	 * @param db DB
@@ -18,7 +24,7 @@ public class AuthUtil {
 	 * @return アカウントに紐づく権限のリスト
 	 * @throws Exception 例外
 	 */
-	public ArrayList<LinkedHashMap<String, String>> getAuthByAccountId(
+	public static ArrayList<LinkedHashMap<String, String>> getAuthByAccountId(
 			DbInterface db, String accountId) throws Exception {
 
 		// アカウントに紐づく全ての権限を取得する
@@ -42,7 +48,7 @@ public class AuthUtil {
 	 * @param authList ユーザに紐づく権限のリスト
 	 * @return ユーザが権限を持っている場合はtrue、そうでない場合はfalse
 	 */
-	public boolean hasAuth(String mhtmlpartsId, ArrayList<LinkedHashMap<String, String>> authList) {
+	public static boolean hasAuth(String mhtmlpartsId, ArrayList<LinkedHashMap<String, String>> authList) {
 		for (LinkedHashMap<String, String> columnMap : authList) {
 			if (columnMap.get("HTML_PARTS_ID").equals(mhtmlpartsId)) {
 				return true;
@@ -58,7 +64,7 @@ public class AuthUtil {
 	 * @param authList ユーザに紐づく権限のリスト
 	 * @return ユーザが権限を持っている場合はtrue、そうでない場合はfalse
 	 */
-	public boolean hasReadAuth(String mhtmlpartsId, ArrayList<LinkedHashMap<String, String>> authList) {
+	public static boolean hasReadAuth(String mhtmlpartsId, ArrayList<LinkedHashMap<String, String>> authList) {
 		for (LinkedHashMap<String, String> columnMap : authList) {
 			if (columnMap.get("HTML_PARTS_ID").equals(mhtmlpartsId)
 					&& columnMap.get("AUTH_KIND").equals("read")) {
@@ -75,7 +81,7 @@ public class AuthUtil {
 	 * @param authList ユーザに紐づく権限のリスト
 	 * @return ユーザが権限を持っている場合はtrue、そうでない場合はfalse
 	 */
-	public boolean hasEditAuth(String mhtmlpartsId, ArrayList<LinkedHashMap<String, String>> authList) {
+	public static boolean hasEditAuth(String mhtmlpartsId, ArrayList<LinkedHashMap<String, String>> authList) {
 		for (LinkedHashMap<String, String> columnMap : authList) {
 			if (columnMap.get("HTML_PARTS_ID").equals(mhtmlpartsId)
 					&& columnMap.get("AUTH_KIND").equals("edit")) {
@@ -93,7 +99,7 @@ public class AuthUtil {
 	 * @return アカウントに紐づくロールのリスト
 	 * @throws Exception 例外
 	 */
-	public ArrayList<LinkedHashMap<String, String>> getRoleByAccountId(
+	public static ArrayList<LinkedHashMap<String, String>> getRoleByAccountId(
 			DbInterface db, String accountId) throws Exception {
 
 		// アカウントに紐づく全ての権限を取得する
@@ -117,7 +123,7 @@ public class AuthUtil {
 	 * @param roleList ユーザに紐づく権限のリスト
 	 * @return ユーザが権限を持っている場合はtrue、そうでない場合はfalse
 	 */
-	public boolean hasRole(String roleId, ArrayList<LinkedHashMap<String, String>> roleList) {
+	public static boolean hasRole(String roleId, ArrayList<LinkedHashMap<String, String>> roleList) {
 		for (LinkedHashMap<String, String> columnMap : roleList) {
 			if (columnMap.get("APROLE_ID").equals(roleId)) {
 				return true;

@@ -5,7 +5,6 @@
 <%@ page import="java.util.LinkedHashMap" %>
 <%@ page import="java.util.Map" %>
 <% String contextPath = request.getContextPath();
-   var authUtil = new AuthUtil();
    var account = (ArrayList<LinkedHashMap<String, String>>) request.getAttribute("account");
    var authList = (ArrayList<LinkedHashMap<String, String>>) request.getAttribute("authList");
    var systemName = (ArrayList<LinkedHashMap<String, String>>) request.getAttribute("systemName");

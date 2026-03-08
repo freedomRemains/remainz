@@ -20,15 +20,15 @@ public class EncryptServiceTest {
 	void beforeEach() {
 
 		// テストフォルダを作成する
-		new FileUtil().createDirIfNotExists(TestUtil.OUTPUT_PATH + "ZipServiceTest");
-		new FileUtil().createDirIfNotExists(TestUtil.OUTPUT_PATH + "ZipServiceTest/unzip");
+		FileUtil.createDirIfNotExists(TestUtil.OUTPUT_PATH + "ZipServiceTest");
+		FileUtil.createDirIfNotExists(TestUtil.OUTPUT_PATH + "ZipServiceTest/unzip");
 	}
 
 	@AfterEach
 	void afterEach() {
 
 		// テストフォルダを削除する
-		new FileUtil().deleteDirIfExists(TestUtil.OUTPUT_PATH);
+		FileUtil.deleteDirIfExists(TestUtil.OUTPUT_PATH);
 	}
 
 	//
@@ -46,7 +46,7 @@ public class EncryptServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "filePath"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "filePath"), e.getLocalizedMessage());
 		}
 
 		try {
@@ -54,7 +54,7 @@ public class EncryptServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "outputDir"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "outputDir"), e.getLocalizedMessage());
 		}
 
 		try {
@@ -62,7 +62,7 @@ public class EncryptServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "encryptKind"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "encryptKind"), e.getLocalizedMessage());
 		}
 	}
 

@@ -45,7 +45,7 @@ public class DbUtil {
 
 		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
 				| NoSuchMethodException | SecurityException | ClassNotFoundException | SQLException e) {
-			throw new ApplicationInternalException(new LogUtil().handleException(e));
+			throw new ApplicationInternalException(LogUtil.handleException(e));
 		}
 
 		// 接続したDBを戻り値とする

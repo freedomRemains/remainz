@@ -39,13 +39,13 @@ public class GetTableDefByFileService implements ServiceInterface {
 		// テーブル定義ファイルを開く
 		String tableDefFilePath = input.getString("dirPath") + PATH_DELM + input.getString("defPath")
 				+ PATH_DELM + tableName + ".txt";
-		try (BufferedReader tableDefFile = new FileUtil().getBufferedReader(tableDefFilePath)) {
+		try (BufferedReader tableDefFile = FileUtil.getBufferedReader(tableDefFilePath)) {
 
 			// 先頭はヘッダ行として扱う(ヘッダ行がない場合はエラーとする)
 			String line = tableDefFile.readLine();
 			if (line == null) {
 				throw new BusinessRuleViolationException(
-						new Mu().msg("msg.err.common.invalidTableDef", tableDefFilePath));
+						Mu.msg("msg.err.common.invalidTableDef", tableDefFilePath));
 			}
 			String[] tsvHeaderValues = line.split("\t");
 

@@ -56,7 +56,7 @@ public class DirRecursiveServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "dirPath"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "dirPath"), e.getLocalizedMessage());
 		}
 
 		try {
@@ -64,7 +64,7 @@ public class DirRecursiveServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "procName"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "procName"), e.getLocalizedMessage());
 		}
 	}
 
@@ -81,7 +81,7 @@ public class DirRecursiveServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noDir", "nowhere"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noDir", "nowhere"), e.getLocalizedMessage());
 		}
 	}
 

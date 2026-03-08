@@ -35,11 +35,11 @@ public class ErrMsgUtilTest {
 	void test01() throws Exception {
 
 		// 正常系
-		String errMsgKey = new ErrMsgUtil().getErrMsgKey(testUtil.getDb(), "dummySessionId", "1000001", "1000401");
+		String errMsgKey = ErrMsgUtil.getErrMsgKey(testUtil.getDb(), "dummySessionId", "1000001", "1000401");
 		assertEquals("1", errMsgKey);
 
 		// 正常系(最大IDありパターンテストのため、2連続でメソッドを実行)
-		errMsgKey = new ErrMsgUtil().getErrMsgKey(testUtil.getDb(), "dummySessionId", "1000001", "1000401");
+		errMsgKey = ErrMsgUtil.getErrMsgKey(testUtil.getDb(), "dummySessionId", "1000001", "1000401");
 		assertEquals("2", errMsgKey);
 	}
 
@@ -47,7 +47,7 @@ public class ErrMsgUtilTest {
 	void test02() throws Exception {
 
 		// カバレッジ(SQLException)
-		String errMsgKey = new ErrMsgUtil().getErrMsgKey(testUtil.getDb(), "dummySessionId", "1000001", "dummmy");
+		String errMsgKey = ErrMsgUtil.getErrMsgKey(testUtil.getDb(), "dummySessionId", "1000001", "dummmy");
 		assertEquals("0", errMsgKey);
 	}
 
@@ -55,7 +55,7 @@ public class ErrMsgUtilTest {
 	void test03() throws Exception {
 
 		// カバレッジ(SQLException)
-		String errMsgKey = new ErrMsgUtil().getErrMsgKeyByMsg(testUtil.getDb(), "dummySessionId", "dummyAccountId", "dummmy");
+		String errMsgKey = ErrMsgUtil.getErrMsgKeyByMsg(testUtil.getDb(), "dummySessionId", "dummyAccountId", "dummmy");
 		assertEquals("0", errMsgKey);
 	}
 }

@@ -29,8 +29,8 @@ public class CreateSqlByDefProcTest {
 		dbName = testUtil.getDbName();
 
 		// テストに必要なフォルダを作成する
-		new FileUtil().createDirIfNotExists(TestUtil.OUTPUT_PATH + "dbmng/" + dbName + "/10_dbdef/20_auto_created");
-		new FileUtil().createDirIfNotExists(TestUtil.OUTPUT_PATH + "dbmng/" + dbName + "/30_sql/20_auto_created");	
+		FileUtil.createDirIfNotExists(TestUtil.OUTPUT_PATH + "dbmng/" + dbName + "/10_dbdef/20_auto_created");
+		FileUtil.createDirIfNotExists(TestUtil.OUTPUT_PATH + "dbmng/" + dbName + "/30_sql/20_auto_created");	
 	}
 
 	@AfterEach
@@ -58,7 +58,7 @@ public class CreateSqlByDefProcTest {
 
 		// サイズが0のファイルを配置
 		String filePath = dirPath + "/" + defPath + "/test.txt";
-		try (var file = new FileUtil().getBufferedOutputStream(filePath)) {
+		try (var file = FileUtil.getBufferedOutputStream(filePath)) {
 
 			// カバレッジ(ファイルサイズが0のファイルを処理)
 			var proc = new CreateSqlByDefProc();
@@ -87,7 +87,7 @@ public class CreateSqlByDefProcTest {
 
 		// ".keep"ファイルを配置
 		String filePath = dirPath + "/" + defPath + "/.keep";
-		try (var file = new FileUtil().getBufferedOutputStream(filePath)) {
+		try (var file = FileUtil.getBufferedOutputStream(filePath)) {
 
 			// カバレッジ(".keep"ファイルを処理)
 			var proc = new CreateSqlByDefProc();
@@ -116,7 +116,7 @@ public class CreateSqlByDefProcTest {
 
 		// "tableNameList.txt"ファイルを配置
 		String filePath = dirPath + "/" + defPath + "/tableNameList.txt";
-		try (var file = new FileUtil().getBufferedOutputStream(filePath)) {
+		try (var file = FileUtil.getBufferedOutputStream(filePath)) {
 
 			// カバレッジ("tableNameList.txt"ファイルを処理)
 			var proc = new CreateSqlByDefProc();

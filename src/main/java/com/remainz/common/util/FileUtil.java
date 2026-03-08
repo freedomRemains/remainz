@@ -21,8 +21,11 @@ import org.apache.log4j.Logger;
  */
 public class FileUtil {
 
-	/** ロガー */
-	private Logger logger = Logger.getLogger(this.getClass().getName());
+	/**
+	 * インスタンス化禁止を明示するため、privateコンストラクタを定義する。
+	 */
+	private FileUtil() {
+	}
 
 	/**
 	 * ファイルパスを指定し、デフォルトエンコーディングでテキストファイルの読み込みインスタンスを取得します。
@@ -32,7 +35,7 @@ public class FileUtil {
 	 * @throws UnsupportedEncodingException サポートされていないエンコーディング例外
 	 * @throws FileNotFoundException        ファイルが見つからない例外
 	 */
-	public BufferedReader getBufferedReader(String filePath)
+	public static BufferedReader getBufferedReader(String filePath)
 			throws UnsupportedEncodingException, FileNotFoundException {
 
 		// デフォルトエンコーディングでテキストファイルの読み込みインスタンスを生成して呼び出し側に戻す
@@ -48,12 +51,13 @@ public class FileUtil {
 	 * @throws UnsupportedEncodingException サポートされていないエンコーディング例外
 	 * @throws FileNotFoundException        ファイルが見つからない例外
 	 */
-	public BufferedReader getBufferedReader(String filePath, String encoding)
+	public static BufferedReader getBufferedReader(String filePath, String encoding)
 			throws UnsupportedEncodingException, FileNotFoundException {
 
 		// システムのエンコーディングと異なる場合はログを出力する
 		String systemEncoding = System.getProperty("file.encoding");
 		if (!systemEncoding.equalsIgnoreCase(encoding)) {
+			Logger logger = Logger.getLogger(FileUtil.class.getName());
 			logger.info("Specified encoding and system encoding are different. [encoding]" + encoding + " [systemEncoding]" + systemEncoding);
 		}
 
@@ -70,7 +74,7 @@ public class FileUtil {
 	 * @throws UnsupportedEncodingException サポートされていないエンコーディング例外
 	 * @throws FileNotFoundException        ファイルが見つからない例外
 	 */
-	public BufferedWriter getBufferedWriter(String filePath)
+	public static BufferedWriter getBufferedWriter(String filePath)
 			throws UnsupportedEncodingException, FileNotFoundException {
 		return getBufferedWriter(filePath, false);
 	}
@@ -84,7 +88,7 @@ public class FileUtil {
 	 * @throws UnsupportedEncodingException サポートされていないエンコーディング例外
 	 * @throws FileNotFoundException        ファイルが見つからない例外
 	 */
-	public BufferedWriter getBufferedWriter(String filePath, boolean append)
+	public static BufferedWriter getBufferedWriter(String filePath, boolean append)
 			throws UnsupportedEncodingException, FileNotFoundException {
 		return new BufferedWriter(
 				new OutputStreamWriter(new FileOutputStream(filePath, append), new RcProp().get("default.charset")));
@@ -100,7 +104,7 @@ public class FileUtil {
 	 * @throws UnsupportedEncodingException サポートされていないエンコーディング例外
 	 * @throws FileNotFoundException        ファイルが見つからない例外
 	 */
-	public BufferedWriter getBufferedWriter(String filePath, boolean append, String encoding)
+	public static BufferedWriter getBufferedWriter(String filePath, boolean append, String encoding)
 			throws UnsupportedEncodingException, FileNotFoundException {
 		return new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filePath, append), encoding));
 	}
@@ -112,7 +116,7 @@ public class FileUtil {
 	 * @return zip出力ストリームのインスタンス
 	 * @throws FileNotFoundException ファイルが見つからない例外
 	 */
-	public ZipOutputStream getZipOutputStream(String filePath) throws FileNotFoundException {
+	public static ZipOutputStream getZipOutputStream(String filePath) throws FileNotFoundException {
 		return new ZipOutputStream(new FileOutputStream(new File(filePath)));
 	}
 
@@ -123,7 +127,7 @@ public class FileUtil {
 	 * @return zip入力ストリームのインスタンス
 	 * @throws FileNotFoundException ファイルが見つからない例外
 	 */
-	public ZipInputStream getZipInputStream(String filePath) throws FileNotFoundException {
+	public static ZipInputStream getZipInputStream(String filePath) throws FileNotFoundException {
 		return new ZipInputStream(new FileInputStream(new File(filePath)));
 	}
 
@@ -134,7 +138,7 @@ public class FileUtil {
 	 * @return zip出力ストリームのインスタンス
 	 * @throws FileNotFoundException ファイルが見つからない例外
 	 */
-	public BufferedInputStream getBufferedInputStream(String filePath) throws FileNotFoundException {
+	public static BufferedInputStream getBufferedInputStream(String filePath) throws FileNotFoundException {
 		return new BufferedInputStream(new FileInputStream(new File(filePath)));
 	}
 
@@ -145,11 +149,11 @@ public class FileUtil {
 	 * @return zip出力ストリームのインスタンス
 	 * @throws FileNotFoundException ファイルが見つからない例外
 	 */
-	public BufferedOutputStream getBufferedOutputStream(String filePath) throws FileNotFoundException {
+	public static BufferedOutputStream getBufferedOutputStream(String filePath) throws FileNotFoundException {
 		return new BufferedOutputStream(new FileOutputStream(new File(filePath)));
 	}
 
-	public void createDirIfNotExists(String dirPath) {
+	public static void createDirIfNotExists(String dirPath) {
 
 		// ディレクトリが存在する場合は即時終了する
 		File dir = new File(dirPath);
@@ -161,7 +165,7 @@ public class FileUtil {
 		mkdirs(dir);
 	}
 
-	public void mkdirs(File targetDir) {
+	public static void mkdirs(File targetDir) {
 
 		// 最大3回リトライして、ディレクトリ作成を試す
 		for (int i = 0; i < 3; i++) {
@@ -171,7 +175,7 @@ public class FileUtil {
 		}
 	}
 
-	public void deleteDirIfExists(String dirPath) {
+	public static void deleteDirIfExists(String dirPath) {
 
 		// ディレクトリが存在しないか、ファイルの場合は削除する
 		File dir = new File(dirPath);
@@ -183,7 +187,7 @@ public class FileUtil {
 		deleteDirRecursive(dir);
 	}
 
-	public void deleteDirRecursive(File parentDir) {
+	public static void deleteDirRecursive(File parentDir) {
 
 		// 親ディレクトリの子のリストを取得する
 		File[] files = parentDir.listFiles();
@@ -213,7 +217,7 @@ public class FileUtil {
 		deleteFileOrDir(parentDir);
 	}
 
-	public void deleteFileOrDir(File fileOrDir) {
+	public static void deleteFileOrDir(File fileOrDir) {
 
 		// 最大3回リトライして、ファイル or ディレクトリの削除を試す
 		for (int i = 0; i < 3; i++) {
@@ -223,7 +227,7 @@ public class FileUtil {
 		}
 	}
 
-	public File[] listFiles(File dir) {
+	public static File[] listFiles(File dir) {
 
 		// ディレクトリ配下の子ディレクトリ及び子ファイルを取得する
 		File[] files = dir.listFiles();

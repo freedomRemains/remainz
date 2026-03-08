@@ -46,7 +46,7 @@ public class ScriptService implements ServiceInterface {
 				  ORDER BY B.ORD_IN_GRP
 				""";
 		sql = sql.replace("#{scriptId}", input.getString("scriptId"));
-		logger.info(new Mu().msg("msg.common.sql", sql));
+		logger.info(Mu.msg("msg.common.sql", sql));
 
 		// スクリプトパラメータを取得する
 		getScriptParam(input, input.getString("scriptId"));
@@ -60,7 +60,7 @@ public class ScriptService implements ServiceInterface {
 			// サービスインスタンスを生成し、サービスを実行する
 			String className = columnMap.get("SERVICE_NAME");
 			ServiceInterface service = (ServiceInterface) Class.forName(className).getConstructor().newInstance();
-			logger.info(new Mu().msg("msg.common.service", className));
+			logger.info(Mu.msg("msg.common.service", className));
 			service.doService(input, output);
 
 			// 指定されたアダプタ処理を呼び出す(なければデフォルトのGenericAdapter)
@@ -69,7 +69,7 @@ public class ScriptService implements ServiceInterface {
 				className = "com.remainz.common.service.adapter.GenericAdapter";
 			}
 			AdapterInterface adapter = (AdapterInterface) Class.forName(className).getConstructor().newInstance();
-			logger.info(new Mu().msg("msg.common.adapter", className));
+			logger.info(Mu.msg("msg.common.adapter", className));
 			adapter.doAdapt(output, input);
 
 			// 指定された入力パラメータ準備処理を呼び出す(なければ何もしない)
@@ -78,7 +78,7 @@ public class ScriptService implements ServiceInterface {
 				continue;
 			}
 			PrepareInterface prepare = (PrepareInterface) Class.forName(className).getConstructor().newInstance();
-			logger.info(new Mu().msg("msg.common.prepare", className));
+			logger.info(Mu.msg("msg.common.prepare", className));
 			prepare.doPrepare(input, output);
 		}
 	}
@@ -94,7 +94,7 @@ public class ScriptService implements ServiceInterface {
 				  ORDER BY B.ORD_IN_GRP
 				""";
 		sql = sql.replace("#{scriptId}", input.getString("scriptId"));
-		logger.info(new Mu().msg("msg.common.sql", sql));
+		logger.info(Mu.msg("msg.common.sql", sql));
 
 		// SQLを実行する
 		ArrayList<LinkedHashMap<String, String>> recordList = input.getDb().select(sql);
@@ -111,7 +111,7 @@ public class ScriptService implements ServiceInterface {
 
 			// 入力パラメータに上書きとなる場合は、警告ログを記録し、上書きしないようにする
 			if (Cu.isNotEmpty(input.getString(paramKey))) {
-				logger.warn(new Mu().msg("msg.warn.valueAlreadyExists", paramKey, paramValue));
+				logger.warn(Mu.msg("msg.warn.valueAlreadyExists", paramKey, paramValue));
 				continue;
 			}
 
@@ -144,7 +144,7 @@ public class ScriptService implements ServiceInterface {
 			if (Cu.isEmpty(value)) {
 
 				// 入力パラメータにデータがない場合は、警告のログを出力する
-				logger.warn(new Mu().msg("msg.warn.valueNotFound", key));
+				logger.warn(Mu.msg("msg.warn.valueNotFound", key));
 				continue;
 			}
 

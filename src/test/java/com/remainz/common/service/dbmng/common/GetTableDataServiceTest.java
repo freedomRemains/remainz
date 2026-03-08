@@ -87,7 +87,7 @@ public class GetTableDataServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "db"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "db"), e.getLocalizedMessage());
 		}
 
 		input.setDb(testUtil.getDb());
@@ -95,7 +95,7 @@ public class GetTableDataServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "dirPath"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "dirPath"), e.getLocalizedMessage());
 		}
 
 		String dirPath = TestUtil.OUTPUT_PATH + "dbmng/" + dbName;
@@ -104,7 +104,7 @@ public class GetTableDataServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "dataPath"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "dataPath"), e.getLocalizedMessage());
 		}
 
 		String dataPath = "20_dbdata/20_auto_created";
@@ -113,7 +113,7 @@ public class GetTableDataServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "sqlPath"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "sqlPath"), e.getLocalizedMessage());
 		}
 
 		String sqlPath = "20_dbdata/20_auto_created";
@@ -122,7 +122,7 @@ public class GetTableDataServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "tableName"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "tableName"), e.getLocalizedMessage());
 		}
 	}
 

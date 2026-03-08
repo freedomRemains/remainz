@@ -49,7 +49,7 @@
                    %>
                 <div class="p-2">
                   <label><span class="form-label fw-bold"><%=tableDefList.get(0).get("TABLE_LOGICAL_NAME") + "(" + tableDefList.get(0).get("TABLE_NAME") + ")"%></span><br /></label>
-                  <% if (authUtil.hasEditAuth("1000601", authList)) { %>
+                  <% if (AuthUtil.hasEditAuth("1000601", authList)) { %>
                     <a class="btn btn-secondary px-2 py-0" href="<%=newRecordUri%>?tableName=<%=tableName%>">新規レコード追加</a>
                     <input class="btn btn-secondary px-2 py-0" type="button" name="doPost" value="一括削除" onclick="confirmBulkDelete()">
                   <% } %>
@@ -58,7 +58,7 @@
                   <table class="table table-bordered table-striped table-hover table-responsive text-nowrap">
                     <thead class="table-success">
                       <tr>
-                        <% if (authUtil.hasEditAuth("1000601", authList)) { %>
+                        <% if (AuthUtil.hasEditAuth("1000601", authList)) { %>
                           <th class="align-middle px-2 py-0">操作</th>
                           <th class="align-middle px-2 py-0">選択</th>
                         <% } %>
@@ -72,7 +72,7 @@
                         <tr>
                           <% for (Map.Entry<String, String> entry : dbRecord.entrySet()) {
                                if (entry.getKey().equals(tableName + "_ID") &&
-                                   authUtil.hasEditAuth("1000601", authList)) { %>
+                                   AuthUtil.hasEditAuth("1000601", authList)) { %>
                             <td class="px-2 py-0">
                               <a class="btn btn-secondary px-2 py-0" href="<%=deleteRecordUri%>?tableName=<%=tableName%>&recordId=<%=entry.getValue()%>">削除</a>
                               <a class="btn btn-secondary px-2 py-0" href="<%=editRecordUri%>?tableName=<%=tableName%>&recordId=<%=entry.getValue()%>">編集</a>

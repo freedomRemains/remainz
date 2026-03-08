@@ -40,7 +40,7 @@ public class GetTableDataService implements ServiceInterface {
 		// DBデータを書き込むTSVファイルを作成する
 		String filePath = input.getString("dirPath") + PATH_DELM + input.getString("dataPath") + PATH_DELM
 				+ tableName + ".txt";
-		try (BufferedWriter tableTsvFile = new FileUtil().getBufferedWriter(filePath)) {
+		try (BufferedWriter tableTsvFile = FileUtil.getBufferedWriter(filePath)) {
 
 			// SQLを実行し、テーブルデータを取得する
 			getTableDataBySql(input, tableTsvFile, tableName);

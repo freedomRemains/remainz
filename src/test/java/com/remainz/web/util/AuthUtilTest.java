@@ -35,7 +35,7 @@ public class AuthUtilTest {
 	void test01() throws Exception {
 
 		// 存在しないアカウントID
-		var authList = new AuthUtil().getAuthByAccountId(testUtil.getDb(), "1");
+		var authList = AuthUtil.getAuthByAccountId(testUtil.getDb(), "1");
 		assertEquals(0, authList.size());
 	}
 
@@ -43,7 +43,7 @@ public class AuthUtilTest {
 	void test02() throws Exception {
 
 		// 存在するアカウントID
-		var authList = new AuthUtil().getAuthByAccountId(testUtil.getDb(), "1000201");
+		var authList = AuthUtil.getAuthByAccountId(testUtil.getDb(), "1000201");
 		assertEquals("1000001", authList.get(0).get("HTML_PARTS_ID"));
 		assertEquals("read", authList.get(0).get("AUTH_KIND"));
 		assertEquals("1000101", authList.get(1).get("HTML_PARTS_ID"));
@@ -58,46 +58,43 @@ public class AuthUtilTest {
 	void test03() throws Exception {
 
 		// 権限を持っている判定
-		var authUtil = new AuthUtil();
-		var authList = authUtil.getAuthByAccountId(testUtil.getDb(), "1000201");
-		assertTrue(authUtil.hasAuth("1000001", authList));
+		var authList = AuthUtil.getAuthByAccountId(testUtil.getDb(), "1000201");
+		assertTrue(AuthUtil.hasAuth("1000001", authList));
 
 		// 権限を持っていない判定
-		authList = authUtil.getAuthByAccountId(testUtil.getDb(), "1000201");
-		assertFalse(authUtil.hasAuth("1000301", authList));
+		authList = AuthUtil.getAuthByAccountId(testUtil.getDb(), "1000201");
+		assertFalse(AuthUtil.hasAuth("1000301", authList));
 	}
 
 	@Test
 	void test04() throws Exception {
 		
 		// 権限を持っている判定
-		var authUtil = new AuthUtil();
-		var authList = authUtil.getAuthByAccountId(testUtil.getDb(), "1000201");
-		assertTrue(authUtil.hasReadAuth("1000001", authList));
+		var authList = AuthUtil.getAuthByAccountId(testUtil.getDb(), "1000201");
+		assertTrue(AuthUtil.hasReadAuth("1000001", authList));
 
 		// 権限を持っていない判定
-		authList = authUtil.getAuthByAccountId(testUtil.getDb(), "1000201");
-		assertFalse(authUtil.hasReadAuth("1000201", authList));
+		authList = AuthUtil.getAuthByAccountId(testUtil.getDb(), "1000201");
+		assertFalse(AuthUtil.hasReadAuth("1000201", authList));
 	}
 
 	@Test
 	void test05() throws Exception {
 
 		// 権限を持っている判定
-		var authUtil = new AuthUtil();
-		var authList = authUtil.getAuthByAccountId(testUtil.getDb(), "1000201");
-		assertTrue(authUtil.hasEditAuth("1000201", authList));
+		var authList = AuthUtil.getAuthByAccountId(testUtil.getDb(), "1000201");
+		assertTrue(AuthUtil.hasEditAuth("1000201", authList));
 
 		// 権限を持っていない判定
-		authList = authUtil.getAuthByAccountId(testUtil.getDb(), "1000201");
-		assertFalse(authUtil.hasEditAuth("1000001", authList));
+		authList = AuthUtil.getAuthByAccountId(testUtil.getDb(), "1000201");
+		assertFalse(AuthUtil.hasEditAuth("1000001", authList));
 	}
 
 	@Test
 	void test06() throws Exception {
 
 		// 存在しないアカウントID
-		var roleList = new AuthUtil().getRoleByAccountId(testUtil.getDb(), "1");
+		var roleList = AuthUtil.getRoleByAccountId(testUtil.getDb(), "1");
 		assertEquals(0, roleList.size());
 	}
 
@@ -105,7 +102,7 @@ public class AuthUtilTest {
 	void test07() throws Exception {
 
 		// 存在するアカウントID
-		var roleList = new AuthUtil().getRoleByAccountId(testUtil.getDb(), "1000201");
+		var roleList = AuthUtil.getRoleByAccountId(testUtil.getDb(), "1000201");
 		assertEquals("1000201", roleList.get(0).get("APROLE_ID"));
 	}
 
@@ -113,12 +110,11 @@ public class AuthUtilTest {
 	void test08() throws Exception {
 
 		// ロールを持っている判定
-		var authUtil = new AuthUtil();
-		var roleList = authUtil.getRoleByAccountId(testUtil.getDb(), "1000201");
-		assertTrue(authUtil.hasRole("1000201", roleList));
+		var roleList = AuthUtil.getRoleByAccountId(testUtil.getDb(), "1000201");
+		assertTrue(AuthUtil.hasRole("1000201", roleList));
 
 		// ロールを持っていない判定
-		roleList = authUtil.getRoleByAccountId(testUtil.getDb(), "1000201");
-		assertFalse(authUtil.hasRole("1000001", roleList));
+		roleList = AuthUtil.getRoleByAccountId(testUtil.getDb(), "1000201");
+		assertFalse(AuthUtil.hasRole("1000001", roleList));
 	}
 }

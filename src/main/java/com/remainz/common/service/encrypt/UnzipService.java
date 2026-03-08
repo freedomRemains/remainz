@@ -41,7 +41,7 @@ public class UnzipService implements ServiceInterface {
 		File outputDir = new File(input.getString("outputDir"));
 
 		// zip入力ストリームを作成する
-		try (ZipInputStream zipInputStream = new FileUtil().getZipInputStream(
+		try (ZipInputStream zipInputStream = FileUtil.getZipInputStream(
 				input.getString("targetZip"))) {
 
 			// 再帰的にフォルダをたどってzip解凍する
@@ -50,7 +50,7 @@ public class UnzipService implements ServiceInterface {
 		} catch (IOException e) {
 
 			// 例外をスローする 
-			throw new ApplicationInternalException(new LogUtil().handleException(e));
+			throw new ApplicationInternalException(LogUtil.handleException(e));
 		}
 	}
 
@@ -68,12 +68,12 @@ public class UnzipService implements ServiceInterface {
 			if (zipEntry.isDirectory()) {
 
 				// ディレクトリを作成する
-				new FileUtil().mkdirs(uncompressFile);
+				FileUtil.mkdirs(uncompressFile);
 
 			} else {
 
 				// zipエントリがファイルである場合は、ファイル出力ストリームを生成する
-				try (BufferedOutputStream bufferedOutputStream = new FileUtil().getBufferedOutputStream(
+				try (BufferedOutputStream bufferedOutputStream = FileUtil.getBufferedOutputStream(
 						uncompressFile.getPath())) {
 
 					// zipエントリの内容をファイルに書き込む

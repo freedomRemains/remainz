@@ -39,14 +39,14 @@ public class ZipAndBase64EncodeService implements ServiceInterface {
 		String zipFilePath = zip(input.getString("targetDirOrFile"), input.getString("outputDir"));
 
 		// zipファイルを読み込む
-		try (BufferedInputStream zipFile = new FileUtil().getBufferedInputStream(zipFilePath)) {
+		try (BufferedInputStream zipFile = FileUtil.getBufferedInputStream(zipFilePath)) {
 
 			// zipファイルパスから出力ファイルパスを作成する
 			String encodeResultFilePath = zipFilePath.substring(0, zipFilePath.lastIndexOf(".zip"))
 					+ "Encode.txt";
 
 			// 出力ファイルを作成する
-			try (BufferedWriter encodeResultFile = new FileUtil().getBufferedWriter(encodeResultFilePath)) {
+			try (BufferedWriter encodeResultFile = FileUtil.getBufferedWriter(encodeResultFilePath)) {
 
 				// 暗号化を実行する
 				doEncrypt(zipFile, encodeResultFile, charset);
@@ -58,7 +58,7 @@ public class ZipAndBase64EncodeService implements ServiceInterface {
 		}
 
 		// zipファイルを削除する
-		new FileUtil().deleteFileOrDir(new File(zipFilePath));
+		FileUtil.deleteFileOrDir(new File(zipFilePath));
 	}
 
 	private String zip(String targetDirOrFile, String outputDir) {

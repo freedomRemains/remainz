@@ -21,7 +21,7 @@ public class SendMailServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "username"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "username"), e.getLocalizedMessage());
 		}
 
 		try {
@@ -29,7 +29,7 @@ public class SendMailServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "password"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "password"), e.getLocalizedMessage());
 		}
 
 		try {
@@ -37,7 +37,7 @@ public class SendMailServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "subject"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "subject"), e.getLocalizedMessage());
 		}
 
 		try {
@@ -45,7 +45,7 @@ public class SendMailServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "honbun"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "honbun"), e.getLocalizedMessage());
 		}
 
 		try {
@@ -53,7 +53,7 @@ public class SendMailServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "to"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "to"), e.getLocalizedMessage());
 		}
 	}
 

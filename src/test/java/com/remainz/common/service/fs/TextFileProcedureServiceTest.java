@@ -62,7 +62,7 @@ public class TextFileProcedureServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "procName"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "procName"), e.getLocalizedMessage());
 		}
 
 		try {
@@ -70,7 +70,7 @@ public class TextFileProcedureServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "filePath or (dirPath, fileName)"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "filePath or (dirPath, fileName)"), e.getLocalizedMessage());
 		}
 	}
 

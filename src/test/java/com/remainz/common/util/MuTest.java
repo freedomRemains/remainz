@@ -37,6 +37,6 @@ class MuTest {
 	void test01() {
 
 		// getのテストを実施
-		assertEquals("value already exists. [key]test [value]1", new Mu().msg("msg.warn.valueAlreadyExists", "test", Integer.valueOf(1)));
+		assertEquals("value already exists. [key]test [value]1", Mu.msg("msg.warn.valueAlreadyExists", "test", Integer.valueOf(1)));
 	}
 }

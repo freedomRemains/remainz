@@ -17,7 +17,7 @@ public class TextFileProcBase implements TextFileProcInterface {
 	protected void readTextFile(GenericParam input, GenericParam output, String filePath) throws Exception {
 
 		// ファイルを開く
-		try (BufferedReader file = new FileUtil().getBufferedReader(filePath)) {
+		try (BufferedReader file = FileUtil.getBufferedReader(filePath)) {
 
 			// テキストファイル内の全ての行を処理するまでループ
 			int lineNumber = 1;

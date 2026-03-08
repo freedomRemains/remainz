@@ -46,7 +46,7 @@ class InputCheckUtilTest {
 			fail();
 
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "input"), e.getMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "input"), e.getMessage());
 		}
 	}
 
@@ -59,7 +59,7 @@ class InputCheckUtilTest {
 			fail();
 
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "db"), e.getMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "db"), e.getMessage());
 		}
 	}
 
@@ -73,7 +73,7 @@ class InputCheckUtilTest {
 			fail();
 
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", key), e.getMessage());
+			assertEquals(Mu.msg("msg.common.noParam", key), e.getMessage());
 		}
 	}
 
@@ -89,7 +89,7 @@ class InputCheckUtilTest {
 			fail();
 
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", key), e.getMessage());
+			assertEquals(Mu.msg("msg.common.noParam", key), e.getMessage());
 		}
 	}
 
@@ -125,7 +125,7 @@ class InputCheckUtilTest {
 			fail();
 
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", key), e.getMessage());
+			assertEquals(Mu.msg("msg.common.noParam", key), e.getMessage());
 		}
 	}
 
@@ -141,7 +141,7 @@ class InputCheckUtilTest {
 			fail();
 
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", key), e.getMessage());
+			assertEquals(Mu.msg("msg.common.noParam", key), e.getMessage());
 		}
 	}
 }

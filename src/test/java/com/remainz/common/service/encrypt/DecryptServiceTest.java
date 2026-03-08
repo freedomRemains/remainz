@@ -21,15 +21,15 @@ public class DecryptServiceTest {
 	void beforeEach() {
 
 		// テストフォルダを作成する
-		new FileUtil().createDirIfNotExists(TestUtil.OUTPUT_PATH + "ZipServiceTest");
-		new FileUtil().createDirIfNotExists(TestUtil.OUTPUT_PATH + "ZipServiceTest/unzip");
+		FileUtil.createDirIfNotExists(TestUtil.OUTPUT_PATH + "ZipServiceTest");
+		FileUtil.createDirIfNotExists(TestUtil.OUTPUT_PATH + "ZipServiceTest/unzip");
 	}
 
 	@AfterEach
 	void afterEach() {
 
 		// テストフォルダを削除する
-		new FileUtil().deleteDirIfExists(TestUtil.OUTPUT_PATH);
+		FileUtil.deleteDirIfExists(TestUtil.OUTPUT_PATH);
 	}
 
 	//
@@ -47,7 +47,7 @@ public class DecryptServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "secretKeyFilePath"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "secretKeyFilePath"), e.getLocalizedMessage());
 		}
 
 		try {
@@ -55,7 +55,7 @@ public class DecryptServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "ivFilePath"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "ivFilePath"), e.getLocalizedMessage());
 		}
 
 		try {
@@ -63,7 +63,7 @@ public class DecryptServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "encryptResultFilePath"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "encryptResultFilePath"), e.getLocalizedMessage());
 		}
 
 		try {
@@ -71,7 +71,7 @@ public class DecryptServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "outputDir"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "outputDir"), e.getLocalizedMessage());
 		}
 
 		try {
@@ -79,7 +79,7 @@ public class DecryptServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "encryptKind"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "encryptKind"), e.getLocalizedMessage());
 		}
 	}
 

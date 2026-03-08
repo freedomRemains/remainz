@@ -50,7 +50,7 @@ public class ZipService implements ServiceInterface {
 
 		// zip出力ストリームを作成する
 		String zipFilePath = input.getString("outputDir") + PATH_DELM + zipFileName + ".zip";
-		try (ZipOutputStream zipOutputStream = new FileUtil().getZipOutputStream(zipFilePath)) {
+		try (ZipOutputStream zipOutputStream = FileUtil.getZipOutputStream(zipFilePath)) {
 
 			// 再帰的にフォルダをたどってzip圧縮する
 			doCompressDirRecursive(targetDirOrFile, zipOutputStream, baseDir);
@@ -61,7 +61,7 @@ public class ZipService implements ServiceInterface {
 		} catch (IOException e) {
 
 			// 例外をスローする 
-			throw new ApplicationInternalException(new LogUtil().handleException(e));
+			throw new ApplicationInternalException(LogUtil.handleException(e));
 		}
 	}
 
@@ -75,7 +75,7 @@ public class ZipService implements ServiceInterface {
 					getRelativePath(parent.getPath(), baseDir) + "/"));
 
 			// 子のファイルリストがなければ、即時終了する
-			File[] childFiles = new FileUtil().listFiles(parent);
+			File[] childFiles = FileUtil.listFiles(parent);
 			if (childFiles.length == 0) {
 				return;
 			}
@@ -92,7 +92,7 @@ public class ZipService implements ServiceInterface {
 					getRelativePath(parent.getPath(), baseDir)));
 
 			// ファイル入力ストリームを生成する
-			try (BufferedInputStream bufferedInputStream = new FileUtil().getBufferedInputStream(
+			try (BufferedInputStream bufferedInputStream = FileUtil.getBufferedInputStream(
 					parent.getPath())) {
 
 				// zipファイルにファイルの内容を書き込み、zip圧縮する

@@ -45,7 +45,7 @@ public class Base64UrlEncodeServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "target"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "target"), e.getLocalizedMessage());
 		}
 	}
 

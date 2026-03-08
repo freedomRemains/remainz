@@ -55,7 +55,7 @@ public class DbSelectBySqlFileServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "db"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "db"), e.getLocalizedMessage());
 		}
 
 		try {
@@ -63,7 +63,7 @@ public class DbSelectBySqlFileServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "sqlFilePath"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "sqlFilePath"), e.getLocalizedMessage());
 		}
 
 		try {
@@ -71,7 +71,7 @@ public class DbSelectBySqlFileServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "recordListKey"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "recordListKey"), e.getLocalizedMessage());
 		}
 	}
 

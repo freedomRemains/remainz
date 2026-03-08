@@ -20,7 +20,7 @@ public class DirProcBase implements DirProcInterface {
 		// dirPathが示すディレクトリ(処理対象となる親ディレクトリ)が存在しなければエラーとする
 		File dir = new File(dirPath);
 		if (!dir.exists()) {
-			throw new BusinessRuleViolationException(new Mu().msg("msg.common.noDir", dirPath));
+			throw new BusinessRuleViolationException(Mu.msg("msg.common.noDir", dirPath));
 		}
 
 		// ディレクトリを再帰的に処理する

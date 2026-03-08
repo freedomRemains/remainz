@@ -27,7 +27,7 @@ public class LoginService implements ServiceInterface {
 		} catch (Exception e) {
 
 			// エラーメッセージIDを取得する
-			String errMsgKey = new ErrMsgUtil().getErrMsgKey(input.getDb(),
+			String errMsgKey = ErrMsgUtil.getErrMsgKey(input.getDb(),
 					input.getString("sessionId"), input.getString("accountId"),
 					"1000401");
 
@@ -57,12 +57,12 @@ public class LoginService implements ServiceInterface {
 		paramList.add(mailAddress);
 		var recordList = input.getDb().select(sql, paramList);
 		if (recordList.size() == 0 || recordList.size() > 1) {
-			throw new ApplicationInternalException(new Mu().msg("msg.err.userauth"));
+			throw new ApplicationInternalException(Mu.msg("msg.err.userauth"));
 		}
 
 		// TODO ハッシュ化した値を比較する
 		if (!recordList.get(0).get("PASSWORD").equals(password)) {
-			throw new ApplicationInternalException(new Mu().msg("msg.err.userauth"));
+			throw new ApplicationInternalException(Mu.msg("msg.err.userauth"));
 		}
 
 		// 入力パラメータに上書きでアカウントIDを設定する

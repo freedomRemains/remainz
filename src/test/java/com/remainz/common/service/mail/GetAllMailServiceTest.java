@@ -52,7 +52,7 @@ public class GetAllMailServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "db"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "db"), e.getLocalizedMessage());
 		}
 
 		try {
@@ -60,7 +60,7 @@ public class GetAllMailServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "mailStoreKind"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "mailStoreKind"), e.getLocalizedMessage());
 		}
 
 		try {
@@ -68,7 +68,7 @@ public class GetAllMailServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "mailServer"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "mailServer"), e.getLocalizedMessage());
 		}
 
 		try {
@@ -76,7 +76,7 @@ public class GetAllMailServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "mailAccount"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "mailAccount"), e.getLocalizedMessage());
 		}
 
 		try {
@@ -84,7 +84,7 @@ public class GetAllMailServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "mailPassword"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "mailPassword"), e.getLocalizedMessage());
 		}
 
 		try {
@@ -92,7 +92,7 @@ public class GetAllMailServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "mailProcs"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "mailProcs"), e.getLocalizedMessage());
 		}
 	}
 
