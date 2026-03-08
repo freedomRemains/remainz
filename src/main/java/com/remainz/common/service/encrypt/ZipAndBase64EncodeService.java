@@ -6,18 +6,16 @@ import java.io.File;
 import java.nio.charset.Charset;
 import java.util.Base64;
 
-import com.remainz.common.exception.ApplicationInternalException;
 import com.remainz.common.param.GenericParam;
 import com.remainz.common.service.ServiceInterface;
 import com.remainz.common.util.FileUtil;
 import com.remainz.common.util.InputCheckUtil;
-import com.remainz.common.util.LogUtil;
 import com.remainz.common.util.RcProp;
 
 public class ZipAndBase64EncodeService implements ServiceInterface {
 
 	@Override
-	public void doService(GenericParam input, GenericParam output) {
+	public void doService(GenericParam input, GenericParam output) throws Exception {
 
 		// 必要なパラメータが入力されていなければエラーとする
 		InputCheckUtil inputCheckUtil = new InputCheckUtil();
@@ -28,7 +26,8 @@ public class ZipAndBase64EncodeService implements ServiceInterface {
 		doEncryptDirOrFileAsTextFile(input, output);
 	}
 
-	private void doEncryptDirOrFileAsTextFile(GenericParam input, GenericParam output) {
+	private void doEncryptDirOrFileAsTextFile(GenericParam input, GenericParam output)
+			throws Exception {
 
 		// 入力パラメータにchaset指定がない場合は、デフォルト値を適用する
 		String charset = input.getString("charset");
@@ -56,8 +55,6 @@ public class ZipAndBase64EncodeService implements ServiceInterface {
 				output.putString("encodeResultFilePath", encodeResultFilePath);
 			}
 
-		} catch (Exception e) {
-			throw new ApplicationInternalException(new LogUtil().handleException(e));
 		}
 
 		// zipファイルを削除する

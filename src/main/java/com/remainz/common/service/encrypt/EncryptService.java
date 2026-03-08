@@ -9,7 +9,6 @@ import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 
-import com.remainz.common.exception.ApplicationInternalException;
 import com.remainz.common.param.GenericParam;
 import com.remainz.common.service.ServiceInterface;
 import com.remainz.common.util.FileUtil;
@@ -27,7 +26,7 @@ public class EncryptService implements ServiceInterface {
 	}
 
 	@Override
-	public void doService(GenericParam input, GenericParam output) {
+	public void doService(GenericParam input, GenericParam output) throws Exception {
 
 		// 必要なパラメータが入力されていなければエラーとする
 		InputCheckUtil inputCheckUtil = new InputCheckUtil();
@@ -39,7 +38,7 @@ public class EncryptService implements ServiceInterface {
 		doEncryptFile(input, output);
 	}
 
-	private void doEncryptFile(GenericParam input, GenericParam output) {
+	private void doEncryptFile(GenericParam input, GenericParam output) throws Exception {
 
 		// ファイルを読み込む
 		String filePath = input.getString("filePath");
@@ -76,8 +75,6 @@ public class EncryptService implements ServiceInterface {
 				output.putString("encryptResultFilePath", encryptResultFilePath);
 			}
 
-		} catch (Exception e) {
-			throw new ApplicationInternalException(new LogUtil().handleException(e));
 		}
 	}
 
