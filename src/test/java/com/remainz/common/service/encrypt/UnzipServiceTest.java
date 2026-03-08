@@ -24,16 +24,16 @@ public class UnzipServiceTest {
 	void beforeEach() {
 
 		// テストフォルダを作成する
-		new FileUtil().createDirIfNotExists(TestUtil.RESOURCE_PATH + "service/encrypt/ZipServiceTest/dirToZip/subDir1");
-		new FileUtil().createDirIfNotExists(TestUtil.OUTPUT_PATH + "ZipServiceTest");
-		new FileUtil().createDirIfNotExists(TestUtil.OUTPUT_PATH + "ZipServiceTest/unzip");
+		FileUtil.createDirIfNotExists(TestUtil.RESOURCE_PATH + "service/encrypt/ZipServiceTest/dirToZip/subDir1");
+		FileUtil.createDirIfNotExists(TestUtil.OUTPUT_PATH + "ZipServiceTest");
+		FileUtil.createDirIfNotExists(TestUtil.OUTPUT_PATH + "ZipServiceTest/unzip");
 	}
 
 	@AfterEach
 	void afterEach() {
 
 		// テストフォルダを削除する
-		new FileUtil().deleteDirIfExists(TestUtil.OUTPUT_PATH);
+		FileUtil.deleteDirIfExists(TestUtil.OUTPUT_PATH);
 	}
 
 	//
@@ -51,7 +51,7 @@ public class UnzipServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "targetZip"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "targetZip"), e.getLocalizedMessage());
 		}
 
 		try {
@@ -59,7 +59,7 @@ public class UnzipServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "outputDir"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "outputDir"), e.getLocalizedMessage());
 		}
 	}
 

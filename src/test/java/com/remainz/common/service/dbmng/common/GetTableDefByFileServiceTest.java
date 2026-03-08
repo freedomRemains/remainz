@@ -61,7 +61,7 @@ public class GetTableDefByFileServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "db"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "db"), e.getLocalizedMessage());
 		}
 
 		input.setDb(testUtil.getDb());
@@ -69,7 +69,7 @@ public class GetTableDefByFileServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "dirPath"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "dirPath"), e.getLocalizedMessage());
 		}
 
 		String dirPath = TestUtil.OUTPUT_PATH + "dbmng/" + dbName;
@@ -78,7 +78,7 @@ public class GetTableDefByFileServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "defPath"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "defPath"), e.getLocalizedMessage());
 		}
 
 		String defPath = "10_dbdef/20_auto_created";
@@ -87,7 +87,7 @@ public class GetTableDefByFileServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "tableName"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "tableName"), e.getLocalizedMessage());
 		}
 	}
 
@@ -136,7 +136,7 @@ public class GetTableDefByFileServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.err.common.invalidTableDef", tableDefFilePath),
+			assertEquals(Mu.msg("msg.err.common.invalidTableDef", tableDefFilePath),
 					e.getLocalizedMessage());
 		}
 	}

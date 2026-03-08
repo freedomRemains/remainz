@@ -39,7 +39,7 @@ public class Base64DecodeAndUnzipService implements ServiceInterface {
 				"Encode.txt")) + ".zip";
 
 		// ファイルから暗号化データを読み込み、zipファイルを復元する
-		try (BufferedOutputStream zipFile = new FileUtil().getBufferedOutputStream(zipFilePath)) {
+		try (BufferedOutputStream zipFile = FileUtil.getBufferedOutputStream(zipFilePath)) {
 			getZipFileFromFile(charset, zipFile, encodeResultFilePath);
 		}
 
@@ -47,14 +47,14 @@ public class Base64DecodeAndUnzipService implements ServiceInterface {
 		unzip(zipFilePath, input.getString("outputDir"));
 
 		// zipファイルを削除する
-		new FileUtil().deleteFileOrDir(new File(zipFilePath));
+		FileUtil.deleteFileOrDir(new File(zipFilePath));
 	}
 
 	private void getZipFileFromFile(String charset, BufferedOutputStream zipFile,
 			String encodeResultFilePath) throws Exception {
 
 		// 暗号化結果ファイルを開く
-		try (BufferedReader encryptResultFile = new FileUtil().getBufferedReader(
+		try (BufferedReader encryptResultFile = FileUtil.getBufferedReader(
 				encodeResultFilePath)) {
 
 			// メモリが枯渇しないよう、一定のデータ量ごとに処理を行う

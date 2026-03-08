@@ -49,7 +49,7 @@ public class DirProcBaseTest {
 			proc.doProc(input, output, input.getString("dirPath"));
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noDir", input.getString("dirPath")),
+			assertEquals(Mu.msg("msg.common.noDir", input.getString("dirPath")),
 					e.getLocalizedMessage());
 		}
 	}

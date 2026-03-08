@@ -46,7 +46,7 @@ public class DecryptService implements ServiceInterface {
 		String encryptResultFilePath = input.getString("encryptResultFilePath");
 
 		// ファイルから暗号化データを読み込む
-		try (BufferedInputStream encryptResultFile = new FileUtil().getBufferedInputStream(
+		try (BufferedInputStream encryptResultFile = FileUtil.getBufferedInputStream(
 				encryptResultFilePath)) {
 			decryptFile(encryptResultFilePath, encryptResultFile, secretKey, iv,
 					input.getString("encryptKind"));
@@ -56,7 +56,7 @@ public class DecryptService implements ServiceInterface {
 	private SecretKey getSecretKeyFromFile(String secretKeyFilePath, String encryptKind) {
 
 		// 秘密鍵ファイルを開く
-		try (BufferedInputStream secretKeyFileStream = new FileUtil().getBufferedInputStream(
+		try (BufferedInputStream secretKeyFileStream = FileUtil.getBufferedInputStream(
 				secretKeyFilePath)) {
 
 			// ファイルから秘密鍵を読み込む
@@ -69,14 +69,14 @@ public class DecryptService implements ServiceInterface {
 			return secretKey;
 
 		} catch (IOException e) {
-			throw new ApplicationInternalException(new LogUtil().handleException(e));
+			throw new ApplicationInternalException(LogUtil.handleException(e));
 		}
 	}
 
 	private IvParameterSpec getIvFromFile(String ivFilePath, String encryptKind) {
 
 		// ivファイルを開く
-		try (BufferedInputStream secretKeyFileStream = new FileUtil().getBufferedInputStream(
+		try (BufferedInputStream secretKeyFileStream = FileUtil.getBufferedInputStream(
 				ivFilePath)) {
 
 			// ファイルからivを読み込む
@@ -89,7 +89,7 @@ public class DecryptService implements ServiceInterface {
 			return ivSpec;
 
 		} catch (IOException e) {
-			throw new ApplicationInternalException(new LogUtil().handleException(e));
+			throw new ApplicationInternalException(LogUtil.handleException(e));
 		}
 	}
 
@@ -104,7 +104,7 @@ public class DecryptService implements ServiceInterface {
 		}
 
 		// 出力ファイルを開く
-		try (BufferedOutputStream outputFile = new FileUtil().getBufferedOutputStream(outputFilePath)) {
+		try (BufferedOutputStream outputFile = FileUtil.getBufferedOutputStream(outputFilePath)) {
 
 			// メモリが枯渇しないよう、一定のデータ量ごとに処理を行う
 			byte[] buf = new byte[8192];
@@ -116,13 +116,13 @@ public class DecryptService implements ServiceInterface {
 				System.arraycopy(buf, 0, target, 0, bytesRead);
 
 				// 復号対象のデータをログに記録する
-				new LogUtil().recordBytesLog("[decryptTarget]", target);
+				LogUtil.recordBytesLog("[decryptTarget]", target);
 
 				// 暗号化データを復号する
 				byte[] decryptResult = decrypt(secretKey, iv, encryptKind, target);
 
 				// 復号したデータをログに記録する
-				new LogUtil().recordBytesLog("[decryptResult]", decryptResult);
+				LogUtil.recordBytesLog("[decryptResult]", decryptResult);
 
 				// 復号したデータを出力ファイルに書き込む
 				outputFile.write(decryptResult);

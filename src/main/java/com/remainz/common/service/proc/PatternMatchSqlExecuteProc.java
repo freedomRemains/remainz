@@ -51,6 +51,6 @@ public class PatternMatchSqlExecuteProc extends DirProcBase {
 		service.doService(input, output);
 
 		// 結果をログに記録する
-		logger.info(new Mu().msg("msg.updateSqlResult", targetFile.getName(), output.getString(resultKey)));
+		logger.info(Mu.msg("msg.updateSqlResult", targetFile.getName(), output.getString(resultKey)));
 	}
 }

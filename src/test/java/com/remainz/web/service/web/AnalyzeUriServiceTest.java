@@ -46,7 +46,7 @@ public class AnalyzeUriServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "db"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "db"), e.getLocalizedMessage());
 		}
 
 		try {
@@ -54,7 +54,7 @@ public class AnalyzeUriServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "requestKind"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "requestKind"), e.getLocalizedMessage());
 		}
 
 		try {
@@ -62,7 +62,7 @@ public class AnalyzeUriServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "requestUri"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "requestUri"), e.getLocalizedMessage());
 		}
 	}
 
@@ -118,7 +118,7 @@ public class AnalyzeUriServiceTest {
 			fail();
 		} catch (ApplicationInternalException e) {
 			assertTrue(e.getLocalizedMessage().contains(
-					new Mu().msg("msg.err.invalidRequestUri", requestUri)));
+					Mu.msg("msg.err.invalidRequestUri", requestUri)));
 		}
 	}
 
@@ -140,7 +140,7 @@ public class AnalyzeUriServiceTest {
 			fail();
 		} catch (ApplicationInternalException e) {
 			assertTrue(e.getLocalizedMessage().contains(
-					new Mu().msg("msg.err.invalidRequestKind", requestUri, requestKind)));
+					Mu.msg("msg.err.invalidRequestKind", requestUri, requestKind)));
 		}
 	}
 
@@ -179,7 +179,7 @@ public class AnalyzeUriServiceTest {
 			fail();
 		} catch (ApplicationInternalException e) {
 			assertTrue(e.getLocalizedMessage().contains(
-					new Mu().msg("msg.err.invalidRequestUri", requestUri)));
+					Mu.msg("msg.err.invalidRequestUri", requestUri)));
 
 			// DBをロールバックする
 			testUtil.getDb().rollback();
@@ -304,7 +304,7 @@ public class AnalyzeUriServiceTest {
 			fail();
 		} catch (ApplicationInternalException e) {
 			assertTrue(e.getLocalizedMessage().contains(
-					new Mu().msg("msg.err.invalidRequestKind", requestUri, requestKind)));
+					Mu.msg("msg.err.invalidRequestKind", requestUri, requestKind)));
 
 			// DBをロールバックする
 			testUtil.getDb().rollback();
@@ -329,7 +329,7 @@ public class AnalyzeUriServiceTest {
 			fail();
 		} catch (ApplicationInternalException e) {
 			assertTrue(e.getLocalizedMessage().contains(
-					new Mu().msg("msg.err.invalidRequestKind", requestUri, requestKind)));
+					Mu.msg("msg.err.invalidRequestKind", requestUri, requestKind)));
 
 			// DBをロールバックする
 			testUtil.getDb().rollback();
@@ -354,7 +354,7 @@ public class AnalyzeUriServiceTest {
 			fail();
 		} catch (ApplicationInternalException e) {
 			assertTrue(e.getLocalizedMessage().contains(
-					new Mu().msg("msg.err.invalidRequestKind", requestUri, requestKind)));
+					Mu.msg("msg.err.invalidRequestKind", requestUri, requestKind)));
 
 			// DBをロールバックする
 			testUtil.getDb().rollback();
@@ -379,7 +379,7 @@ public class AnalyzeUriServiceTest {
 			fail();
 		} catch (ApplicationInternalException e) {
 			assertTrue(e.getLocalizedMessage().contains(
-					new Mu().msg("msg.err.invalidRequestKind", requestUri, requestKind)));
+					Mu.msg("msg.err.invalidRequestKind", requestUri, requestKind)));
 
 			// DBをロールバックする
 			testUtil.getDb().rollback();

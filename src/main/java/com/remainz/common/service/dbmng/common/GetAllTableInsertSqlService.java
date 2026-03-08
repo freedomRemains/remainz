@@ -47,7 +47,7 @@ public class GetAllTableInsertSqlService implements ServiceInterface {
 			ArrayList<String> tableNameList = getTableNameList(tableNameListFilePath);
 
 			// テーブル名リストファイルのパスをログに記録する
-			logger.info(new Mu().msg("msg.detectTableNameListFilePath", tableNameListFilePath));
+			logger.info(Mu.msg("msg.detectTableNameListFilePath", tableNameListFilePath));
 
 			// テーブル名リスト内の全てのデータを処理するまでループ
 			for (String tableName : tableNameList) {
@@ -66,7 +66,7 @@ public class GetAllTableInsertSqlService implements ServiceInterface {
 		if (recordList != null && recordList.size() > 0) {
 
 			// オンメモリにテーブル名リストがある旨をログに記録する
-			logger.info(new Mu().msg("msg.detectedTableNameListOnMemory"));
+			logger.info(Mu.msg("msg.detectedTableNameListOnMemory"));
 
 			// テーブル名リスト内の全てのデータを処理するまでループ
 			for (LinkedHashMap<String, String> columnMap : recordList) {
@@ -89,7 +89,7 @@ public class GetAllTableInsertSqlService implements ServiceInterface {
 		ArrayList<String> tableNameList = new ArrayList<String>();
 
 		// テーブル名リストファイルを開く
-		try (BufferedReader tableNameListFile = new FileUtil().getBufferedReader(tableNameListFilePath)) {
+		try (BufferedReader tableNameListFile = FileUtil.getBufferedReader(tableNameListFilePath)) {
 
 			// 全ての行を処理するまでループ
 			String line = "";
@@ -98,7 +98,7 @@ public class GetAllTableInsertSqlService implements ServiceInterface {
 			}
 
 		} catch (IOException e) {
-			throw new ApplicationInternalException(new LogUtil().handleException(e));
+			throw new ApplicationInternalException(LogUtil.handleException(e));
 		}
 
 		// テーブル名リストを呼び出し側に戻す

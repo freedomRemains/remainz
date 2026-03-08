@@ -49,7 +49,7 @@ public class GetTableCreateSqlService implements ServiceInterface {
 		// リソースパス配下の "30_sql/20_auto_created" にテキストファイルを生成する
 		String sqlFilePath = input.getString("dirPath") + PATH_DELM + input.getString("sqlPath") + "/CREATE_"
 				+ tableName + ".txt";
-		try (BufferedWriter tableSqlFile = new FileUtil().getBufferedWriter(sqlFilePath)) {
+		try (BufferedWriter tableSqlFile = FileUtil.getBufferedWriter(sqlFilePath)) {
 
 			// DB定義を取得してファイルに書き込む
 			writeTableSql(output, tableName, tableSqlFile, recordList);
@@ -62,7 +62,7 @@ public class GetTableCreateSqlService implements ServiceInterface {
 		// テーブル定義をオンメモリで持っている場合は、呼び出し側に返却する
 		ArrayList<LinkedHashMap<String, String>> recordList = input.getRecordList("tableDef" + tableName);
 		if (recordList != null && recordList.size() > 0) {
-			logger.info(new Mu().msg("msg.detectedTableDefOnMemory", "tableDef" + tableName));
+			logger.info(Mu.msg("msg.detectedTableDefOnMemory", "tableDef" + tableName));
 			return recordList;
 		}
 
@@ -116,7 +116,7 @@ public class GetTableCreateSqlService implements ServiceInterface {
 			sql.append("," + lineSepr + "\tPRIMARY KEY(" + primaryKeyPart + ")");
 		}
 		sql.append(lineSepr + ");");
-		logger.info(new Mu().msg("msg.common.sql", sql));
+		logger.info(Mu.msg("msg.common.sql", sql));
 
 		// SQLをファイルに書き込む
 		tableSqlFile.write(sql.toString());

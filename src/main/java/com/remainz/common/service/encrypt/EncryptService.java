@@ -42,13 +42,13 @@ public class EncryptService implements ServiceInterface {
 
 		// ファイルを読み込む
 		String filePath = input.getString("filePath");
-		try (BufferedInputStream zipFile = new FileUtil().getBufferedInputStream(filePath)) {
+		try (BufferedInputStream zipFile = FileUtil.getBufferedInputStream(filePath)) {
 
 			// ファイルパスから出力ファイルパスを作成する
 			String encryptResultFilePath = filePath + "_encrypt.bin";
 
 			// 出力ファイルを作成する
-			try (BufferedOutputStream encryptResultFile = new FileUtil().getBufferedOutputStream(
+			try (BufferedOutputStream encryptResultFile = FileUtil.getBufferedOutputStream(
 					encryptResultFilePath)) {
 
 				// 暗号化種別を取得する
@@ -113,13 +113,13 @@ public class EncryptService implements ServiceInterface {
 			System.arraycopy(buf, 0, target, 0, bytesRead);
 
 			// ファイルから読み込んだデータをログに記録する
-			new LogUtil().recordBytesLog("[target]", target);
+			LogUtil.recordBytesLog("[target]", target);
 
 			// 暗号化を実行する
 			byte[] encryptResult = encrypt(secretKey, iv, encryptKind, target);
 
 			// 暗号化後のデータをログに記録する
-			new LogUtil().recordBytesLog("[encryptResult]", encryptResult);
+			LogUtil.recordBytesLog("[encryptResult]", encryptResult);
 
 			// 出力ファイルに暗号化後の文字列を書き込む
 			encryptResultFile.write(encryptResult);
@@ -147,7 +147,7 @@ public class EncryptService implements ServiceInterface {
 		String secretKeyFilePath = filePath + "_encrypt.key";
 
 		// 秘密鍵をファイルに書き込む
-		try (BufferedOutputStream secretKeyFile = new FileUtil().getBufferedOutputStream(secretKeyFilePath)) {
+		try (BufferedOutputStream secretKeyFile = FileUtil.getBufferedOutputStream(secretKeyFilePath)) {
 			secretKeyFile.write(secretKeyEncoded);
 		}
 
@@ -164,7 +164,7 @@ public class EncryptService implements ServiceInterface {
 		String ivFilePath = filePath + "_encrypt.iv";
 
 		// 秘密鍵をファイルに書き込む
-		try (BufferedOutputStream ivFile = new FileUtil().getBufferedOutputStream(ivFilePath)) {
+		try (BufferedOutputStream ivFile = FileUtil.getBufferedOutputStream(ivFilePath)) {
 			ivFile.write(ivBytes);
 		}
 

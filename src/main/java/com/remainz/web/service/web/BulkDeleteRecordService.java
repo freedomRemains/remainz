@@ -26,7 +26,7 @@ public class BulkDeleteRecordService implements ServiceInterface {
 			doBulkDeleteRecord(input, output);
 
 		} catch (Exception e) {
-			throw new ApplicationInternalException(new LogUtil().handleException(e));
+			throw new ApplicationInternalException(LogUtil.handleException(e));
 		}
 	}
 

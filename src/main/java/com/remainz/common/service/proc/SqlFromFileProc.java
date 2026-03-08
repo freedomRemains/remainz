@@ -34,6 +34,6 @@ public class SqlFromFileProc extends TextFileProcBase {
 		output.putString("sqlFromFile", sql.toString());
 
 		// ログを記録する
-		logger.info(new Mu().msg("msg.common.sql", output.getString("sqlFromFile")));
+		logger.info(Mu.msg("msg.common.sql", output.getString("sqlFromFile")));
 	}
 }

@@ -50,28 +50,13 @@ class CuTest {
 	@Test
 	void test03() {
 
-		// 文字列が空でないケースをテストする
-		assertFalse(new Cu().isEmptyString("abc"));
-	}
-
-	@Test
-	void test04() {
-
-		// 文字列が空でないケースをテストする
-		assertTrue(Cu.isNotEmpty("abc"));
-		assertTrue(new Cu().isNotEmptyString("abc"));
-	}
-
-	@Test
-	void test05() {
-
 		// ファイル名として使用できない文字列が変換されることをテストする
 		assertEquals("￥／：＊？”＜＞｜？／＞：＊”＜｜￥",
 				Cu.convertForFileName("\\/:*?\"<>|?/>:*\"<|\\"));
 	}
 
 	@Test
-	void test06() throws Exception {
+	void test04() throws Exception {
 
 		// 制御文字が検出されることをテストする
 		assertFalse(Cu.hasCtrlCode(new String(new char[] {(char)-1})));

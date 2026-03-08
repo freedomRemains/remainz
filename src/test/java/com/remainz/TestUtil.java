@@ -115,7 +115,7 @@ public class TestUtil {
 	public void clearOutputDir() {
 
 		// テストフォルダを削除する
-		new FileUtil().deleteDirIfExists(OUTPUT_PATH);
+		FileUtil.deleteDirIfExists(OUTPUT_PATH);
 	}
 
 	/**
@@ -170,9 +170,9 @@ public class TestUtil {
 	public void prepareOutputDir() {
 
 		// テストに必要なフォルダを作成する
-		new FileUtil().createDirIfNotExists(OUTPUT_PATH + "dbmng/" + dbName + "/10_dbdef/20_auto_created");
-		new FileUtil().createDirIfNotExists(OUTPUT_PATH + "dbmng/" + dbName + "/20_dbdata/20_auto_created");
-		new FileUtil().createDirIfNotExists(OUTPUT_PATH + "dbmng/" + dbName + "/30_sql/20_auto_created");	
+		FileUtil.createDirIfNotExists(OUTPUT_PATH + "dbmng/" + dbName + "/10_dbdef/20_auto_created");
+		FileUtil.createDirIfNotExists(OUTPUT_PATH + "dbmng/" + dbName + "/20_dbdata/20_auto_created");
+		FileUtil.createDirIfNotExists(OUTPUT_PATH + "dbmng/" + dbName + "/30_sql/20_auto_created");	
 	}
 
 	/**

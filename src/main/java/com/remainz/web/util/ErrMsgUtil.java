@@ -10,7 +10,13 @@ import com.remainz.common.util.Cu;
 
 public class ErrMsgUtil {
 
-	public String getErrMsgKey(DbInterface db, String sessionId, String accountId,
+	/**
+	 * インスタンス化禁止を明示するため、privateコンストラクタを定義する。
+	 */
+	private ErrMsgUtil() {
+	}
+
+	public static String getErrMsgKey(DbInterface db, String sessionId, String accountId,
 			String mgnrkeyvalId, Object... args) {
 
 		String errMsg = "0";
@@ -28,14 +34,14 @@ public class ErrMsgUtil {
 		return getErrMsgKeyByMsg(db, sessionId, accountId, errMsg);
 	}
 
-	public String getErrMsg(DbInterface db, String mgnrkeyvalId, Object... args) throws SQLException {
+	public static String getErrMsg(DbInterface db, String mgnrkeyvalId, Object... args) throws SQLException {
 
 		// 汎用グループIDをキーとして、エラーメッセージを取得する
 		var errMsgList = db.select("SELECT GNR_VAL FROM GNR_KEY_VAL WHERE GNR_KEY_VAL_ID = " + mgnrkeyvalId);
 		return MessageFormat.format(errMsgList.get(0).get("GNR_VAL"), args);
 	}
 
-	public String getErrMsgKeyByMsg(DbInterface db, String sessionId, String accountId,
+	public static String getErrMsgKeyByMsg(DbInterface db, String sessionId, String accountId,
 			String errMsg) {
 
 		try {

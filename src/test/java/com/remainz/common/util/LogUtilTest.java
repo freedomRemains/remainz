@@ -81,7 +81,7 @@ class LogUtilTest {
 
 
 		// 例外のログ記録を検証する
-		new LogUtil().handleException(new ApplicationInternalException("アプリケーション例外"));
+		LogUtil.handleException(new ApplicationInternalException("アプリケーション例外"));
 		File logFile = new File(logPath);
 		assertTrue(logFile.exists());
 	}
@@ -90,7 +90,7 @@ class LogUtilTest {
 	void test02() {
 
 		// 例外がnullのパターンを検証する
-		new LogUtil().handleException(null);
+		LogUtil.handleException(null);
 		File logFile = new File(logPath);
 		assertTrue(logFile.exists());
 	}
@@ -99,7 +99,7 @@ class LogUtilTest {
 	void test03() {
 
 		// 例外メッセージが空文字列のパターンを検証する
-		new LogUtil().handleException(new Exception(""));
+		LogUtil.handleException(new Exception(""));
 		File logFile = new File(logPath);
 		assertTrue(logFile.exists());
 	}
@@ -109,7 +109,7 @@ class LogUtilTest {
 
 		// byte配列のログパターンを検証する
 		byte[] bytes = new byte[] {0x01, 0x02};
-		new LogUtil().recordBytesLog(logPath, bytes);
+		LogUtil.recordBytesLog(logPath, bytes);
 		File logFile = new File(logPath);
 		assertTrue(logFile.exists());
 	}

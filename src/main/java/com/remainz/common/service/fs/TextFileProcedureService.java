@@ -40,13 +40,13 @@ public class TextFileProcedureService implements ServiceInterface {
 		// filePath、dirPath、fileNameの全てのパラメータがない場合はエラーとする
 		if (Cu.isEmpty(filePath) && Cu.isEmpty(dirPath) && Cu.isEmpty(fileName)) {
 			throw new BusinessRuleViolationException(
-					new Mu().msg("msg.common.noParam", "filePath or (dirPath, fileName)"));
+					Mu.msg("msg.common.noParam", "filePath or (dirPath, fileName)"));
 		}
 
 		// dirPath指定ありでfileName指定なしはエラーとする
 		if (Cu.isNotEmpty(dirPath) && Cu.isEmpty(fileName)) {
 			throw new BusinessRuleViolationException(
-					new Mu().msg("msg.common.noParam", "filePath or (dirPath, fileName)"));
+					Mu.msg("msg.common.noParam", "filePath or (dirPath, fileName)"));
 		}
 
 		// filePath指定なしの場合はdirPath + "/" + fileNameをfilePathとする

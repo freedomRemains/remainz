@@ -67,15 +67,15 @@ public class GetTableDefServiceTest {
 	void beforeEach() {
 
 		// テストに必要なフォルダを作成する
-		new FileUtil().createDirIfNotExists(TestUtil.OUTPUT_PATH + "dbmng/mysql/10_dbdef/20_auto_created");
-		new FileUtil().createDirIfNotExists(TestUtil.OUTPUT_PATH + "dbmng/h2/10_dbdef/20_auto_created");
+		FileUtil.createDirIfNotExists(TestUtil.OUTPUT_PATH + "dbmng/mysql/10_dbdef/20_auto_created");
+		FileUtil.createDirIfNotExists(TestUtil.OUTPUT_PATH + "dbmng/h2/10_dbdef/20_auto_created");
 	}
 
 	@AfterEach
 	void afterEach() {
 
 		// テストフォルダを削除する
-		new FileUtil().deleteDirIfExists(TestUtil.OUTPUT_PATH);
+		FileUtil.deleteDirIfExists(TestUtil.OUTPUT_PATH);
 	}
 
 	@AfterAll
@@ -203,7 +203,7 @@ public class GetTableDefServiceTest {
 			doService(dbName, tableName, tableDefFilePath, getTableDefSql);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.err.common.invalidTableDef", tableName),
+			assertEquals(Mu.msg("msg.err.common.invalidTableDef", tableName),
 					e.getLocalizedMessage());
 		}
 	}

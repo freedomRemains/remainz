@@ -44,14 +44,14 @@ public class AnalyzeUriService implements ServiceInterface {
 		} catch (Exception e) {
 
 			// 例外をスローする
-			throw new ApplicationInternalException(new LogUtil().handleException(e));
+			throw new ApplicationInternalException(LogUtil.handleException(e));
 		}
 	}
 
 	private void doAnalyzeUri(GenericParam input, GenericParam output) throws Exception {
 
 		// 入力パラメータのログを記録する
-		input.recordLog(logger, new Mu().msg("msg.AnalyzeUriService.inputLog"));
+		input.recordLog(logger, Mu.msg("msg.AnalyzeUriService.inputLog"));
 
 		// リスエスト種別及びリクエストURIをキーとして、スクリプトIDを取得する
 		String scriptId = getScriptId(input.getDb(), input.getString("requestKind"),
@@ -63,7 +63,7 @@ public class AnalyzeUriService implements ServiceInterface {
 		service.doService(input, output);
 
 		// 出力パラメータのログを記録する
-		output.recordLog(logger, new Mu().msg("msg.AnalyzeUriService.outputLog"));
+		output.recordLog(logger, Mu.msg("msg.AnalyzeUriService.outputLog"));
 	}
 
 	private String getScriptId(DbInterface db, String requestKind, String requestUri)
@@ -84,7 +84,7 @@ public class AnalyzeUriService implements ServiceInterface {
 
 		// レコードが0件、もしくは2件以上の場合は、エラー画面に遷移する
 		if (recordList.size() == 0 || recordList.size() > 1) {
-			throw new ApplicationInternalException(new Mu().msg("msg.err.invalidRequestUri", requestUri));
+			throw new ApplicationInternalException(Mu.msg("msg.err.invalidRequestUri", requestUri));
 		}
 
 		// リクエスト種別に応じたスクリプトIDを呼び出し側に返却する
@@ -97,7 +97,7 @@ public class AnalyzeUriService implements ServiceInterface {
 		} else  if ("DELETE".equals(requestKind) && !"0".equals(recordList.get(0).get("SCR_ID_DELETE"))) {
 			return recordList.get(0).get("SCR_ID_DELETE");
 		} else {
-			throw new ApplicationInternalException(new Mu().msg("msg.err.invalidRequestKind",
+			throw new ApplicationInternalException(Mu.msg("msg.err.invalidRequestKind",
 					requestUri, requestKind));
 		}
 	}

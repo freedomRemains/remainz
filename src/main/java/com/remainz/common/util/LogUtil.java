@@ -7,16 +7,10 @@ import org.apache.log4j.Logger;
  */
 public class LogUtil {
 
-	/** ロガー */
-	private Logger logger = null;
-
 	/**
-	 * コンストラクタ。
+	 * インスタンス化禁止を明示するため、privateコンストラクタを定義する。
 	 */
-	public LogUtil() {
-
-		// ロガーを取得する
-		logger = Logger.getLogger(this.getClass().getName());
+	private LogUtil() {
 	}
 
 	/**
@@ -25,12 +19,13 @@ public class LogUtil {
 	 * @param e 例外
 	 * @return 例外の内容を示す文字列
 	 */
-	public String handleException(Exception e) {
+	public static String handleException(Exception e) {
 
 		// スタックトレースを取得する
 		String stackTrace = getStackTrace(e);
 
 		// スタックトレースをログに記録し、呼び出し側にも戻す
+		Logger logger = Logger.getLogger(LogUtil.class.getName());
 		logger.error(stackTrace);
 		return stackTrace;
 	}
@@ -41,7 +36,7 @@ public class LogUtil {
 	 * @param e 例外
 	 * @return 例外のスタックトレース文字列
 	 */
-	public String getStackTrace(Exception e) {
+	public static String getStackTrace(Exception e) {
 
 		// パラメータチェックを行う
 		if (e == null) {
@@ -70,7 +65,7 @@ public class LogUtil {
 		return msg.toString();
 	}
 
-	public void recordBytesLog(String title, byte[] bytes) {
+	public static void recordBytesLog(String title, byte[] bytes) {
 
 		// 16進数文字列に変換したbyte配列のデータをログに記録する
 		StringBuilder msg = new StringBuilder();
@@ -80,6 +75,7 @@ public class LogUtil {
 			}
 			msg.append(String.format("%02x", bytes[index]));
 		}
+		Logger logger = Logger.getLogger(LogUtil.class.getName());
 		logger.info(title + msg);
 	}
 }

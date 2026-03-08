@@ -163,7 +163,7 @@ public class MailProcBase implements MailProcInterface {
 		File mailDir = new File(mailDirPath);
 		if (!mailDir.exists()) {
 			analyzeLog.append("[saveAttachmentFile][createDir] " + mailDirPath + LINE_SEPR);
-			new FileUtil().createDirIfNotExists(mailDirPath);
+			FileUtil.createDirIfNotExists(mailDirPath);
 		}
 
 		// 添付ファイルパスを生成する
@@ -220,7 +220,7 @@ public class MailProcBase implements MailProcInterface {
 		File mailDir = new File(mailDirPath);
 		if (!mailDir.exists()) {
 			analyzeLog.append("[saveMailAsFile][createDir] " + mailDirPath + LINE_SEPR);
-			new FileUtil().createDirIfNotExists(mailDirPath);
+			FileUtil.createDirIfNotExists(mailDirPath);
 		}
 
 		// メールIDに件名と送信日時を付加してファイル名とする
@@ -229,7 +229,7 @@ public class MailProcBase implements MailProcInterface {
 				+ Cu.convertForFileName(dateFormat.format(sentDate))
 				+ ".txt";
 		String filePath = mailDirPath + PATH_DELM + fileName;
-		try (var mailFile = new FileUtil().getBufferedWriter(filePath)) {
+		try (var mailFile = FileUtil.getBufferedWriter(filePath)) {
 
 			// メールの内容をファイルに書き込む
 			StringBuffer msg = new StringBuffer();

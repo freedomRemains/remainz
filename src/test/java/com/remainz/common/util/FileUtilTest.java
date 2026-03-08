@@ -47,7 +47,7 @@ class FileUtilTest {
 	void test01() {
 
 		// getBufferedReaderの検証
-		try (BufferedReader bufferedReader = new FileUtil().getBufferedReader(
+		try (BufferedReader bufferedReader = FileUtil.getBufferedReader(
 				RESOURCE_PATH + "util/FileUtilTest/test.txt")) {
 			assertNotNull(bufferedReader);
 
@@ -60,7 +60,7 @@ class FileUtilTest {
 	void test02() {
 
 		// getBufferedReaderの検証(エンコーディング指定あり)
-		try (BufferedReader bufferedReader = new FileUtil().getBufferedReader(
+		try (BufferedReader bufferedReader = FileUtil.getBufferedReader(
 				RESOURCE_PATH + "util/FileUtilTest/test.txt", "SJIS")) {
 			assertNotNull(bufferedReader);
 
@@ -73,7 +73,7 @@ class FileUtilTest {
 	void test03() {
 
 		// getBufferedWriterの検証
-		try (BufferedWriter bufferedWriter = new FileUtil().getBufferedWriter(
+		try (BufferedWriter bufferedWriter = FileUtil.getBufferedWriter(
 				RESOURCE_PATH + "util/FileUtilTest/write.txt")) {
 			bufferedWriter.write("This is test.");
 
@@ -85,7 +85,7 @@ class FileUtilTest {
 				new File(RESOURCE_PATH + "util/FileUtilTest/write.txt").length());
 
 		// getBufferedWriterの検証(追記モード)
-		try (BufferedWriter bufferedWriter = new FileUtil().getBufferedWriter(
+		try (BufferedWriter bufferedWriter = FileUtil.getBufferedWriter(
 				RESOURCE_PATH + "util/FileUtilTest/write.txt", true)) {
 			bufferedWriter.write("This is test2.");
 
@@ -97,7 +97,7 @@ class FileUtilTest {
 				new File(RESOURCE_PATH + "util/FileUtilTest/write.txt").length());
 
 		// getBufferedWriterの検証(追記モード、エンコーディング指定)
-		try (BufferedWriter bufferedWriter = new FileUtil().getBufferedWriter(
+		try (BufferedWriter bufferedWriter = FileUtil.getBufferedWriter(
 				RESOURCE_PATH + "util/FileUtilTest/write.txt", true, "SJIS")) {
 			bufferedWriter.write("This is test3.");
 
@@ -116,7 +116,7 @@ class FileUtilTest {
 	void test04() {
 
 		// getZipOutputStreamの検証
-		try (ZipOutputStream ZipOutputStream = new FileUtil().getZipOutputStream(
+		try (ZipOutputStream ZipOutputStream = FileUtil.getZipOutputStream(
 				RESOURCE_PATH + "util/FileUtilTest/write.zip")) {
 			assertNotNull(ZipOutputStream);
 
@@ -132,7 +132,7 @@ class FileUtilTest {
 	void test05() {
 
 		// getZipInputStreamの検証
-		try (ZipInputStream zipInputStream = new FileUtil().getZipInputStream(
+		try (ZipInputStream zipInputStream = FileUtil.getZipInputStream(
 				RESOURCE_PATH + "util/FileUtilTest/test.zip")) {
 			assertNotNull(zipInputStream);
 
@@ -145,7 +145,7 @@ class FileUtilTest {
 	void test06() {
 
 		// getBufferedInputStreamの検証
-		try (BufferedInputStream bufferedInputStream = new FileUtil().getBufferedInputStream(
+		try (BufferedInputStream bufferedInputStream = FileUtil.getBufferedInputStream(
 				RESOURCE_PATH + "util/FileUtilTest/test.txt")) {
 			assertNotNull(bufferedInputStream);
 
@@ -158,7 +158,7 @@ class FileUtilTest {
 	void test07() {
 
 		// getBufferedOutputStreamの検証
-		try (BufferedOutputStream bufferedOutputStream = new FileUtil().getBufferedOutputStream(
+		try (BufferedOutputStream bufferedOutputStream = FileUtil.getBufferedOutputStream(
 				RESOURCE_PATH + "util/FileUtilTest/write.txt")) {
 			assertNotNull(bufferedOutputStream);
 
@@ -174,35 +174,34 @@ class FileUtilTest {
 	void test08() throws Exception {
 
 		// テストのためにディレクトリを作成する
-		FileUtil fileUtil = new FileUtil();
-		fileUtil.createDirIfNotExists(RESOURCE_PATH + "util/FileUtilTest/output");
+		FileUtil.createDirIfNotExists(RESOURCE_PATH + "util/FileUtilTest/output");
 
 		// 存在するディレクトリを指定してcreate
-		fileUtil.createDirIfNotExists(RESOURCE_PATH + "util/FileUtilTest/output");
+		FileUtil.createDirIfNotExists(RESOURCE_PATH + "util/FileUtilTest/output");
 		assertTrue(new File(RESOURCE_PATH + "util/FileUtilTest/output").exists());
 		assertTrue(new File(RESOURCE_PATH + "util/FileUtilTest/output").isDirectory());
 
 		// ファイルを作成する
-		try (BufferedWriter bufferedWriter = new FileUtil().getBufferedWriter(
+		try (BufferedWriter bufferedWriter = FileUtil.getBufferedWriter(
 				RESOURCE_PATH + "util/FileUtilTest/output/write.txt")) {
 			bufferedWriter.write("This is test.");
 		}
 
 		// 存在するファイルと同名を指定してディレクトリ作成
-		fileUtil.createDirIfNotExists(RESOURCE_PATH + "util/FileUtilTest/output/write.txt");
+		FileUtil.createDirIfNotExists(RESOURCE_PATH + "util/FileUtilTest/output/write.txt");
 		assertTrue(new File(RESOURCE_PATH + "util/FileUtilTest/output/write.txt").exists());
 		assertTrue(new File(RESOURCE_PATH + "util/FileUtilTest/output/write.txt").isFile());
 
 		// 存在するファイルと同名を指定してディレクトリ削除
-		fileUtil.deleteDirIfExists(RESOURCE_PATH + "util/FileUtilTest/output/write.txt");
+		FileUtil.deleteDirIfExists(RESOURCE_PATH + "util/FileUtilTest/output/write.txt");
 		assertTrue(new File(RESOURCE_PATH + "util/FileUtilTest/output/write.txt").exists());
 		assertTrue(new File(RESOURCE_PATH + "util/FileUtilTest/output/write.txt").isFile());
 
 		// テストのために作成したディレクトリを削除する
-		fileUtil.deleteDirIfExists(RESOURCE_PATH + "util/FileUtilTest/output");
+		FileUtil.deleteDirIfExists(RESOURCE_PATH + "util/FileUtilTest/output");
 
 		// 存在しないディレクトリを指定してdelete
-		fileUtil.deleteDirIfExists(RESOURCE_PATH + "util/FileUtilTest/output");
+		FileUtil.deleteDirIfExists(RESOURCE_PATH + "util/FileUtilTest/output");
 		assertFalse(new File(RESOURCE_PATH + "util/FileUtilTest/output").exists());
 	}
 
@@ -210,14 +209,13 @@ class FileUtilTest {
 	void test09() throws Exception {
 
 		// テストのためにディレクトリを作成する
-		FileUtil fileUtil = new FileUtil();
-		fileUtil.createDirIfNotExists(RESOURCE_PATH + "util/FileUtilTest/output");
+		FileUtil.createDirIfNotExists(RESOURCE_PATH + "util/FileUtilTest/output");
 
 		// カバレッジ(空のディレクトリ削除)
-		fileUtil.deleteDirIfExists(RESOURCE_PATH + "util/FileUtilTest/output");
+		FileUtil.deleteDirIfExists(RESOURCE_PATH + "util/FileUtilTest/output");
 
 		// 存在しないディレクトリを指定してdelete
-		fileUtil.deleteDirIfExists(RESOURCE_PATH + "util/FileUtilTest/output");
+		FileUtil.deleteDirIfExists(RESOURCE_PATH + "util/FileUtilTest/output");
 		assertFalse(new File(RESOURCE_PATH + "util/FileUtilTest/output").exists());
 	}
 
@@ -225,26 +223,25 @@ class FileUtilTest {
 	void test10() throws Exception {
 
 		// テストのためにディレクトリを作成する
-		FileUtil fileUtil = new FileUtil();
-		fileUtil.createDirIfNotExists(RESOURCE_PATH + "util/FileUtilTest/output");
+		FileUtil.createDirIfNotExists(RESOURCE_PATH + "util/FileUtilTest/output");
 
 		// カバレッジ(存在するディレクトリのため、mkdirを最大リトライまで繰り返す)
-		fileUtil.mkdirs(new File(RESOURCE_PATH + "util/FileUtilTest/output"));
+		FileUtil.mkdirs(new File(RESOURCE_PATH + "util/FileUtilTest/output"));
 		assertTrue(new File(RESOURCE_PATH + "util/FileUtilTest/output").exists());
 		assertTrue(new File(RESOURCE_PATH + "util/FileUtilTest/output").isDirectory());
 
 		// ファイルを作成する
-		try (BufferedWriter bufferedWriter = new FileUtil().getBufferedWriter(
+		try (BufferedWriter bufferedWriter = FileUtil.getBufferedWriter(
 				RESOURCE_PATH + "util/FileUtilTest/output/write.txt")) {
 			bufferedWriter.write("This is test.");
 		}
 
 		// ファイルを開いてつかんだ状態とする
-		try (BufferedReader bufferedReader = new FileUtil().getBufferedReader(
+		try (BufferedReader bufferedReader = FileUtil.getBufferedReader(
 				RESOURCE_PATH + "util/FileUtilTest/output/write.txt")) {
 
 			// ファイルを削除する(カバレッジ、つかんでいるので削除できず最大までリトライする)
-			fileUtil.deleteFileOrDir(new File(RESOURCE_PATH + "util/FileUtilTest/output/write.txt"));
+			FileUtil.deleteFileOrDir(new File(RESOURCE_PATH + "util/FileUtilTest/output/write.txt"));
 		}
 
 		// Linuxの場合、rootだとファイルが開かれていても消せるため、このassertは行わないこととした
@@ -252,7 +249,7 @@ class FileUtilTest {
 		//assertTrue(new File(RESOURCE_PATH + "util/FileUtilTest/output/write.txt").isFile());
 
 		// 存在しないディレクトリを指定してdelete
-		fileUtil.deleteDirIfExists(RESOURCE_PATH + "util/FileUtilTest/output");
+		FileUtil.deleteDirIfExists(RESOURCE_PATH + "util/FileUtilTest/output");
 		assertFalse(new File(RESOURCE_PATH + "util/FileUtilTest/output").exists());
 	}
 
@@ -260,20 +257,19 @@ class FileUtilTest {
 	void test11() throws Exception {
 
 		// テストのためにディレクトリを作成する
-		FileUtil fileUtil = new FileUtil();
-		fileUtil.createDirIfNotExists(RESOURCE_PATH + "util/FileUtilTest/output");
+		FileUtil.createDirIfNotExists(RESOURCE_PATH + "util/FileUtilTest/output");
 
 		// ファイルを作成する
-		try (BufferedWriter bufferedWriter = new FileUtil().getBufferedWriter(
+		try (BufferedWriter bufferedWriter = FileUtil.getBufferedWriter(
 				RESOURCE_PATH + "util/FileUtilTest/output/write.txt")) {
 			bufferedWriter.write("This is test.");
 		}
 
 		// カバレッジ(ファイル削除、listFilesがnullになる条件)
-		fileUtil.deleteDirRecursive(new File(RESOURCE_PATH + "util/FileUtilTest/output/write.txt"));
+		FileUtil.deleteDirRecursive(new File(RESOURCE_PATH + "util/FileUtilTest/output/write.txt"));
 
 		// 存在しないディレクトリを指定してdelete
-		fileUtil.deleteDirIfExists(RESOURCE_PATH + "util/FileUtilTest/output");
+		FileUtil.deleteDirIfExists(RESOURCE_PATH + "util/FileUtilTest/output");
 		assertFalse(new File(RESOURCE_PATH + "util/FileUtilTest/output").exists());
 	}
 
@@ -281,8 +277,7 @@ class FileUtilTest {
 	void test12() throws Exception {
 
 		// カバレッジ(ディレクトリ配下の子要素を取得)
-		FileUtil fileUtil = new FileUtil();
-		File[] listFiles = fileUtil.listFiles(new File(RESOURCE_PATH + "util/FileUtilTest"));
+		File[] listFiles = FileUtil.listFiles(new File(RESOURCE_PATH + "util/FileUtilTest"));
 		assertNotNull(listFiles);
 		assertTrue(listFiles.length == 2);
 	}
@@ -291,8 +286,7 @@ class FileUtilTest {
 	void test13() throws Exception {
 
 		// カバレッジ(ファイルを指定してディレクトリ配下の子要素を取得)
-		FileUtil fileUtil = new FileUtil();
-		File[] listFiles = fileUtil.listFiles(new File(RESOURCE_PATH + "util/FileUtilTest/test.txt"));
+		File[] listFiles = FileUtil.listFiles(new File(RESOURCE_PATH + "util/FileUtilTest/test.txt"));
 		assertNotNull(listFiles);
 		assertTrue(listFiles.length == 0);
 	}
@@ -301,17 +295,16 @@ class FileUtilTest {
 	void test14() throws Exception {
 
 		// テストのためにディレクトリを作成する
-		FileUtil fileUtil = new FileUtil();
-		fileUtil.createDirIfNotExists(RESOURCE_PATH + "util/FileUtilTest/output/subdir");
+		FileUtil.createDirIfNotExists(RESOURCE_PATH + "util/FileUtilTest/output/subdir");
 
 		// ファイルを作成する
-		try (BufferedWriter bufferedWriter = new FileUtil().getBufferedWriter(
+		try (BufferedWriter bufferedWriter = FileUtil.getBufferedWriter(
 				RESOURCE_PATH + "util/FileUtilTest/output/subdir/write.txt")) {
 			bufferedWriter.write("This is test.");
 		}
 
 		// カバレッジ(ファイル削除、listFilesがnullになる条件)
-		fileUtil.deleteDirRecursive(new File(RESOURCE_PATH + "util/FileUtilTest/output"));
+		FileUtil.deleteDirRecursive(new File(RESOURCE_PATH + "util/FileUtilTest/output"));
 		assertFalse(new File(RESOURCE_PATH + "util/FileUtilTest/output").exists());
 	}
 }

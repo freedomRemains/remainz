@@ -55,7 +55,7 @@ public class InnerClassPathProp {
 		} catch (ApplicationInternalException e) {
 
 			// エラー発生時はログを記録する
-			new LogUtil().handleException(e);
+			LogUtil.handleException(e);
 		}
 	}
 
@@ -82,9 +82,8 @@ public class InnerClassPathProp {
 		} catch (Exception e) {
 
 			// 例外発生時はログを記録し、エラー内容をメンバに保存する
-			LogUtil logUtil = new LogUtil();
-			lastError = logUtil.getStackTrace(e);
-			logUtil.handleException(e);
+			lastError = LogUtil.getStackTrace(e);
+			LogUtil.handleException(e);
 		}
 
 		// エラーを検出している場合はアプリケーション内部例外をスローする

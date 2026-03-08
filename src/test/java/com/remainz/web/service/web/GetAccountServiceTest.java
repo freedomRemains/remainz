@@ -48,7 +48,7 @@ public class GetAccountServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "db"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "db"), e.getLocalizedMessage());
 		}
 
 		try {
@@ -56,7 +56,7 @@ public class GetAccountServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "requestKind"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "requestKind"), e.getLocalizedMessage());
 		}
 
 		try {
@@ -64,7 +64,7 @@ public class GetAccountServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "requestUri"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "requestUri"), e.getLocalizedMessage());
 		}
 	}
 

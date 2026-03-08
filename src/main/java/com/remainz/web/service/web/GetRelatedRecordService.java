@@ -36,7 +36,7 @@ public class GetRelatedRecordService implements ServiceInterface {
 			if (!doGetRelatedRecord(input, output)) {
 
 				// エラーメッセージIDを取得する
-				String errMsgKey = new ErrMsgUtil().getErrMsgKey(input.getDb(),
+				String errMsgKey = ErrMsgUtil.getErrMsgKey(input.getDb(),
 						input.getString("sessionId"), input.getString("accountId"),
 						"1000301");
 
@@ -49,7 +49,7 @@ public class GetRelatedRecordService implements ServiceInterface {
 			}
 
 		} catch (Exception e) {
-			throw new ApplicationInternalException(new LogUtil().handleException(e));
+			throw new ApplicationInternalException(LogUtil.handleException(e));
 		}
 	}
 
@@ -250,8 +250,8 @@ public class GetRelatedRecordService implements ServiceInterface {
 		for (int index = 0; index < columnNameList.size(); index++) {
 			paramList.add(recordId);
 		}
-		logger.info(new Mu().msg("msg.common.sql", sql));
-		logger.info(new Mu().msg("msg.common.sqlParam", paramList.toString()));
+		logger.info(Mu.msg("msg.common.sql", sql));
+		logger.info(Mu.msg("msg.common.sqlParam", paramList.toString()));
 		return db.select(sql.toString(), paramList);
 	}
 
@@ -284,7 +284,7 @@ public class GetRelatedRecordService implements ServiceInterface {
 		sql.append(")");
 
 		// ログを記録した上でSQLを実行し、結果を呼び出し側に返却する
-		logger.info(new Mu().msg("msg.common.sql", sql));
+		logger.info(Mu.msg("msg.common.sql", sql));
 		return db.select(sql.toString());
 	}
 

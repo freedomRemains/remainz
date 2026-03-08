@@ -113,7 +113,7 @@ public class GetTableInsertSqlServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "db"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "db"), e.getLocalizedMessage());
 		}
 
 		input.setDb(testUtil.getDb());
@@ -121,7 +121,7 @@ public class GetTableInsertSqlServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "dirPath"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "dirPath"), e.getLocalizedMessage());
 		}
 
 		String dirPath = TestUtil.OUTPUT_PATH + "dbmng/" + dbName;
@@ -130,7 +130,7 @@ public class GetTableInsertSqlServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "defPath"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "defPath"), e.getLocalizedMessage());
 		}
 
 		String defPath = "10_dbdef/20_auto_created";
@@ -139,7 +139,7 @@ public class GetTableInsertSqlServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "dataPath"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "dataPath"), e.getLocalizedMessage());
 		}
 
 		String dataPath = "20_dbdata/20_auto_created";
@@ -148,7 +148,7 @@ public class GetTableInsertSqlServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "sqlPath"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "sqlPath"), e.getLocalizedMessage());
 		}
 
 		String sqlPath = "30_sql/20_auto_created";
@@ -157,7 +157,7 @@ public class GetTableInsertSqlServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "tableName"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "tableName"), e.getLocalizedMessage());
 		}
 	}
 
@@ -276,7 +276,7 @@ public class GetTableInsertSqlServiceTest {
 		assertTrue(insertSqlFile.length() == 0);
 
 		// 生成したINSERTのSQLファイルを削除する(不要ファイルが残ってしまうため)
-		new FileUtil().deleteFileOrDir(insertSqlFile);
+		FileUtil.deleteFileOrDir(insertSqlFile);
 	}
 
 	@Test
@@ -337,14 +337,14 @@ public class GetTableInsertSqlServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (ApplicationInternalException e) {
-			assertTrue(e.getLocalizedMessage().contains(new Mu().msg("msg.err.common.noColumnInfo",
+			assertTrue(e.getLocalizedMessage().contains(Mu.msg("msg.err.common.noColumnInfo",
 					"NOT_EXIST_COLUMN")));
 		}
 
 		// 生成したINSERTのSQLファイルを削除する(不要ファイルが残ってしまうため)
 		String outputPath = dirPath + "/" + sqlPath + "/";
 		File insertSqlFile = new File(outputPath + "INSERT_" + tableName + ".txt");
-		new FileUtil().deleteFileOrDir(insertSqlFile);
+		FileUtil.deleteFileOrDir(insertSqlFile);
 	}
 
 	@Test
@@ -372,6 +372,6 @@ public class GetTableInsertSqlServiceTest {
 		// 生成したINSERTのSQLファイルを削除する(不要ファイルが残ってしまうため)
 		String outputPath = dirPath + "/" + sqlPath + "/";
 		File insertSqlFile = new File(outputPath + "INSERT_" + tableName + ".txt");
-		new FileUtil().deleteFileOrDir(insertSqlFile);
+		FileUtil.deleteFileOrDir(insertSqlFile);
 	}
 }

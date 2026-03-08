@@ -82,16 +82,16 @@ public class ServiceControlServlet extends HttpServlet {
 
 		// サーブレットが動作している位置を取得する場合は、次のコードを有効にしてログを確認する
 		String port = Integer.toString(request.getServerPort());
-		logger.info(new Mu().msg("msg.ServiceControlServlet.currentPos", request.getPathTranslated()));
-		logger.info(new Mu().msg("msg.ServiceControlServlet.scheme", request.getScheme()));
-		logger.info(new Mu().msg("msg.ServiceControlServlet.server", request.getServerName()));
-		logger.info(new Mu().msg("msg.ServiceControlServlet.port", port));
-		logger.info(new Mu().msg("msg.ServiceControlServlet.contextPath", request.getContextPath()));
-		logger.info(new Mu().msg("msg.ServiceControlServlet.servletPath", request.getServletPath()));
+		logger.info(Mu.msg("msg.ServiceControlServlet.currentPos", request.getPathTranslated()));
+		logger.info(Mu.msg("msg.ServiceControlServlet.scheme", request.getScheme()));
+		logger.info(Mu.msg("msg.ServiceControlServlet.server", request.getServerName()));
+		logger.info(Mu.msg("msg.ServiceControlServlet.port", port));
+		logger.info(Mu.msg("msg.ServiceControlServlet.contextPath", request.getContextPath()));
+		logger.info(Mu.msg("msg.ServiceControlServlet.servletPath", request.getServletPath()));
 
 		// リクエスト内のURIを取得する
 		String requestUri = request.getRequestURI();
-		logger.info(new Mu().msg("msg.ServiceControlServlet.requestUri", requestUri));
+		logger.info(Mu.msg("msg.ServiceControlServlet.requestUri", requestUri));
 
 		// DBに接続する
 		DbInterface db = new DbUtil().getDb(new InnerClassPathProp("rc.properties"));
@@ -121,7 +121,7 @@ public class ServiceControlServlet extends HttpServlet {
 		} catch (Exception e) {
 
 			// ログを記録する
-			new LogUtil().handleException(e);
+			LogUtil.handleException(e);
 
 			// ロールバックする
 			rollbackDb(db);
@@ -189,7 +189,7 @@ public class ServiceControlServlet extends HttpServlet {
 		} catch (SQLException e) {
 
 			// 通常起きえない例外のため、カバレッジ確認対象外とする
-			new LogUtil().handleException(e);
+			LogUtil.handleException(e);
 		}
 	}
 
@@ -202,7 +202,7 @@ public class ServiceControlServlet extends HttpServlet {
 		} catch (SQLException e) {
 
 			// 通常起きえない例外のため、カバレッジ確認対象外とする
-			new LogUtil().handleException(e);
+			LogUtil.handleException(e);
 		}
 	}
 
@@ -215,7 +215,7 @@ public class ServiceControlServlet extends HttpServlet {
 		} catch (SQLException e) {
 
 			// 通常起きえない例外のため、カバレッジ確認対象外とする
-			new LogUtil().handleException(e);
+			LogUtil.handleException(e);
 		}
 	}
 
@@ -232,15 +232,15 @@ public class ServiceControlServlet extends HttpServlet {
 			service.doService(input, output);
 
 			// 画面表示用にスタックトレースを出力パラメータに設定する
-			output.putString("stackTrace", new LogUtil().handleException(e));
+			output.putString("stackTrace", LogUtil.handleException(e));
 
 			// 出力パラメータのログを記録する
-			output.recordLog(logger, new Mu().msg("msg.ServiceControlServlet.doErrPageScript"));
+			output.recordLog(logger, Mu.msg("msg.ServiceControlServlet.doErrPageScript"));
 
 		} catch (Exception e1) {
 
 			// 通常起きえない、このエラーが起きた場合はデバッグすること
-			new LogUtil().handleException(e1);
+			LogUtil.handleException(e1);
 		}
 
 		// 出力パラメータを呼び出し側に返却する
@@ -270,14 +270,14 @@ public class ServiceControlServlet extends HttpServlet {
 
 			// 応答種別がリダイレクトの場合は、サービス出力パラメータの設定に基づいてリダイレクトを行う
 			String redirectUrl = new RwProp().get("servlet.redirect.basepath") + output.getString("destination");
-			logger.info(new Mu().msg("msg.ServiceProvider.redirectUrl", redirectUrl));
+			logger.info(Mu.msg("msg.ServiceProvider.redirectUrl", redirectUrl));
 			response.sendRedirect(redirectUrl);
 
 		} else if ("forward".equals(respKind)) {
 
 			// 応答種別がフォワードの場合は、サービス出力パラメータの設定に基づいてフォワード処理を行う
 			String forwardPath = new RwProp().get("servlet.forward.basepath") + output.getString("destination");
-			logger.info(new Mu().msg("msg.ServiceProvider.forwardPath", forwardPath));
+			logger.info(Mu.msg("msg.ServiceProvider.forwardPath", forwardPath));
 			RequestDispatcher requestDispatcher = request.getRequestDispatcher(forwardPath);
 			requestDispatcher.forward(request, response);
 

@@ -33,11 +33,11 @@ public class GetAccountService implements ServiceInterface {
 		} catch (RoleRestrictionException e) {
 
 			// ロール制約例外を検出した場合は、ログを記録して例外をそのままスローする
-			new LogUtil().handleException(e);
+			LogUtil.handleException(e);
 			throw e;
 
 		} catch (Exception e) {
-			throw new ApplicationInternalException(new LogUtil().handleException(e));
+			throw new ApplicationInternalException(LogUtil.handleException(e));
 		}
 	}
 
@@ -52,7 +52,7 @@ public class GetAccountService implements ServiceInterface {
 		getAccount(input.getDb(), input.getString("accountId"), output);
 
 		// アカウントに紐づく権限を取得し、出力パラメータに設定する
-		var authList = new AuthUtil().getAuthByAccountId(input.getDb(), input.getString("accountId"));
+		var authList = AuthUtil.getAuthByAccountId(input.getDb(), input.getString("accountId"));
 		output.putRecordList("authList", authList);
 
 		// アクセスしようとしているURLにロールによる制約があるか確認する
@@ -98,8 +98,7 @@ public class GetAccountService implements ServiceInterface {
 		var recordList = db.select(sql, paramList);
 
 		// アカウントに紐づくロールを取得する
-		var authUtil = new AuthUtil();
-		var roleList = authUtil.getRoleByAccountId(db, accountId);
+		var roleList = AuthUtil.getRoleByAccountId(db, accountId);
 
 		// 取得した全てのロール制約のうち、いずれかのロールを持っている場合は即時終了する
 		for (var columnMap : recordList) {
@@ -110,7 +109,7 @@ public class GetAccountService implements ServiceInterface {
 			}
 
 			// アカウントがロールを持っていればロール制約違反なしと判断し、即時終了する
-			if (authUtil.hasRole(columnMap.get("APROLE_ID"), roleList)) {
+			if (AuthUtil.hasRole(columnMap.get("APROLE_ID"), roleList)) {
 				return;
 			}
 		}

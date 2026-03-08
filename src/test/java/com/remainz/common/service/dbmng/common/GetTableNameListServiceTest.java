@@ -56,7 +56,7 @@ public class GetTableNameListServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "db"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "db"), e.getLocalizedMessage());
 		}
 
 		try {
@@ -64,7 +64,7 @@ public class GetTableNameListServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "dirPath"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "dirPath"), e.getLocalizedMessage());
 		}
 
 		try {
@@ -72,7 +72,7 @@ public class GetTableNameListServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "defPath"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "defPath"), e.getLocalizedMessage());
 		}
 
 		try {
@@ -80,7 +80,7 @@ public class GetTableNameListServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "getTableNameListSql"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "getTableNameListSql"), e.getLocalizedMessage());
 		}
 	}
 
@@ -95,7 +95,7 @@ public class GetTableNameListServiceTest {
 				""";
 
 		// 必要なディレクトリがなければ作成する
-		new FileUtil().createDirIfNotExists(TestUtil.OUTPUT_PATH + "dbmng/h2/10_dbdef/20_auto_created");
+		FileUtil.createDirIfNotExists(TestUtil.OUTPUT_PATH + "dbmng/h2/10_dbdef/20_auto_created");
 
 		// SQLエラーのパターン
 		GetTableNameListService service = new GetTableNameListService();
@@ -113,7 +113,7 @@ public class GetTableNameListServiceTest {
 		}
 
 		// 生成したディレクトリを削除する
-		new FileUtil().deleteDirIfExists(TestUtil.OUTPUT_PATH);
+		FileUtil.deleteDirIfExists(TestUtil.OUTPUT_PATH);
 	}
 
 	@Test
@@ -124,7 +124,7 @@ public class GetTableNameListServiceTest {
 		String getTableNameListSql = testUtil.createGetTableNameListSql();
 
 		// 必要なディレクトリがなければ作成する
-		new FileUtil().createDirIfNotExists(TestUtil.OUTPUT_PATH + "dbmng/" + dbName + "/10_dbdef/20_auto_created");
+		FileUtil.createDirIfNotExists(TestUtil.OUTPUT_PATH + "dbmng/" + dbName + "/10_dbdef/20_auto_created");
 
 		// 正常系のパターン
 		GetTableNameListService service = new GetTableNameListService();
@@ -138,6 +138,6 @@ public class GetTableNameListServiceTest {
 		assertTrue(new File(TestUtil.OUTPUT_PATH + "dbmng/" + dbName + "/10_dbdef/20_auto_created/tableNameList.txt").exists());
 
 		// 生成したディレクトリを削除する
-		new FileUtil().deleteDirIfExists(TestUtil.OUTPUT_PATH);
+		FileUtil.deleteDirIfExists(TestUtil.OUTPUT_PATH);
 	}
 }

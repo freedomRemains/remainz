@@ -6,6 +6,12 @@ package com.remainz.common.util;
  */
 public class Cu {
 
+	/**
+	 * インスタンス化禁止を明示するため、privateコンストラクタを定義する。
+	 */
+	private Cu() {
+	}
+
 	public static boolean isEmpty(String target) {
 		if (target == null || target.length() == 0) {
 			return true;
@@ -16,14 +22,6 @@ public class Cu {
 
 	public static boolean isNotEmpty(String target) {
 		return !isEmpty(target);
-	}
-
-	public boolean isEmptyString(String target) {
-		return isEmpty(target);
-	}
-
-	public boolean isNotEmptyString(String target) {
-		return isNotEmpty(target);
 	}
 
 	public static String convertForFileName(String fileName) {

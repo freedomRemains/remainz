@@ -52,7 +52,7 @@ public class GetTableInsertSqlService implements ServiceInterface {
 		// SQLファイルを作成する
 		String filePath = input.getString("dirPath") + PATH_DELM + input.getString("sqlPath") + "/INSERT_"
 				+ tableName + ".txt";
-		try (BufferedWriter tableSqlFile = new FileUtil().getBufferedWriter(filePath)) {
+		try (BufferedWriter tableSqlFile = FileUtil.getBufferedWriter(filePath)) {
 
 			// テーブル定義に基づき、INSERTのSQLを生成する
 			createInsertSqlByTableData(input, tableSqlFile, tableName, tableDef);
@@ -101,7 +101,7 @@ public class GetTableInsertSqlService implements ServiceInterface {
 		// データファイルを開く
 		String dataFilePath = input.getString("dirPath") + PATH_DELM + input.getString("dataPath")
 				+ PATH_DELM + tableName + ".txt";
-		try (BufferedReader dataFile = new FileUtil().getBufferedReader(dataFilePath)) {
+		try (BufferedReader dataFile = FileUtil.getBufferedReader(dataFilePath)) {
 			createRecordListByDataFile(recordList, dataFile);
 		}
 
@@ -186,7 +186,7 @@ public class GetTableInsertSqlService implements ServiceInterface {
 		}
 
 		// カラム名が見つからない場合はエラーとする
-		throw new ApplicationInternalException(new Mu().msg("msg.err.common.noColumnInfo",
+		throw new ApplicationInternalException(Mu.msg("msg.err.common.noColumnInfo",
 				columnName));
 	}
 }

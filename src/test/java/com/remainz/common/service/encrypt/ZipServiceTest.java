@@ -27,16 +27,16 @@ public class ZipServiceTest {
 	void beforeEach() {
 
 		// テストフォルダを作成する
-		new FileUtil().createDirIfNotExists(TestUtil.RESOURCE_PATH + "service/encrypt/ZipServiceTest/dirToZip/subDir1");
-		new FileUtil().createDirIfNotExists(TestUtil.OUTPUT_PATH + "ZipServiceTest");
-		new FileUtil().createDirIfNotExists(TestUtil.OUTPUT_PATH + "ZipServiceTest/unzip");
+		FileUtil.createDirIfNotExists(TestUtil.RESOURCE_PATH + "service/encrypt/ZipServiceTest/dirToZip/subDir1");
+		FileUtil.createDirIfNotExists(TestUtil.OUTPUT_PATH + "ZipServiceTest");
+		FileUtil.createDirIfNotExists(TestUtil.OUTPUT_PATH + "ZipServiceTest/unzip");
 	}
 
 	@AfterEach
 	void afterEach() {
 
 		// テストフォルダを削除する
-		new FileUtil().deleteDirIfExists(TestUtil.OUTPUT_PATH);
+		FileUtil.deleteDirIfExists(TestUtil.OUTPUT_PATH);
 	}
 
 	//
@@ -54,7 +54,7 @@ public class ZipServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "targetDirOrFile"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "targetDirOrFile"), e.getLocalizedMessage());
 		}
 
 		try {
@@ -62,7 +62,7 @@ public class ZipServiceTest {
 			service.doService(input, output);
 			fail();
 		} catch (BusinessRuleViolationException e) {
-			assertEquals(new Mu().msg("msg.common.noParam", "outputDir"), e.getLocalizedMessage());
+			assertEquals(Mu.msg("msg.common.noParam", "outputDir"), e.getLocalizedMessage());
 		}
 	}
 
@@ -136,7 +136,7 @@ public class ZipServiceTest {
 
 		// 親ディレクトリなしのテストを行うため、一時ファイルを作成する
 		File temp = new File("blankFileForTestZipService");
-		try (BufferedWriter file = new FileUtil().getBufferedWriter("blankFileForTestZipService")) {
+		try (BufferedWriter file = FileUtil.getBufferedWriter("blankFileForTestZipService")) {
 			file.close();
 		}
 		assertTrue(Cu.isEmpty(temp.getParent()));
@@ -159,7 +159,7 @@ public class ZipServiceTest {
 		assertBlankFile(outputDir + "blankFileForTestZipService");
 
 		// 一時ファイルを削除する
-		new FileUtil().deleteFileOrDir(temp);
+		FileUtil.deleteFileOrDir(temp);
 	}
 
 	private GenericParam getNormalInput(String targetDirOrFile) {
