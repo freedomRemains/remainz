@@ -19,7 +19,7 @@ import com.remainz.common.util.LogUtil;
 public class DecryptService implements ServiceInterface {
 
 	@Override
-	public void doService(GenericParam input, GenericParam output) {
+	public void doService(GenericParam input, GenericParam output) throws Exception {
 
 		// 必要なパラメータが入力されていなければエラーとする
 		InputCheckUtil inputCheckUtil = new InputCheckUtil();
@@ -33,7 +33,7 @@ public class DecryptService implements ServiceInterface {
 		doDecryptFile(input, output);
 	}
 
-	private void doDecryptFile(GenericParam input, GenericParam output) {
+	private void doDecryptFile(GenericParam input, GenericParam output) throws Exception {
 
 		// ファイルから秘密鍵を取得する
 		SecretKey secretKey = getSecretKeyFromFile(input.getString("secretKeyFilePath"),
@@ -50,8 +50,6 @@ public class DecryptService implements ServiceInterface {
 				encryptResultFilePath)) {
 			decryptFile(encryptResultFilePath, encryptResultFile, secretKey, iv,
 					input.getString("encryptKind"));
-		} catch (Exception e) {
-			throw new ApplicationInternalException(new LogUtil().handleException(e));
 		}
 	}
 

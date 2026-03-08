@@ -9,7 +9,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.remainz.TestUtil;
-import com.remainz.common.exception.ApplicationInternalException;
 import com.remainz.common.exception.BusinessRuleViolationException;
 import com.remainz.common.param.GenericParam;
 import com.remainz.common.util.FileUtil;
@@ -38,7 +37,7 @@ public class ZipAndBase64EncodeServiceTest {
 	//
 
 	@Test
-	void test01() {
+	void test01() throws Exception {
 
 		// 必須パラメータなしのパターン
 		var input = new GenericParam();
@@ -61,7 +60,7 @@ public class ZipAndBase64EncodeServiceTest {
 	}
 
 	@Test
-	void test02() {
+	void test02() throws Exception {
 
 		String targetDirOrFile = "dirToZip";
 
@@ -74,7 +73,7 @@ public class ZipAndBase64EncodeServiceTest {
 	}
 
 	@Test
-	void test03() {
+	void test03() throws Exception {
 
 		String targetDirOrFile = "dirToZip";
 
@@ -88,7 +87,7 @@ public class ZipAndBase64EncodeServiceTest {
 	}
 
 	@Test
-	void test04() {
+	void test04() throws Exception {
 
 		String targetDirOrFile = "dirToZip";
 
@@ -100,8 +99,8 @@ public class ZipAndBase64EncodeServiceTest {
 			input.putString("charset", "notExistCharset");
 			service.doService(input, output);
 			fail();
-		} catch (ApplicationInternalException e) {
-			assertTrue(e.getLocalizedMessage().contains("UnsupportedCharsetException"));
+		} catch (Exception e) {
+			assertTrue(e.getClass().getName().contains("UnsupportedCharsetException"));
 		}
 	}
 

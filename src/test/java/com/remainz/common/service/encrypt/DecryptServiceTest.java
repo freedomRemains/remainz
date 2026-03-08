@@ -37,7 +37,7 @@ public class DecryptServiceTest {
 	//
 
 	@Test
-	void test01() {
+	void test01() throws Exception {
 
 		// 必須パラメータなしのパターン
 		var input = new GenericParam();
@@ -84,7 +84,7 @@ public class DecryptServiceTest {
 	}
 
 	@Test
-	void test02() {
+	void test02() throws Exception {
 
 		String targetDirOrFile = "dirToZip";
 
@@ -98,7 +98,7 @@ public class DecryptServiceTest {
 	}
 
 	@Test
-	void test03() {
+	void test03() throws Exception {
 
 		String targetDirOrFile = "dirToZip";
 
@@ -114,7 +114,7 @@ public class DecryptServiceTest {
 	}
 
 	@Test
-	void test04() {
+	void test04() throws Exception {
 
 		String targetDirOrFile = "dirToZip";
 
@@ -126,13 +126,13 @@ public class DecryptServiceTest {
 		try {
 			service.doService(input, output);
 			fail();
-		} catch (ApplicationInternalException e) {
-			assertTrue(e.getLocalizedMessage().contains("FileNotFoundException"));
+		} catch (Exception e) {
+			assertTrue(e.getClass().getName().contains("FileNotFoundException"));
 		}
 	}
 
 	@Test
-	void test05() {
+	void test05() throws Exception {
 
 		String targetDirOrFile = "dirToZip";
 
@@ -150,7 +150,7 @@ public class DecryptServiceTest {
 	}
 
 	@Test
-	void test06() {
+	void test06() throws Exception {
 
 		String targetDirOrFile = "dirToZip";
 
@@ -167,7 +167,7 @@ public class DecryptServiceTest {
 		}
 	}
 
-	private GenericParam getNormalInput(String targetDirOrFile) {
+	private GenericParam getNormalInput(String targetDirOrFile) throws Exception {
 
 		// zipファイルを生成する
 		String outputDir = TestUtil.OUTPUT_PATH + "ZipServiceTest";
@@ -199,7 +199,7 @@ public class DecryptServiceTest {
 		return output.getString("zipFilePath");
 	}
 
-	private GenericParam encrypt(String filePath, String outputDir) {
+	private GenericParam encrypt(String filePath, String outputDir) throws Exception {
 
 		// 暗号化サービスを実行する
 		var input = new GenericParam();

@@ -5,18 +5,16 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.util.Base64;
 
-import com.remainz.common.exception.ApplicationInternalException;
 import com.remainz.common.param.GenericParam;
 import com.remainz.common.service.ServiceInterface;
 import com.remainz.common.util.FileUtil;
 import com.remainz.common.util.InputCheckUtil;
-import com.remainz.common.util.LogUtil;
 import com.remainz.common.util.RcProp;
 
 public class Base64DecodeAndUnzipService implements ServiceInterface {
 
 	@Override
-	public void doService(GenericParam input, GenericParam output) {
+	public void doService(GenericParam input, GenericParam output) throws Exception {
 
 		// 必要なパラメータが入力されていなければエラーとする
 		InputCheckUtil inputCheckUtil = new InputCheckUtil();
@@ -27,7 +25,7 @@ public class Base64DecodeAndUnzipService implements ServiceInterface {
 		doDecryptAndUnzipFile(input, output);
 	}
 
-	private void doDecryptAndUnzipFile(GenericParam input, GenericParam output) {
+	private void doDecryptAndUnzipFile(GenericParam input, GenericParam output) throws Exception {
 
 		// 入力パラメータにchaset指定がない場合は、デフォルト値を適用する
 		String charset = input.getString("charset");
@@ -43,8 +41,6 @@ public class Base64DecodeAndUnzipService implements ServiceInterface {
 		// ファイルから暗号化データを読み込み、zipファイルを復元する
 		try (BufferedOutputStream zipFile = new FileUtil().getBufferedOutputStream(zipFilePath)) {
 			getZipFileFromFile(charset, zipFile, encodeResultFilePath);
-		} catch (Exception e) {
-			throw new ApplicationInternalException(new LogUtil().handleException(e));
 		}
 
 		// zipファイルを解凍する
